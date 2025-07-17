@@ -421,7 +421,7 @@ export default function DashboardPage() {
 
   return (
     <div className="py-8">
-      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8 animate-fade-in-up">
           <div>

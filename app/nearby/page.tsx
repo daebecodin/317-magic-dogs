@@ -41,7 +41,7 @@ export default function NearbyPage() {
 
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Near You

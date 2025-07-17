@@ -6,12 +6,7 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-interface DogProfilePageProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-export default function DogProfilePage({ params, searchParams }: DogProfilePageProps) {
+export default function DogProfilePage({ params, searchParams }: { params: { id: string }, searchParams?: { [key: string]: string | string[] | undefined } }) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -20,7 +15,7 @@ export default function DogProfilePage({ params, searchParams }: DogProfilePageP
 
   return (
     <div className="py-12 md:py-24 bg-muted/20">
-      <div className="container px-4 md:px-6 max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <Card className="overflow-hidden animate-fade-in-up">
           <div className="grid md:grid-cols-2">
             <div className="relative aspect-square bg-gradient-to-br from-blue-50 to-green-50">

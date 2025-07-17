@@ -16,7 +16,7 @@ export default function SignupPage() {
   if (isSubmitted) {
     return (
       <div className="py-12 md:py-24">
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
           <div className="max-w-2xl mx-auto text-center">
             <Card>
               <CardHeader>
@@ -54,7 +54,7 @@ export default function SignupPage() {
 
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4">
