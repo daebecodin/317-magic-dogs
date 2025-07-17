@@ -69,7 +69,7 @@ export function Hero() {
           </div>
 
           <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
-            <div className="w-full aspect-video rounded-2xl shadow-2xl overflow-hidden relative z-10">
+            <div className="w-full h-[400px] rounded-2xl shadow-2xl overflow-hidden relative z-10">
               <iframe
                 title="Lowpoly Dogs Pack"
                 frameBorder="0"
