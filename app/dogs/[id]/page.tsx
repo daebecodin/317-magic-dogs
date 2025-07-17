@@ -6,16 +6,16 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-// Standard Next.js PageProps type for dynamic routes
-interface DogProfilePageProps {
+// Define PageProps type explicitly as Next.js expects for Server Components
+type PageProps = {
   params: { id: string };
   searchParams?: { [key: string]: string | string[] | undefined };
-}
+};
 
 export default async function DogProfilePage({
   params,
   searchParams,
-}: DogProfilePageProps) {
+}: PageProps) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
