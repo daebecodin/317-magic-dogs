@@ -5,18 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { type NextPage } from "next" // Import NextPage
 
-interface DogProfilePageProps {
-  params: {
-    id: string;
-  };
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
-  };
-}
-
-const DogProfilePage: NextPage<DogProfilePageProps> = async ({ params, searchParams }) => {
+export default async function DogProfilePage({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -73,5 +69,3 @@ const DogProfilePage: NextPage<DogProfilePageProps> = async ({ params, searchPar
     </div>
   )
 }
-
-export default DogProfilePage
