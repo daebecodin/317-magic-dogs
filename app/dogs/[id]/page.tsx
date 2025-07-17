@@ -7,32 +7,7 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Metadata, ResolvingMetadata } from "next"
 
-type Props = {
-  params: { id: string }
-}
-
-export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const dog = mockDogs.find((d) => d.id === parseInt(params.id))
-
-  if (!dog) {
-    return {
-      title: "Dog Not Found - SafeDawgs",
-    }
-  }
-
-  return {
-    title: `${dog.name} - ${dog.breed} | SafeDawgs`,
-    description: `Profile for ${dog.name}, a ${dog.age} ${dog.gender} ${dog.breed}. ${dog.description}`,
-  }
-}
-
-export async function generateStaticParams() {
-  return mockDogs.map((dog) => ({
-    id: dog.id.toString(),
-  }))
-}
-
-export default function DogProfilePage({ params }: { params: { id: string } }) {
+export default function DogProfilePage({ params, searchParams }: { params: { id: string }, searchParams?: { [key: string]: string | string[] | undefined } }) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -88,4 +63,25 @@ export default function DogProfilePage({ params }: { params: { id: string } }) {
       </div>
     </div>
   )
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }, parent: ResolvingMetadata): Promise<Metadata> {
+  const dog = mockDogs.find((d) => d.id === parseInt(params.id))
+
+  if (!dog) {
+    return {
+      title: "Dog Not Found - SafeDawgs",
+    }
+  }
+
+  return {
+    title: `${dog.name} - ${dog.breed} | SafeDawgs`,
+    description: `Profile for ${dog.name}, a ${dog.age} ${dog.gender} ${dog.breed}. ${dog.description}`,
+  }
+}
+
+export async function generateStaticParams() {
+  return mockDogs.map((dog) => ({
+    id: dog.id.toString(),
+  }))
 }
