@@ -6,6 +6,7 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
+// Standard Next.js PageProps type for dynamic routes
 interface DogProfilePageProps {
   params: { id: string };
   searchParams?: { [key: string]: string | string[] | undefined };
