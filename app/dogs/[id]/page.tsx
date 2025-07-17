@@ -6,10 +6,18 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
+// Explicitly define the props type for clarity and to potentially override bad inference
+interface DogProfilePageProps {
+  params: {
+    id: string;
+  };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
 export default async function DogProfilePage({
   params,
   searchParams,
-}: { params: { id: string }; searchParams?: { [key: string]: string | string[] | undefined } }) {
+}: DogProfilePageProps) { // Use the explicit interface here
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
