@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Heart, Users } from "lucide-react"
 import Image from "next/image"
+import { CountUp } from "@/components/animations/count-up"
+import { SplitText } from "@/components/animations/split-text"
 
 export function Hero() {
   return (
@@ -12,13 +14,14 @@ export function Hero() {
 
       <div className="container px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-fade-in-up">
-            <div className="space-y-4">
+          <div className="space-y-8">
+            <div className="space-y-4 animate-fade-in-up">
               <Badge variant="secondary" className="w-fit">
                 🐕 Saving Lives Through Technology
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                Saving Dogs Through <span className="text-primary">Smarter Rescue</span> Matching
+                <SplitText text="Saving Dogs Through" />
+                <SplitText text="Smarter Rescue Matching" className="text-primary" />
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl">
                 We connect at-risk dogs in high-kill shelters with a network of vetted, loving animal rescues. Together,
@@ -26,7 +29,7 @@ export function Hero() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
               <Button size="lg" asChild className="group">
                 <Link href="/signup">
                   For Rescues
@@ -39,13 +42,15 @@ export function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-8 pt-8 border-t">
+            <div className="flex flex-wrap gap-8 pt-8 border-t animate-fade-in-up" style={{ animationDelay: "300ms" }}>
               <div className="flex items-center gap-2">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                   <Heart className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">1,247</div>
+                  <div className="text-2xl font-bold">
+                    <CountUp to={1247} />
+                  </div>
                   <div className="text-sm text-muted-foreground">Dogs Saved</div>
                 </div>
               </div>
@@ -54,7 +59,9 @@ export function Hero() {
                   <Users className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <div className="text-2xl font-bold">245</div>
+                  <div className="text-2xl font-bold">
+                    <CountUp to={245} />
+                  </div>
                   <div className="text-sm text-muted-foreground">Partner Organizations</div>
                 </div>
               </div>

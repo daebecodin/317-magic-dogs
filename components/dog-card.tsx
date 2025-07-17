@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -10,10 +11,10 @@ import type { Dog } from "@/lib/types"
 export function DogCard({ dog }: { dog: Dog }) {
   return (
     <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col">
-      <div className="aspect-w-1 aspect-h-1 w-full bg-gradient-to-br from-blue-50 to-green-50 relative">
-        <Image src={dog.image} alt={dog.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
+      <div className="aspect-square w-full bg-gradient-to-br from-blue-50 to-green-50 relative">
+        <Image src={dog.image} alt={dog.name} fill className="object-cover rounded-t-lg" />
         {dog.urgent && (
-          <Badge variant="destructive" className="absolute top-3 right-3 flex items-center gap-1">
+          <Badge variant="destructive" className="absolute top-3 right-3 z-10 flex items-center gap-1">
             <AlertTriangle className="w-3 h-3" />
             Urgent
           </Badge>
@@ -36,8 +37,8 @@ export function DogCard({ dog }: { dog: Dog }) {
             {dog.shelter} • {dog.distance}
           </span>
         </div>
-        <Button size="sm" className="w-full mt-4">
-          View Profile
+        <Button size="sm" className="w-full mt-4" asChild>
+          <Link href={`/dogs/${dog.id}`}>View Profile</Link>
         </Button>
       </CardContent>
     </Card>
