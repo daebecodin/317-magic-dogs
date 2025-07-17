@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heart, Users, ArrowRight } from "lucide-react"
+import { GradientText } from "@/components/animations/gradient-text"
 
 export function CallToAction() {
   return (
@@ -17,23 +18,25 @@ export function CallToAction() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-blue-600" />
-                </div>
-                <CardTitle className="text-xl">For Rescue Organizations</CardTitle>
-                <CardDescription>Connect with shelters in need and expand your impact</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full" asChild>
-                  <Link href="/signup">
-                    Join as a Rescue
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+            <GradientText showBorder={true} animationSpeed={5}>
+              <Card className="text-center h-full border-none">
+                <CardHeader>
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-xl">For Rescue Organizations</CardTitle>
+                  <CardDescription>Connect with shelters in need and expand your impact</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button className="w-full" asChild>
+                    <Link href="/signup">
+                      Join as a Rescue
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </GradientText>
 
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>

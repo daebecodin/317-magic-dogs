@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Heart, Users, CheckCircle, ArrowRight } from "lucide-react"
+import { GradientText } from "@/components/animations/gradient-text"
 
 export function HowItWorksPreview() {
   const steps = [
@@ -36,7 +37,9 @@ export function HowItWorksPreview() {
           <Badge variant="secondary" className="mb-4">
             How It Works
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Simple Process, Powerful Results</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <GradientText>Simple Process, Powerful Results</GradientText>
+          </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Our platform streamlines rescue matching to save more dogs faster.
           </p>
