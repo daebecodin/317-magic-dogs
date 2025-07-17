@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Check, Star, Zap } from "lucide-react"
+import { Check, Star, Zap, Heart } from "lucide-react"
 import { useState } from "react"
 
 export default function PricingClientPage() {
@@ -99,6 +99,21 @@ export default function PricingClientPage() {
     },
   ]
 
+  const individualPlan = {
+    name: "Adopter",
+    price: { monthly: 0, annual: 0 },
+    description: "For individuals looking to find and adopt their new best friend.",
+    features: [
+      "Search for available dogs",
+      "Filter by breed, age, and location",
+      "View shelter and rescue profiles",
+      "Save your favorite dogs",
+      "Receive new dog alerts",
+    ],
+    icon: Heart,
+    popular: false,
+  }
+
   const PricingCard = ({ plan, type }: { plan: any; type: string }) => (
     <Card className={`relative ${plan.popular ? "border-primary shadow-lg" : ""}`}>
       {plan.popular && <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">Most Popular</Badge>}
@@ -159,13 +174,14 @@ export default function PricingClientPage() {
 
         {/* Pricing Tabs */}
         <Tabs defaultValue="rescue" className="max-w-6xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2 mb-12">
+          <TabsList className="grid w-full grid-cols-3 mb-12">
             <TabsTrigger value="rescue">Rescue Organizations</TabsTrigger>
             <TabsTrigger value="shelter">Shelters</TabsTrigger>
+            <TabsTrigger value="individual">Individuals</TabsTrigger>
           </TabsList>
 
           <TabsContent value="rescue">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 animate-fade-in">
               {rescuePlans.map((plan, index) => (
                 <PricingCard key={index} plan={plan} type="rescue" />
               ))}
@@ -173,10 +189,18 @@ export default function PricingClientPage() {
           </TabsContent>
 
           <TabsContent value="shelter">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-8 animate-fade-in">
               {shelterPlans.map((plan, index) => (
                 <PricingCard key={index} plan={plan} type="shelter" />
               ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="individual">
+            <div className="grid md:grid-cols-3 gap-8 justify-center animate-fade-in">
+              <div className="md:col-start-2">
+                <PricingCard plan={individualPlan} type="individual" />
+              </div>
             </div>
           </TabsContent>
         </Tabs>
