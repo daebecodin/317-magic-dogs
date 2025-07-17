@@ -6,7 +6,7 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-export default async function DogProfilePage({ params, searchParams }: { params: Record<string, string | string[]>, searchParams?: Record<string, string | string[] | undefined> }) {
+export default async function DogProfilePage({ params, searchParams }) { // Removed explicit type annotation
   const dog = mockDogs.find((d) => d.id === parseInt(params.id as string))
 
   if (!dog) {
