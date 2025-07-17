@@ -9,8 +9,8 @@ import type { Dog } from "@/lib/types"
 
 export function DogCard({ dog }: { dog: Dog }) {
   return (
-    <Card className="hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
-      <div className="aspect-w-1 aspect-h-1 w-full bg-muted relative">
+    <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col">
+      <div className="aspect-w-1 aspect-h-1 w-full bg-gradient-to-br from-blue-50 to-green-50 relative">
         <Image src={dog.image} alt={dog.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
         {dog.urgent && (
           <Badge variant="destructive" className="absolute top-3 right-3 flex items-center gap-1">

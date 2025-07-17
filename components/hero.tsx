@@ -7,12 +7,12 @@ import Image from "next/image"
 export function Hero() {
   return (
     <section className="relative py-12 md:py-24 lg:py-32 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-green-50" />
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-green-50 -z-10" />
 
-      <div className="container relative px-4 md:px-6">
+      <div className="container px-4 md:px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
+          <div className="space-y-8 animate-fade-in-up">
             <div className="space-y-4">
               <Badge variant="secondary" className="w-fit">
                 🐕 Saving Lives Through Technology
@@ -61,7 +61,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
             <div className="relative z-10">
               <Image
                 src="/placeholder.svg?height=600&width=600"
@@ -73,8 +73,8 @@ export function Hero() {
               />
             </div>
             {/* Decorative elements */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-xl" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-green-200/50 rounded-full blur-xl" />
+            <div className="absolute -top-8 -right-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
+            <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-green-200/30 rounded-full blur-2xl" />
           </div>
         </div>
       </div>

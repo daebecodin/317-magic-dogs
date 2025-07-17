@@ -41,8 +41,8 @@ export default function NearbyPage() {
 
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6">
-        <div className="text-center mb-16">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Near You
           </Badge>
@@ -56,13 +56,13 @@ export default function NearbyPage() {
           </Button>
         </div>
 
-        <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12">
-          <div className="w-full h-64 md:h-96 bg-muted rounded-xl">
+        <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+          <div className="w-full h-64 md:h-96 bg-muted rounded-xl shadow-inner">
             <InteractiveMap shelters={mockOrganizations.shelters} rescues={mockOrganizations.rescues} />
           </div>
         </div>
 
-        <Tabs defaultValue="dogs" className="max-w-6xl mx-auto">
+        <Tabs defaultValue="dogs" className="max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: "400ms" }}>
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="dogs">Dogs</TabsTrigger>
             <TabsTrigger value="shelters">Shelters</TabsTrigger>
