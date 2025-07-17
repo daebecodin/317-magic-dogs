@@ -69,16 +69,24 @@ export function Hero() {
           </div>
 
           <div className="relative animate-fade-in" style={{ animationDelay: "200ms" }}>
-            <div className="relative z-10">
-              <Image
-                src="/placeholder.svg?height=600&width=600"
-                alt="Happy rescued dogs"
-                width={600}
-                height={600}
-                className="rounded-2xl object-cover shadow-2xl"
-                priority
-              />
+            <div className="sketchfab-embed-wrapper w-full aspect-video rounded-2xl shadow-2xl overflow-hidden relative z-10">
+              <iframe
+                title="Lowpoly Dogs Pack"
+                frameBorder="0"
+                allowFullScreen // Keep this standard attribute
+                allow="autoplay; fullscreen; xr-spatial-tracking"
+                xr-spatial-tracking
+                execution-while-out-of-viewport
+                execution-while-not-rendered
+                web-share
+                className="w-full h-full"
+                src="https://sketchfab.com/models/183ca044e42543a68fa0ec5ef9b7584d/embed?autostart=1&camera=0&preload=1&transparent=1&ui_hint=0"
+              >
+              </iframe>
             </div>
+            <p className="text-xs font-normal mt-2 text-muted-foreground text-center">
+              <a href="https://sketchfab.com/3d-models/lowpoly-dogs-pack-183ca044e42543a68fa0ec5ef9b7584d?utm_medium=embed&utm_campaign=share-popup&utm_content=183ca044e42543a68fa0ec5ef9b7584d" target="_blank" rel="nofollow" className="font-bold text-primary hover:underline"> Lowpoly Dogs Pack </a> by <a href="https://sketchfab.com/billl90?utm_medium=embed&utm_campaign=share-popup&utm_content=183ca044e42543a68fa0ec5ef9b7584d" target="_blank" rel="nofollow" className="font-bold text-primary hover:underline"> RedDeer </a> on <a href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=183ca044e42543a68fa0ec5ef9b7584d" target="_blank" rel="nofollow" className="font-bold text-primary hover:underline">Sketchfab</a>
+            </p>
             {/* Decorative elements */}
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
             <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-green-200/30 rounded-full blur-2xl" />

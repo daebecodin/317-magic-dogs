@@ -6,7 +6,16 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-export default async function DogProfilePage({ params, searchParams }: { params: { id: string }, searchParams?: { [key: string]: string | string[] | undefined } }) {
+interface DogProfilePageProps {
+  params: {
+    id: string;
+  };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
+}
+
+export default async function DogProfilePage({ params, searchParams }: DogProfilePageProps) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
