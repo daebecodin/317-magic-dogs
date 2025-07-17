@@ -10,7 +10,7 @@ import { mockOrganizations, mockDogs } from "@/lib/mock-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { DogCardSkeleton, OrgCardSkeleton } from "@/components/skeletons"
+import { DogCardSkeleton, OrgCardSkeleton } from "@/components/skeletons/card-skeletons"
 import type { Dog, Shelter, Rescue } from "@/lib/types"
 
 const ShelterCard = ({ shelter }: { shelter: Shelter }) => (
