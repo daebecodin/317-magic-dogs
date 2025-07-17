@@ -21,6 +21,8 @@ export type Shelter = {
   phone: string
   email: string
   description: string
+  lat: number
+  lng: number
 }
 
 export type Rescue = {
@@ -33,4 +35,6 @@ export type Rescue = {
   phone: string
   email: string
   description: string
+  lat: number
+  lng: number
 }

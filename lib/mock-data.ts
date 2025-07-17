@@ -12,6 +12,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(415) 555-0123",
       email: "contact@bayareashelter.org",
       description: "Municipal shelter serving the greater Bay Area with a focus on finding homes for all animals.",
+      lat: 37.7749,
+      lng: -122.4194,
     },
     {
       id: 2,
@@ -23,6 +25,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(510) 555-0456",
       email: "help@gghumane.org",
       description: "Non-profit organization dedicated to animal welfare and community education.",
+      lat: 37.8044,
+      lng: -122.2712,
     },
     {
       id: 3,
@@ -34,6 +38,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(650) 555-0789",
       email: "info@peninsulapets.org",
       description: "Volunteer-run rescue focusing on senior and special needs animals.",
+      lat: 37.4419,
+      lng: -122.1430,
     },
   ],
   rescues: [
@@ -47,6 +53,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(510) 555-0321",
       email: "adopt@secondchancedog.org",
       description: "Specializing in rehabilitating dogs with behavioral challenges and finding them loving homes.",
+      lat: 37.8715,
+      lng: -122.2730,
     },
     {
       id: 2,
@@ -58,6 +66,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(650) 555-0654",
       email: "contact@lovingpaws.org",
       description: "Foster-based rescue with a network of dedicated volunteers throughout the Bay Area.",
+      lat: 37.5630,
+      lng: -122.3255,
     },
     {
       id: 3,
@@ -69,6 +79,8 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
       phone: "(408) 555-0987",
       email: "info@goldenrescue.org",
       description: "Breed-specific rescue dedicated to Golden Retrievers and Golden mixes.",
+      lat: 37.3382,
+      lng: -121.8863,
     },
   ],
 }

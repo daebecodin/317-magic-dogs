@@ -1,13 +1,26 @@
 "use client"
 import { useState, useEffect } from "react"
+import dynamic from "next/dynamic"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { MapPin } from "lucide-react"
+import { MapPin, Loader } from "lucide-react"
 import { mockOrganizations, mockDogs } from "@/lib/mock-data"
 import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
+
+const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-muted rounded-xl flex items-center justify-center">
+      <div className="text-center">
+        <Loader className="w-12 h-12 text-muted-foreground mx-auto mb-4 animate-spin" />
+        <p className="text-muted-foreground">Loading map...</p>
+      </div>
+    </div>
+  ),
+})
 
 export default function NearbyPage() {
   const [location, setLocation] = useState("San Francisco, CA")
@@ -43,13 +56,9 @@ export default function NearbyPage() {
           </Button>
         </div>
 
-        <div className="bg-muted/50 rounded-2xl p-8 mb-12 text-center">
-          <div className="w-full h-64 bg-muted rounded-xl flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Interactive map coming soon</p>
-              <p className="text-sm text-muted-foreground">Showing organizations within 25 miles of {location}</p>
-            </div>
+        <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12">
+          <div className="w-full h-64 md:h-96 bg-muted rounded-xl">
+            <InteractiveMap shelters={mockOrganizations.shelters} rescues={mockOrganizations.rescues} />
           </div>
         </div>
 
