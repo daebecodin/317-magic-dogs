@@ -13,21 +13,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const team = [
-    {
-      name: "Anastasia",
-      role: "Founder",
-      description:
-        "A lifelong animal advocate bridging the tech gap in rescue. Anastasia has over 10 years of experience in animal welfare and saw the need for better technology to connect shelters and rescues.",
-      avatar: "/placeholder.svg?height=100&width=100",
-      initials: "AN",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-      },
-    },
+  
     {
       name: "Aaron",
-      role: "Founding Engineer",
+      role: "Engineer",
       description:
         "Leads platform development with focus on usability and security. Aaron brings extensive experience in building scalable platforms and has a passion for using technology for social good.",
       avatar: "/placeholder.svg?height=100&width=100",
