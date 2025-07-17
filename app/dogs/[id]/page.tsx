@@ -13,9 +13,9 @@ type PageProps = {
 };
 
 export default async function DogProfilePage({
-  params,
+  params, // Explicitly destructure params here
   searchParams,
-}: PageProps) {
+}: { params: { id: string }; searchParams?: { [key: string]: string | string[] | undefined } }) { // Explicitly type the destructured props
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
