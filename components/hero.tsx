@@ -74,13 +74,16 @@ export function Hero() {
             style={{ animationDelay: "400ms" }}
           >
             <div className="aspect-video rounded-2xl overflow-hidden shadow-lg border border-muted">
-              <iframe
-  src="https://sketchfab.com/models/183ca044e42543a68fa0ec5ef9b7584d/embed?autostart=1&camera=0&preload=1&transparent=1&ui_hint=0"
-  title="3D Model Viewer"
-  allow="autoplay; fullscreen; vr"
-  allowFullScreen
-  className="w-full h-[600px] rounded-lg shadow-lg"
-/>
+              <div className="w-full flex justify-center">
+  <iframe
+    title="3D Dogs Model"
+    className="w-[500px] h-[600px] rounded-xl shadow-xl"
+    allow="autoplay; fullscreen; vr"
+    allowFullScreen
+    frameBorder="0"
+    src="https://sketchfab.com/models/183ca044e42543a68fa0ec5ef9b7584d/embed?autostart=1&camera=0&preload=1&transparent=1&ui_hint=0&ui_infos=0&ui_controls=0&ui_watermark=0"
+  />
+</div>
 
             </div>
           </div>
