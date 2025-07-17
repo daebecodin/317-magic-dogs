@@ -9,6 +9,7 @@ import type { FC } from "react"
 
 interface DogProfilePageProps {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
 const DogProfilePage: FC<DogProfilePageProps> = ({ params }) => {

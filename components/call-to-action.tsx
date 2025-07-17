@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Heart, Users, ArrowRight } from "lucide-react"
 import { GradientText } from "@/components/animations/gradient-text"
+import { ShinyText } from "@/components/animations/shiny-text"
 
 export function CallToAction() {
   return (
@@ -11,7 +12,9 @@ export function CallToAction() {
       <div className="container px-4 md:px-6">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Save Lives?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <ShinyText>Ready to Save Lives?</ShinyText>
+            </h2>
             <p className="text-xl text-muted-foreground">
               Join thousands of shelters and rescues working together to give every dog a chance.
             </p>
