@@ -5,14 +5,34 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import type { FC } from "react"
+import type { Metadata, ResolvingMetadata } from "next"
 
-interface DogProfilePageProps {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+type Props = {
+  params: { id: string }
 }
 
-const DogProfilePage: FC<DogProfilePageProps> = ({ params }) => {
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+  const dog = mockDogs.find((d) => d.id === parseInt(params.id))
+
+  if (!dog) {
+    return {
+      title: "Dog Not Found - SafeDawgs",
+    }
+  }
+
+  return {
+    title: `${dog.name} - ${dog.breed} | SafeDawgs`,
+    description: `Profile for ${dog.name}, a ${dog.age} ${dog.gender} ${dog.breed}. ${dog.description}`,
+  }
+}
+
+export async function generateStaticParams() {
+  return mockDogs.map((dog) => ({
+    id: dog.id.toString(),
+  }))
+}
+
+export default function DogProfilePage({ params }: { params: { id: string } }) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -69,5 +89,3 @@ const DogProfilePage: FC<DogProfilePageProps> = ({ params }) => {
     </div>
   )
 }
-
-export default DogProfilePage
