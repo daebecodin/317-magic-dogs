@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { ParticlesBackground } from "@/components/particles-background" // Import the new component
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,7 +31,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
+        <ParticlesBackground /> {/* Add the particle background here */}
+        <div className="min-h-screen flex flex-col relative z-0"> {/* Ensure content is above particles */}
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
