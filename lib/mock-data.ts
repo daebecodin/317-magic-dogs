@@ -1,4 +1,6 @@
-export const mockOrganizations = {
+import type { Dog, Shelter, Rescue } from "./types"
+
+export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
   shelters: [
     {
       id: 1,
@@ -71,7 +73,7 @@ export const mockOrganizations = {
   ],
 }
 
-export const mockDogs = [
+export const mockDogs: Dog[] = [
   {
     id: 1,
     name: "Buddy",

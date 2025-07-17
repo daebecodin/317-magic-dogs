@@ -10,8 +10,10 @@ import { mockOrganizations, mockDogs } from "@/lib/mock-data"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { DogCardSkeleton, OrgCardSkeleton } from "@/components/skeletons"
+import type { Dog, Shelter, Rescue } from "@/lib/types"
 
-const ShelterCard = ({ shelter }: { shelter: any }) => (
+const ShelterCard = ({ shelter }: { shelter: Shelter }) => (
   <Card className="hover:shadow-lg transition-shadow">
     <CardHeader>
       <div className="flex justify-between items-start">
@@ -26,7 +28,7 @@ const ShelterCard = ({ shelter }: { shelter: any }) => (
       </div>
     </CardHeader>
     <CardContent>
-      <p className="text-muted-foreground mb-4">{shelter.description}</p>
+      <p className="text-muted-foreground mb-4 h-12 overflow-hidden">{shelter.description}</p>
       <div className="flex items-center gap-4 mb-4 text-sm">
         <div className="flex items-center gap-1">
           <Heart className="w-4 h-4 text-red-500" />
@@ -49,7 +51,7 @@ const ShelterCard = ({ shelter }: { shelter: any }) => (
   </Card>
 )
 
-const RescueCard = ({ rescue }: { rescue: any }) => (
+const RescueCard = ({ rescue }: { rescue: Rescue }) => (
   <Card className="hover:shadow-lg transition-shadow">
     <CardHeader>
       <div className="flex justify-between items-start">
@@ -64,7 +66,7 @@ const RescueCard = ({ rescue }: { rescue: any }) => (
       </div>
     </CardHeader>
     <CardContent>
-      <p className="text-muted-foreground mb-4">{rescue.description}</p>
+      <p className="text-muted-foreground mb-4 h-12 overflow-hidden">{rescue.description}</p>
       <div className="flex items-center gap-4 mb-4 text-sm">
         <div className="flex items-center gap-1">
           <Users className="w-4 h-4 text-blue-500" />
@@ -89,7 +91,7 @@ const RescueCard = ({ rescue }: { rescue: any }) => (
   </Card>
 )
 
-const DogCard = ({ dog }: { dog: any }) => (
+const DogCard = ({ dog }: { dog: Dog }) => (
   <Card className="hover:shadow-lg transition-shadow overflow-hidden h-full flex flex-col">
     <div className="aspect-w-1 aspect-h-1 w-full bg-muted relative">
       <Image src={dog.image} alt={dog.name} layout="fill" objectFit="cover" className="rounded-t-lg" />
@@ -154,22 +156,18 @@ export default function NearbyPage() {
         )
       }
       setIsLoading(false)
-    }, 1000)
+    }, 1500) // Increased delay to show skeletons
     return () => clearTimeout(timer)
   }, [])
 
-  if (isLoading) {
-    return (
-      <div className="py-12 md:py-24">
-        <div className="container px-4 md:px-6">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Finding organizations near you...</p>
-          </div>
+  const renderSkeletons = (count: number, type: "dog" | "org") =>
+    Array(count)
+      .fill(0)
+      .map((_, index) => (
+        <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+          {type === "dog" ? <DogCardSkeleton /> : <OrgCardSkeleton />}
         </div>
-      </div>
-    )
-  }
+      ))
 
   return (
     <div className="py-12 md:py-24">
@@ -200,9 +198,9 @@ export default function NearbyPage() {
 
         <Tabs defaultValue="dogs" className="max-w-6xl mx-auto">
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="dogs">Dogs ({filteredDogs.length})</TabsTrigger>
-            <TabsTrigger value="shelters">Shelters ({mockOrganizations.shelters.length})</TabsTrigger>
-            <TabsTrigger value="rescues">Rescues ({mockOrganizations.rescues.length})</TabsTrigger>
+            <TabsTrigger value="dogs">Dogs</TabsTrigger>
+            <TabsTrigger value="shelters">Shelters</TabsTrigger>
+            <TabsTrigger value="rescues">Rescues</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dogs">
@@ -249,16 +247,14 @@ export default function NearbyPage() {
               </div>
             </Card>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredDogs.map((dog, index) => (
-                <div
-                  key={dog.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <DogCard dog={dog} />
-                </div>
-              ))}
-              {filteredDogs.length === 0 && (
+              {isLoading
+                ? renderSkeletons(6, "dog")
+                : filteredDogs.map((dog, index) => (
+                    <div key={dog.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                      <DogCard dog={dog} />
+                    </div>
+                  ))}
+              {!isLoading && filteredDogs.length === 0 && (
                 <div className="col-span-full text-center py-12">
                   <h3 className="text-xl font-semibold">No dogs match your criteria</h3>
                   <p className="text-muted-foreground mt-2">Try adjusting your filters to find more furry friends.</p>
@@ -268,48 +264,29 @@ export default function NearbyPage() {
           </TabsContent>
 
           <TabsContent value="shelters">
-            <div className="grid lg:grid-cols-2 gap-6 animate-fade-in">
-              {mockOrganizations.shelters.map((shelter, index) => (
-                 <div
-                  key={shelter.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <ShelterCard shelter={shelter} />
-                </div>
-              ))}
+            <div className="grid lg:grid-cols-2 gap-6">
+              {isLoading
+                ? renderSkeletons(4, "org")
+                : mockOrganizations.shelters.map((shelter, index) => (
+                    <div key={shelter.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                      <ShelterCard shelter={shelter} />
+                    </div>
+                  ))}
             </div>
           </TabsContent>
 
           <TabsContent value="rescues">
-            <div className="grid lg:grid-cols-2 gap-6 animate-fade-in">
-              {mockOrganizations.rescues.map((rescue, index) => (
-                 <div
-                  key={rescue.id}
-                  className="animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <RescueCard rescue={rescue} />
-                </div>
-              ))}
+            <div className="grid lg:grid-cols-2 gap-6">
+              {isLoading
+                ? renderSkeletons(4, "org")
+                : mockOrganizations.rescues.map((rescue, index) => (
+                    <div key={rescue.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                      <RescueCard rescue={rescue} />
+                    </div>
+                  ))}
             </div>
           </TabsContent>
         </Tabs>
-
-        <div className="mt-16 text-center">
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle>Don't see your organization?</CardTitle>
-              <CardDescription>Join SafeDawgs to connect with more rescue partners in your area.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button>Join as a Shelter</Button>
-                <Button variant="outline">Join as a Rescue</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   )
