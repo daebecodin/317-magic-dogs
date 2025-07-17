@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { type NextPage } from "next" // Import NextPage
 
 interface DogProfilePageProps {
   params: {
@@ -15,7 +16,7 @@ interface DogProfilePageProps {
   };
 }
 
-export default async function DogProfilePage({ params, searchParams }: DogProfilePageProps) {
+const DogProfilePage: NextPage<DogProfilePageProps> = async ({ params, searchParams }) => {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -72,3 +73,5 @@ export default async function DogProfilePage({ params, searchParams }: DogProfil
     </div>
   )
 }
+
+export default DogProfilePage
