@@ -6,16 +6,10 @@ import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 
-// Define PageProps type explicitly as Next.js expects for Server Components
-type PageProps = {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
 export default async function DogProfilePage({
-  params, // Explicitly destructure params here
+  params,
   searchParams,
-}: { params: { id: string }; searchParams?: { [key: string]: string | string[] | undefined } }) { // Explicitly type the destructured props
+}: { params: { id: string }; searchParams?: { [key: string]: string | string[] | undefined } }) {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
