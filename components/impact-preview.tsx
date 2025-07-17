@@ -33,7 +33,7 @@ export function ImpactPreview() {
   return (
     <section className="py-16 md:py-24">
       <div className="container px-4 md:px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Success Stories
           </Badge>
@@ -45,29 +45,33 @@ export function ImpactPreview() {
 
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {stories.map((story, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <Avatar className="w-20 h-20 mx-auto mb-4">
-                  <AvatarImage src={story.image || "/placeholder.svg"} alt={story.name} />
-                  <AvatarFallback className="text-2xl">🐕</AvatarFallback>
-                </Avatar>
-                <CardTitle className="text-xl">{story.name}</CardTitle>
-                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="w-4 h-4" />
-                  {story.location}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <Badge variant={story.status === "Adopted" ? "default" : "secondary"} className="mb-4">
-                  {story.status}
-                </Badge>
-                <CardDescription className="text-base">{story.story}</CardDescription>
-              </CardContent>
-            </Card>
+            <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
+              <Card className="text-center hover:shadow-lg transition-shadow h-full">
+                <CardHeader>
+                  <div className="relative w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
+                    <Avatar className="w-full h-full">
+                      <AvatarImage src={story.image || "/placeholder.svg"} alt={story.name} />
+                      <AvatarFallback className="text-2xl">🐕</AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <CardTitle className="text-xl">{story.name}</CardTitle>
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="w-4 h-4" />
+                    {story.location}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <Badge variant={story.status === "Adopted" ? "default" : "secondary"} className="mb-4">
+                    {story.status}
+                  </Badge>
+                  <CardDescription className="text-base">{story.story}</CardDescription>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
 
-        <div className="text-center">
+        <div className="text-center animate-fade-in-up" style={{ animationDelay: "450ms" }}>
           <Button size="lg" asChild>
             <Link href="/impact">
               Read More Stories

@@ -114,8 +114,26 @@ export default function PricingClientPage() {
     popular: false,
   }
 
+  const faqs = [
+    {
+      question: "Can I change plans anytime?",
+      answer:
+        "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate any billing adjustments.",
+    },
+    {
+      question: "Is there a free trial?",
+      answer:
+        "All paid plans come with a 14-day free trial. No credit card required to start. You can also use our Free plan indefinitely.",
+    },
+    {
+      question: "What payment methods do you accept?",
+      answer:
+        "We accept all major credit cards, PayPal, and ACH bank transfers for annual plans. All payments are processed securely through Stripe.",
+    },
+  ]
+
   const PricingCard = ({ plan, type }: { plan: any; type: string }) => (
-    <Card className={`relative ${plan.popular ? "border-primary shadow-lg" : ""}`}>
+    <Card className={`relative h-full ${plan.popular ? "border-primary shadow-lg" : ""}`}>
       {plan.popular && <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">Most Popular</Badge>}
       <CardHeader className="text-center">
         {plan.icon && (
@@ -130,8 +148,8 @@ export default function PricingClientPage() {
         </div>
         <CardDescription className="mt-2">{plan.description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ul className="space-y-3 mb-6">
+      <CardContent className="flex flex-col">
+        <ul className="space-y-3 mb-6 flex-grow">
           {plan.features.map((feature: string, index: number) => (
             <li key={index} className="flex items-start gap-2">
               <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
@@ -139,7 +157,7 @@ export default function PricingClientPage() {
             </li>
           ))}
         </ul>
-        <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
+        <Button className="w-full mt-auto" variant={plan.popular ? "default" : "outline"}>
           {plan.price.monthly === 0 ? "Get Started Free" : "Start Free Trial"}
         </Button>
       </CardContent>
@@ -148,9 +166,9 @@ export default function PricingClientPage() {
 
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Pricing
           </Badge>
@@ -173,7 +191,11 @@ export default function PricingClientPage() {
         </div>
 
         {/* Pricing Tabs */}
-        <Tabs defaultValue="rescue" className="max-w-6xl mx-auto">
+        <Tabs
+          defaultValue="rescue"
+          className="max-w-6xl mx-auto animate-fade-in-up"
+          style={{ animationDelay: "150ms" }}
+        >
           <TabsList className="grid w-full grid-cols-3 mb-12">
             <TabsTrigger value="rescue">Rescue Organizations</TabsTrigger>
             <TabsTrigger value="shelter">Shelters</TabsTrigger>
@@ -183,7 +205,9 @@ export default function PricingClientPage() {
           <TabsContent value="rescue">
             <div className="grid md:grid-cols-3 gap-8 animate-fade-in">
               {rescuePlans.map((plan, index) => (
-                <PricingCard key={index} plan={plan} type="rescue" />
+                <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
+                  <PricingCard plan={plan} type="rescue" />
+                </div>
               ))}
             </div>
           </TabsContent>
@@ -191,14 +215,16 @@ export default function PricingClientPage() {
           <TabsContent value="shelter">
             <div className="grid md:grid-cols-3 gap-8 animate-fade-in">
               {shelterPlans.map((plan, index) => (
-                <PricingCard key={index} plan={plan} type="shelter" />
+                <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
+                  <PricingCard plan={plan} type="shelter" />
+                </div>
               ))}
             </div>
           </TabsContent>
 
           <TabsContent value="individual">
             <div className="grid md:grid-cols-3 gap-8 justify-center animate-fade-in">
-              <div className="md:col-start-2">
+              <div className="md:col-start-2 animate-fade-in-up">
                 <PricingCard plan={individualPlan} type="individual" />
               </div>
             </div>
@@ -206,44 +232,24 @@ export default function PricingClientPage() {
         </Tabs>
 
         {/* FAQ Section */}
-        <div className="mt-20 max-w-3xl mx-auto">
+        <div
+          className="mt-20 max-w-3xl mx-auto animate-fade-in-up"
+          style={{ animationDelay: "300ms" }}
+        >
           <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Can I change plans anytime?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll
-                  prorate any billing adjustments.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Is there a free trial?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  All paid plans come with a 14-day free trial. No credit card required to start. You can also use our
-                  Free plan indefinitely.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What payment methods do you accept?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  We accept all major credit cards, PayPal, and ACH bank transfers for annual plans. All payments are
-                  processed securely through Stripe.
-                </p>
-              </CardContent>
-            </Card>
+            {faqs.map((faq, index) => (
+              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + (index + 1) * 150}ms` }}>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">{faq.question}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{faq.answer}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       </div>

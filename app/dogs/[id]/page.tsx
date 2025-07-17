@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { MapPin, AlertTriangle, Heart, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import type { FC } from "react"
 
-type PageProps = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+interface DogProfilePageProps {
+  params: { id: string };
 }
 
-export default function DogProfilePage({ params }: PageProps) {
+const DogProfilePage: FC<DogProfilePageProps> = ({ params }) => {
   const dog = mockDogs.find((d) => d.id === parseInt(params.id))
 
   if (!dog) {
@@ -68,3 +68,5 @@ export default function DogProfilePage({ params }: PageProps) {
     </div>
   )
 }
+
+export default DogProfilePage

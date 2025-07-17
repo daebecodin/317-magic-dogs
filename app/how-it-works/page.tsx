@@ -44,9 +44,9 @@ export default function HowItWorksPage() {
 
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             How It Works
           </Badge>
@@ -62,25 +62,32 @@ export default function HowItWorksPage() {
         {/* Process Steps */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {steps.map((step, index) => (
-            <Card key={index} className="relative">
-              <CardHeader className="text-center pb-4">
-                <div className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}>
-                  <step.icon className="w-8 h-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
-                  {step.number}
-                </div>
-                <CardTitle className="text-xl">{step.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center text-base">{step.description}</CardDescription>
-              </CardContent>
-            </Card>
+            <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
+              <Card className="relative h-full hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center pb-4">
+                  <div
+                    className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}
+                  >
+                    <step.icon className="w-8 h-8" />
+                  </div>
+                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                    {step.number}
+                  </div>
+                  <CardTitle className="text-xl">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center text-base">{step.description}</CardDescription>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
 
         {/* Trust and Safety */}
-        <div className="bg-muted/50 rounded-2xl p-8 md:p-12">
+        <div
+          className="bg-muted/50 rounded-2xl p-8 md:p-12 animate-fade-in-up"
+          style={{ animationDelay: "300ms" }}
+        >
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="flex items-center gap-2 mb-6">
@@ -101,12 +108,11 @@ export default function HowItWorksPage() {
                 ))}
               </ul>
             </div>
-            <div className="relative">
+            <div className="relative aspect-square bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
               <Image
                 src="/placeholder.svg?height=400&width=500"
                 alt="Happy rescued dog being cared for"
-                width={500}
-                height={400}
+                fill
                 className="rounded-xl object-cover"
               />
             </div>

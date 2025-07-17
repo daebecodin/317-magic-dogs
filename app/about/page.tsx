@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const team = [
-  
     {
       name: "Aaron",
       role: "Engineer",
@@ -28,11 +27,29 @@ export default function AboutPage() {
     },
   ]
 
+  const values = [
+    {
+      emoji: "🐕",
+      title: "Dogs First",
+      description: "Every decision we make prioritizes the welfare and wellbeing of the dogs we serve.",
+    },
+    {
+      emoji: "🤝",
+      title: "Collaboration",
+      description: "We believe in bringing together shelters, rescues, and communities to work as one.",
+    },
+    {
+      emoji: "💡",
+      title: "Innovation",
+      description: "We use technology thoughtfully to solve real problems in animal rescue.",
+    },
+  ]
+
   return (
     <div className="py-12 md:py-24">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             About Us
           </Badge>
@@ -46,7 +63,10 @@ export default function AboutPage() {
         </div>
 
         {/* Mission Statement */}
-        <div className="bg-primary/5 rounded-2xl p-8 md:p-12 mb-16">
+        <div
+          className="bg-primary/5 rounded-2xl p-8 md:p-12 mb-16 animate-fade-in-up"
+          style={{ animationDelay: "150ms" }}
+        >
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-bold mb-6">Why We Started SafeDawgs</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -59,7 +79,7 @@ export default function AboutPage() {
         </div>
 
         {/* Team Section */}
-        <div className="mb-16">
+        <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Team</h2>
             <p className="text-lg text-muted-foreground">
@@ -69,72 +89,63 @@ export default function AboutPage() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {team.map((member, index) => (
-              <Card key={index} className="text-center">
-                <CardHeader>
-                  <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
-                    <AvatarFallback className="text-lg">{member.initials}</AvatarFallback>
-                  </Avatar>
-                  <CardTitle className="text-xl">{member.name}</CardTitle>
-                  <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{member.description}</p>
-                  <div className="flex justify-center gap-2">
-                    <Button variant="outline" size="sm" asChild>
-                      <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
-                        <Linkedin className="w-4 h-4" />
-                      </a>
-                    </Button>
-                    <Button variant="outline" size="sm" asChild>
-                      <a href={member.social.twitter} target="_blank" rel="noopener noreferrer">
-                        <Twitter className="w-4 h-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 150}ms` }}>
+                <Card className="text-center h-full hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="relative w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
+                      <Avatar className="w-full h-full">
+                        <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
+                        <AvatarFallback className="text-lg">{member.initials}</AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <CardTitle className="text-xl">{member.name}</CardTitle>
+                    <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-6 leading-relaxed">{member.description}</p>
+                    <div className="flex justify-center gap-2">
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
+                          <Linkedin className="w-4 h-4" />
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" asChild>
+                        <a href={member.social.twitter} target="_blank" rel="noopener noreferrer">
+                          <Twitter className="w-4 h-4" />
+                        </a>
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Values */}
-        <div className="bg-muted/50 rounded-2xl p-8 md:p-12">
+        <div
+          className="bg-muted/50 rounded-2xl p-8 md:p-12 animate-fade-in-up"
+          style={{ animationDelay: "450ms" }}
+        >
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-4">Our Values</h2>
             <p className="text-lg text-muted-foreground">The principles that guide everything we do.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🐕</span>
+            {values.map((value, index) => (
+              <div
+                key={index}
+                className="text-center animate-fade-in-up"
+                style={{ animationDelay: `${450 + (index + 1) * 150}ms` }}
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">{value.emoji}</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
+                <p className="text-muted-foreground">{value.description}</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Dogs First</h3>
-              <p className="text-muted-foreground">
-                Every decision we make prioritizes the welfare and wellbeing of the dogs we serve.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🤝</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Collaboration</h3>
-              <p className="text-muted-foreground">
-                We believe in bringing together shelters, rescues, and communities to work as one.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">💡</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Innovation</h3>
-              <p className="text-muted-foreground">
-                We use technology thoughtfully to solve real problems in animal rescue.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>

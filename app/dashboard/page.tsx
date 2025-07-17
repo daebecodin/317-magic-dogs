@@ -143,57 +143,66 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Stats Cards */}
       <div className="grid md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Capacity</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{rescueData.stats.totalCapacity}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current Dogs</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{rescueData.stats.currentDogs}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available Spaces</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{rescueData.stats.availableSpaces}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Matches</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{rescueData.stats.pendingMatches}</div>
-          </CardContent>
-        </Card>
+        <div className="animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Capacity</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{rescueData.stats.totalCapacity}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Current Dogs</CardTitle>
+              <Heart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{rescueData.stats.currentDogs}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Available Spaces</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{rescueData.stats.availableSpaces}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "400ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Matches</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-600">{rescueData.stats.pendingMatches}</div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Recent Matches */}
-      <Card>
+      <Card className="animate-fade-in-up" style={{ animationDelay: "500ms" }}>
         <CardHeader>
           <CardTitle>Recent Match Requests</CardTitle>
           <CardDescription>Dogs that have been matched with your rescue</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {rescueData.recentMatches.map((match) => (
-              <div key={match.id} className="flex items-center justify-between p-4 border rounded-lg">
+            {rescueData.recentMatches.map((match, index) => (
+              <div
+                key={match.id}
+                className="flex items-center justify-between p-4 border rounded-lg animate-fade-in-up"
+                style={{ animationDelay: `${500 + (index + 1) * 100}ms` }}
+              >
                 <div className="flex items-center gap-4">
                   <Avatar>
                     <AvatarFallback>🐕</AvatarFallback>
@@ -231,7 +240,7 @@ export default function DashboardPage() {
       </Card>
 
       {/* Current Dogs */}
-      <Card>
+      <Card className="animate-fade-in-up" style={{ animationDelay: "600ms" }}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -246,22 +255,30 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {rescueData.currentDogs.map((dog) => (
-              <Card key={dog.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-3">
-                    <Avatar>
-                      <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
-                      <AvatarFallback>🐕</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <h4 className="font-semibold">{dog.name}</h4>
-                      <p className="text-sm text-muted-foreground">{dog.status}</p>
-                      <p className="text-xs text-muted-foreground">{dog.daysInCare} days in care</p>
+            {rescueData.currentDogs.map((dog, index) => (
+              <div
+                key={dog.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${600 + (index + 1) * 100}ms` }}
+              >
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-12 h-12 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
+                        <Avatar className="w-full h-full">
+                          <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
+                          <AvatarFallback>🐕</AvatarFallback>
+                        </Avatar>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold">{dog.name}</h4>
+                        <p className="text-sm text-muted-foreground">{dog.status}</p>
+                        <p className="text-xs text-muted-foreground">{dog.daysInCare} days in care</p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </CardContent>
@@ -273,49 +290,54 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Stats Cards */}
       <div className="grid md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Dogs</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{shelterData.stats.totalDogs}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Urgent Dogs</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">{shelterData.stats.urgentDogs}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Matched This Week</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{shelterData.stats.matchedThisWeek}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Matches</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{shelterData.stats.pendingMatches}</div>
-          </CardContent>
-        </Card>
+        <div className="animate-fade-in-up" style={{ animationDelay: "100ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Dogs</CardTitle>
+              <Heart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{shelterData.stats.totalDogs}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "200ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Urgent Dogs</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">{shelterData.stats.urgentDogs}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Matched This Week</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{shelterData.stats.matchedThisWeek}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="animate-fade-in-up" style={{ animationDelay: "400ms" }}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Matches</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-yellow-600">{shelterData.stats.pendingMatches}</div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Urgent Dogs */}
-      <Card>
+      <Card className="animate-fade-in-up" style={{ animationDelay: "500ms" }}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -333,16 +355,19 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {shelterData.urgentDogs.map((dog) => (
+            {shelterData.urgentDogs.map((dog, index) => (
               <div
                 key={dog.id}
-                className="flex items-center justify-between p-4 border rounded-lg border-red-200 bg-red-50"
+                className="flex items-center justify-between p-4 border rounded-lg border-red-200 bg-red-50 animate-fade-in-up"
+                style={{ animationDelay: `${500 + (index + 1) * 100}ms` }}
               >
                 <div className="flex items-center gap-4">
-                  <Avatar>
-                    <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
-                    <AvatarFallback>🐕</AvatarFallback>
-                  </Avatar>
+                  <div className="relative w-12 h-12 bg-gradient-to-br from-red-100 to-yellow-100 rounded-full">
+                    <Avatar className="w-full h-full">
+                      <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
+                      <AvatarFallback>🐕</AvatarFallback>
+                    </Avatar>
+                  </div>
                   <div>
                     <h4 className="font-semibold">{dog.name}</h4>
                     <p className="text-sm text-muted-foreground">{dog.breed}</p>
@@ -361,15 +386,19 @@ export default function DashboardPage() {
       </Card>
 
       {/* Recent Matches */}
-      <Card>
+      <Card className="animate-fade-in-up" style={{ animationDelay: "600ms" }}>
         <CardHeader>
           <CardTitle>Recent Match Responses</CardTitle>
           <CardDescription>Rescue organizations responding to your dogs</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {shelterData.recentMatches.map((match) => (
-              <div key={match.id} className="flex items-center justify-between p-4 border rounded-lg">
+            {shelterData.recentMatches.map((match, index) => (
+              <div
+                key={match.id}
+                className="flex items-center justify-between p-4 border rounded-lg animate-fade-in-up"
+                style={{ animationDelay: `${600 + (index + 1) * 100}ms` }}
+              >
                 <div className="flex items-center gap-4">
                   <Avatar>
                     <AvatarFallback>🐕</AvatarFallback>
@@ -392,9 +421,9 @@ export default function DashboardPage() {
 
   return (
     <div className="py-8">
-      <div className="container px-4 md:px-6">
+      <div className="container px-4 md:px-6 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 animate-fade-in-up">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-3xl font-bold">{mockUser.name}</h1>
