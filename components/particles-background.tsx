@@ -2,7 +2,7 @@
 
 import { useCallback } from "react"
 import Particles from "react-tsparticles"
-import { loadSlim } from "tsparticles-slim" // loads tsparticles-slim
+import { loadSlim } from "tsparticles" // Changed import from tsparticles-slim to tsparticles
 
 export function ParticlesBackground() {
   const particlesInit = useCallback(async (engine: any) => {
