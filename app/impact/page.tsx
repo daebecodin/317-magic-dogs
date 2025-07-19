@@ -65,7 +65,7 @@ export default function ImpactPage() {
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Every dog has a story. Here are just a few of the lives that have been transformed through our rescue
-            matching platform.
+            matching platform. As a research and startup initiative, we're continuously working to expand our reach and impact.
           </p>
         </div>
 
