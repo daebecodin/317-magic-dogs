@@ -15,6 +15,7 @@ export function Navbar() {
     { name: "Impact", href: "/impact" },
     { name: "Pricing", href: "/pricing" },
     { name: "Nearby", href: "/nearby" },
+    { name: "Explore", href: "/explore" }, // Added Explore page link
   ]
 
   return (
