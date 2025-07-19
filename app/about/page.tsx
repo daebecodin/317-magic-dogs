@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Linkedin, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
-import ProfileCard from "@/components/animations/profile-card" // Import ProfileCard
+import { ChromaGrid } from "@/components/animations/chroma-grid" // Import ChromaGrid
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
+  // Removed the old 'team' array as it will be replaced by ChromaGrid's items
+
   const values = [
     {
       emoji: "🐕",
@@ -32,36 +34,60 @@ export default function AboutPage() {
     },
   ]
 
-  const engineers = [
+  const teamMembers = [
     {
-      name: "Alice Smith",
-      title: "Software Engineer",
-      handle: "alicesoft",
-      avatarUrl: "https://i.pravatar.cc/300?img=20",
+      image: "https://i.pravatar.cc/300?img=8",
+      title: "Alex Rivera",
+      subtitle: "Full Stack Developer",
+      handle: "@alexrivera",
+      borderColor: "#4F46E5",
+      gradient: "linear-gradient(145deg, #4F46E5, #000)",
+      url: "https://github.com/",
     },
     {
-      name: "Bob Johnson",
-      title: "AI Engineer",
-      handle: "bobjohnson",
-      avatarUrl: "https://i.pravatar.cc/300?img=21",
+      image: "https://i.pravatar.cc/300?img=11",
+      title: "Jordan Chen",
+      subtitle: "DevOps Engineer",
+      handle: "@jordanchen",
+      borderColor: "#10B981",
+      gradient: "linear-gradient(210deg, #10B981, #000)",
+      url: "https://linkedin.com/in/",
     },
     {
-      name: "Carol White",
-      title: "Hardware Engineer",
-      handle: "carolhw",
-      avatarUrl: "https://i.pravatar.cc/300?img=22",
+      image: "https://i.pravatar.cc/300?img=3",
+      title: "Morgan Blake",
+      subtitle: "UI/UX Designer",
+      handle: "@morganblake",
+      borderColor: "#F59E0B",
+      gradient: "linear-gradient(165deg, #F59E0B, #000)",
+      url: "https://dribbble.com/",
     },
     {
-      name: "David Green",
-      title: "Systems Engineer",
-      handle: "davidgreen",
-      avatarUrl: "https://i.pravatar.cc/300?img=23",
+      image: "https://i.pravatar.cc/300?img=16",
+      title: "Casey Park",
+      subtitle: "Data Scientist",
+      handle: "@caseypark",
+      borderColor: "#EF4444",
+      gradient: "linear-gradient(195deg, #EF4444, #000)",
+      url: "https://kaggle.com/",
     },
     {
-      name: "Eve Black",
-      title: "Robotics Engineer",
-      handle: "eveblack",
-      avatarUrl: "https://i.pravatar.cc/300?img=24",
+      image: "https://i.pravatar.cc/300?img=25",
+      title: "Sam Kim",
+      subtitle: "Mobile Developer",
+      handle: "@thesamkim",
+      borderColor: "#8B5CF6",
+      gradient: "linear-gradient(225deg, #8B5CF6, #000)",
+      url: "https://github.com/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=60",
+      title: "Tyler Rodriguez",
+      subtitle: "Cloud Architect",
+      handle: "@tylerrod",
+      borderColor: "#06B6D4",
+      gradient: "linear-gradient(135deg, #06B6D4, #000)",
+      url: "https://aws.amazon.com/",
     },
   ];
 
@@ -101,29 +127,25 @@ export default function AboutPage() {
           </div>
         </GradientText>
 
-        {/* Team Section with ProfileCard */}
+        {/* Team Section with ChromaGrid */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Founding Engineers</h2>
+            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
             <p className="text-lg text-muted-foreground">
-              Meet the brilliant minds building the SafeDawgs platform.
+              Meet the passionate individuals working to save dogs every day.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-center">
-            {engineers.map((engineer, index) => (
-              <div key={index} className="flex justify-center"> {/* Centering each card */}
-                <ProfileCard
-                  name={engineer.name}
-                  title={engineer.title}
-                  handle={engineer.handle}
-                  avatarUrl={engineer.avatarUrl}
-                  showUserInfo={true}
-                  enableTilt={true}
-                  onContactClick={() => console.log(`Contact ${engineer.name} clicked`)}
-                />
-              </div>
-            ))}
+          <div style={{ height: '600px', position: 'relative' }}>
+            <ChromaGrid
+              items={teamMembers}
+              radius={300}
+              damping={0.45}
+              fadeOut={0.6}
+              ease="power3.out"
+              columns={3} // You can adjust columns as needed
+              rows={2} // You can adjust rows as needed
+            />
           </div>
         </div>
 

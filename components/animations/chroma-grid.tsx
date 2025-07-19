@@ -4,40 +4,6 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import "../../styles/ChromaGrid.css";
 
-// Define types for ChromaGrid items and props
-interface ChromaGridItem {
-  image: string;
-  title: string;
-  subtitle: string;
-  handle?: string;
-  borderColor?: string;
-  gradient?: string;
-  url?: string;
-  location?: string; // Added location as it was used in the original demo data
-}
-
-interface ChromaGridProps {
-  items?: ChromaGridItem[];
-  className?: string;
-  radius?: number;
-  columns?: number;
-  rows?: number;
-  damping?: number;
-  fadeOut?: number;
-  ease?: string;
-}
-
-// Define a custom CSS properties type to include custom variables
-interface CustomCSSProperties extends React.CSSProperties {
-  '--r'?: string;
-  '--cols'?: number;
-  '--rows'?: number;
-  '--card-border'?: string;
-  '--card-gradient'?: string;
-  '--mouse-x'?: string;
-  '--mouse-y'?: string;
-}
-
 export const ChromaGrid = ({
   items,
   className = "",
@@ -47,15 +13,14 @@ export const ChromaGrid = ({
   damping = 0.45,
   fadeOut = 0.6,
   ease = "power3.out",
-}: ChromaGridProps) => {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const fadeRef = useRef<HTMLDivElement>(null);
-  // Corrected type for setX and setY to match the return type of gsap.quickSetter
-  const setX = useRef<((value: string | number) => void) | null>(null);
-  const setY = useRef<((value: string | number) => void) | null>(null);
-  const pos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+}) => {
+  const rootRef = useRef(null);
+  const fadeRef = useRef(null);
+  const setX = useRef(null);
+  const setY = useRef(null);
+  const pos = useRef({ x: 0, y: 0 });
 
-  const demo: ChromaGridItem[] = [
+  const demo = [
     {
       image: "https://i.pravatar.cc/300?img=8",
       title: "Alex Rivera",
@@ -116,32 +81,30 @@ export const ChromaGrid = ({
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
-    // Explicitly cast the return value of gsap.quickSetter to the desired function type
-    setX.current = gsap.quickSetter(el, "--x", "px") as (value: string | number) => void;
-    setY.current = gsap.quickSetter(el, "--y", "px") as (value: string | number) => void;
+    setX.current = gsap.quickSetter(el, "--x", "px");
+    setY.current = gsap.quickSetter(el, "--y", "px");
     const { width, height } = el.getBoundingClientRect();
     pos.current = { x: width / 2, y: height / 2 };
     setX.current(pos.current.x);
     setY.current(pos.current.y);
   }, []);
 
-  const moveTo = (x: number, y: number) => {
+  const moveTo = (x, y) => {
     gsap.to(pos.current, {
       x,
       y,
       duration: damping,
       ease,
       onUpdate: () => {
-        setX.current?.(pos.current.x); // Added optional chaining
-        setY.current?.(pos.current.y); // Added optional chaining
+        setX.current?.(pos.current.x);
+        setY.current?.(pos.current.y);
       },
       overwrite: true,
     });
   };
 
-  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const r = rootRef.current?.getBoundingClientRect();
-    if (!r) return;
+  const handleMove = (e) => {
+    const r = rootRef.current.getBoundingClientRect();
     moveTo(e.clientX - r.left, e.clientY - r.top);
     gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
   };
@@ -154,18 +117,17 @@ export const ChromaGrid = ({
     });
   };
 
-  const handleCardClick = (url: string | undefined) => {
+  const handleCardClick = (url) => {
     if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
-  const handleCardMove = (e: React.MouseEvent<HTMLElement>) => {
-    const card = e.currentTarget as HTMLElement;
+  const handleCardMove = (e) => {
+    const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    // Removed unnecessary cast to CustomCSSProperties as HTMLElement.style already has setProperty
     card.style.setProperty("--mouse-x", `${x}px`);
     card.style.setProperty("--mouse-y", `${y}px`);
   };
@@ -179,12 +141,12 @@ export const ChromaGrid = ({
           "--r": `${radius}px`,
           "--cols": columns,
           "--rows": rows,
-        } as CustomCSSProperties
+        }
       }
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
     >
-      {data.map((c: ChromaGridItem, i: number) => (
+      {data.map((c, i) => (
         <article
           key={i}
           className="chroma-card"
@@ -195,18 +157,17 @@ export const ChromaGrid = ({
               "--card-border": c.borderColor || "transparent",
               "--card-gradient": c.gradient,
               cursor: c.url ? "pointer" : "default",
-            } as CustomCSSProperties
+            }
           }
         >
           <div className="chroma-img-wrapper">
-            {/* Removed img tag to show animated people placeholder */}
+            <img src={c.image} alt={c.title} loading="lazy" />
           </div>
           <footer className="chroma-info">
-            <div className="flex justify-between items-baseline w-full">
-              <h3 className="name">{c.title}</h3>
-              {c.handle && <span className="handle">{c.handle}</span>}
-            </div>
+            <h3 className="name">{c.title}</h3>
+            {c.handle && <span className="handle">{c.handle}</span>}
             <p className="role">{c.subtitle}</p>
+            {c.location && <span className="location">{c.location}</span>}
           </footer>
         </article>
       ))}
