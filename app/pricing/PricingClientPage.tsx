@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Check, Star, Zap, Heart } from "lucide-react"
 import { useState } from "react"
+import { GradientText } from "@/components/animations/gradient-text"
 
 export default function PricingClientPage() {
   const [isAnnual, setIsAnnual] = useState(false)
@@ -133,35 +134,37 @@ export default function PricingClientPage() {
   ]
 
   const PricingCard = ({ plan, type }: { plan: any; type: string }) => (
-    <Card className={`relative h-full ${plan.popular ? "border-primary shadow-lg" : ""}`}>
-      {plan.popular && <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">Most Popular</Badge>}
-      <CardHeader className="text-center">
-        {plan.icon && (
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <plan.icon className="w-6 h-6 text-primary" />
+    <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+      <Card className={`relative h-full ${plan.popular ? "border-primary shadow-lg" : ""} border-none`}>
+        {plan.popular && <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2">Most Popular</Badge>}
+        <CardHeader className="text-center">
+          {plan.icon && (
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+              <plan.icon className="w-6 h-6 text-primary" />
+            </div>
+          )}
+          <CardTitle className="text-2xl">{plan.name}</CardTitle>
+          <div className="mt-4">
+            <span className="text-4xl font-bold">${isAnnual ? plan.price.annual : plan.price.monthly}</span>
+            <span className="text-muted-foreground">{plan.price.monthly === 0 ? "" : isAnnual ? "/year" : "/month"}</span>
           </div>
-        )}
-        <CardTitle className="text-2xl">{plan.name}</CardTitle>
-        <div className="mt-4">
-          <span className="text-4xl font-bold">${isAnnual ? plan.price.annual : plan.price.monthly}</span>
-          <span className="text-muted-foreground">{plan.price.monthly === 0 ? "" : isAnnual ? "/year" : "/month"}</span>
-        </div>
-        <CardDescription className="mt-2">{plan.description}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col">
-        <ul className="space-y-3 mb-6 flex-grow">
-          {plan.features.map((feature: string, index: number) => (
-            <li key={index} className="flex items-start gap-2">
-              <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">{feature}</span>
-            </li>
-          ))}
-        </ul>
-        <Button className="w-full mt-auto" variant={plan.popular ? "default" : "outline"}>
-          {plan.price.monthly === 0 ? "Get Started Free" : "Start Free Trial"}
-        </Button>
-      </CardContent>
-    </Card>
+          <CardDescription className="mt-2">{plan.description}</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col">
+          <ul className="space-y-3 mb-6 flex-grow">
+            {plan.features.map((feature: string, index: number) => (
+              <li key={index} className="flex items-start gap-2">
+                <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                <span className="text-sm">{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <Button className="w-full mt-auto" variant={plan.popular ? "default" : "outline"}>
+            {plan.price.monthly === 0 ? "Get Started Free" : "Start Free Trial"}
+          </Button>
+        </CardContent>
+      </Card>
+    </GradientText>
   )
 
   return (
@@ -240,14 +243,16 @@ export default function PricingClientPage() {
           <div className="space-y-6">
             {faqs.map((faq, index) => (
               <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + (index + 1) * 150}ms` }}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{faq.question}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{faq.answer}</p>
-                  </CardContent>
-                </Card>
+                <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                  <Card className="border-none">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{faq.question}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">{faq.answer}</p>
+                    </CardContent>
+                  </Card>
+                </GradientText>
               </div>
             ))}
           </div>

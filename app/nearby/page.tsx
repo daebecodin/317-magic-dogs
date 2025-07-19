@@ -9,6 +9,7 @@ import { mockOrganizations, mockDogs } from "@/lib/mock-data"
 import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
+import { GradientText } from "@/components/animations/gradient-text"
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -56,11 +57,13 @@ export default function NearbyPage() {
           </Button>
         </div>
 
-        <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12 animate-fade-in-up" style={{ animationDelay: "200ms" }}>
-          <div className="w-full h-64 md:h-96 bg-muted rounded-xl shadow-inner">
-            <InteractiveMap shelters={mockOrganizations.shelters} rescues={mockOrganizations.rescues} />
+        <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
+          <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12 animate-fade-in-up border-none" style={{ animationDelay: "200ms" }}>
+            <div className="w-full h-64 md:h-96 bg-muted rounded-xl shadow-inner">
+              <InteractiveMap shelters={mockOrganizations.shelters} rescues={mockOrganizations.rescues} />
+            </div>
           </div>
-        </div>
+        </GradientText>
 
         <Tabs defaultValue="dogs" className="max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: "400ms" }}>
           <TabsList className="grid w-full grid-cols-3 mb-8">

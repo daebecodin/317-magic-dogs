@@ -47,20 +47,22 @@ export function HowItWorksPreview() {
 
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {steps.map((step, index) => (
-            <Card key={index} className="relative text-center hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-4">
-                <div className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}>
-                  <step.icon className="w-8 h-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
-                  {step.number}
-                </div>
-                <CardTitle className="text-xl">{step.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">{step.description}</CardDescription>
-              </CardContent>
-            </Card>
+            <GradientText key={index} showBorder={true} className="h-full" animationSpeed={5}>
+              <Card className="relative text-center hover:shadow-lg transition-shadow h-full border-none">
+                <CardHeader className="pb-4">
+                  <div className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}>
+                    <step.icon className="w-8 h-8" />
+                  </div>
+                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-sm">
+                    {step.number}
+                  </div>
+                  <CardTitle className="text-xl">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base">{step.description}</CardDescription>
+                </CardContent>
+              </Card>
+            </GradientText>
           ))}
         </div>
 

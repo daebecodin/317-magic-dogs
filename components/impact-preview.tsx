@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ArrowRight, MapPin } from "lucide-react"
+import { GradientText } from "@/components/animations/gradient-text"
 
 export function ImpactPreview() {
   const stories = [
@@ -46,27 +47,29 @@ export function ImpactPreview() {
         <div className="grid md:grid-cols-3 gap-8 mb-12">
           {stories.map((story, index) => (
             <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
-              <Card className="text-center hover:shadow-lg transition-shadow h-full">
-                <CardHeader>
-                  <div className="relative w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
-                    <Avatar className="w-full h-full">
-                      <AvatarImage src={story.image || "/placeholder.svg"} alt={story.name} />
-                      <AvatarFallback className="text-2xl">🐕</AvatarFallback>
-                    </Avatar>
-                  </div>
-                  <CardTitle className="text-xl">{story.name}</CardTitle>
-                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="w-4 h-4" />
-                    {story.location}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <Badge variant={story.status === "Adopted" ? "default" : "secondary"} className="mb-4">
-                    {story.status}
-                  </Badge>
-                  <CardDescription className="text-base">{story.story}</CardDescription>
-                </CardContent>
-              </Card>
+              <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                <Card className="text-center hover:shadow-lg transition-shadow h-full border-none">
+                  <CardHeader>
+                    <div className="relative w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
+                      <Avatar className="w-full h-full">
+                        <AvatarImage src={story.image || "/placeholder.svg"} alt={story.name} />
+                        <AvatarFallback className="text-2xl">🐕</AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <CardTitle className="text-xl">{story.name}</CardTitle>
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="w-4 h-4" />
+                      {story.location}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Badge variant={story.status === "Adopted" ? "default" : "secondary"} className="mb-4">
+                      {story.status}
+                    </Badge>
+                    <CardDescription className="text-base">{story.story}</CardDescription>
+                  </CardContent>
+                </Card>
+              </GradientText>
             </div>
           ))}
         </div>

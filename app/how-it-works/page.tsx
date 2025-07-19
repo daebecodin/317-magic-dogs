@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Heart, Shield, Users, CheckCircle } from "lucide-react"
 import Image from "next/image"
+import { GradientText } from "@/components/animations/gradient-text"
 
 export const metadata: Metadata = {
   title: "How It Works - SafeDawgs",
@@ -63,61 +64,65 @@ export default function HowItWorksPage() {
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {steps.map((step, index) => (
             <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
-              <Card className="relative h-full hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center pb-4">
-                  <div
-                    className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}
-                  >
-                    <step.icon className="w-8 h-8" />
-                  </div>
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
-                    {step.number}
-                  </div>
-                  <CardTitle className="text-xl">{step.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-base">{step.description}</CardDescription>
-                </CardContent>
-              </Card>
+              <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                <Card className="relative h-full hover:shadow-lg transition-shadow border-none">
+                  <CardHeader className="text-center pb-4">
+                    <div
+                      className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center mx-auto mb-4`}
+                    >
+                      <step.icon className="w-8 h-8" />
+                    </div>
+                    <div className="absolute -top-3 -right-3 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">
+                      {step.number}
+                    </div>
+                    <CardTitle className="text-xl">{step.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-center text-base">{step.description}</CardDescription>
+                  </CardContent>
+                </Card>
+              </GradientText>
             </div>
           ))}
         </div>
 
         {/* Trust and Safety */}
-        <div
-          className="bg-muted/50 rounded-2xl p-8 md:p-12 animate-fade-in-up"
-          style={{ animationDelay: "300ms" }}
-        >
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center gap-2 mb-6">
-                <Shield className="w-6 h-6 text-primary" />
-                <Badge variant="outline">Trust & Safety</Badge>
+        <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
+          <div
+            className="bg-muted/50 rounded-2xl p-8 md:p-12 animate-fade-in-up border-none"
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="flex items-center gap-2 mb-6">
+                  <Shield className="w-6 h-6 text-primary" />
+                  <Badge variant="outline">Trust & Safety</Badge>
+                </div>
+                <h2 className="text-3xl font-bold mb-6">Trust and Safety First</h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Every rescue organization on our platform goes through a thorough vetting process to ensure the highest
+                  standards of animal care.
+                </p>
+                <ul className="space-y-4">
+                  {trustFeatures.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h2 className="text-3xl font-bold mb-6">Trust and Safety First</h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Every rescue organization on our platform goes through a thorough vetting process to ensure the highest
-                standards of animal care.
-              </p>
-              <ul className="space-y-4">
-                {trustFeatures.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="relative aspect-square bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
-              <Image
-                src="/placeholder.svg?height=400&width=500"
-                alt="Happy rescued dog being cared for"
-                fill
-                className="rounded-xl object-cover"
-              />
+              <div className="relative aspect-square bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
+                <Image
+                  src="/placeholder.svg?height=400&width=500"
+                  alt="Happy rescued dog being cared for"
+                  fill
+                  className="rounded-xl object-cover"
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </GradientText>
       </div>
     </div>
   )

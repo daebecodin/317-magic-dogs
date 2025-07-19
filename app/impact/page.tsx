@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MapPin, Calendar, Heart } from "lucide-react"
+import { GradientText } from "@/components/animations/gradient-text"
+import { CountUp } from "@/components/animations/count-up" // Added this import
 
 export const metadata: Metadata = {
   title: "Impact Stories - SafeDawgs",
@@ -45,7 +47,8 @@ export default function ImpactPage() {
 
   const stats = [
     { number: "1,247", label: "Dogs Saved", icon: Heart },
-    { number: "89", label: "Partner Rescues", icon: MapPin },
+    { number: "89",
+      label: "Partner Rescues", icon: MapPin },
     { number: "156", label: "Shelter Partners", icon: Calendar },
   ]
 
@@ -70,15 +73,19 @@ export default function ImpactPage() {
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {stats.map((stat, index) => (
             <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
-              <Card className="text-center h-full">
-                <CardHeader>
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <stat.icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-3xl font-bold text-primary">{stat.number}</CardTitle>
-                  <CardDescription className="text-lg">{stat.label}</CardDescription>
-                </CardHeader>
-              </Card>
+              <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                <Card className="text-center h-full border-none">
+                  <CardHeader>
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <stat.icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <CardTitle className="text-3xl font-bold text-primary">
+                      <CountUp to={parseInt(stat.number.replace(/,/g, ""))} />
+                    </CardTitle>
+                    <CardDescription className="text-lg">{stat.label}</CardDescription>
+                  </CardHeader>
+                </Card>
+              </GradientText>
             </div>
           ))}
         </div>
@@ -95,69 +102,73 @@ export default function ImpactPage() {
           <div className="grid lg:grid-cols-3 gap-8">
             {stories.map((story, index) => (
               <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 150}ms` }}>
-                <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full">
-                  <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-blue-50 to-green-50">
-                    <Avatar className="w-full h-full rounded-none">
-                      <AvatarImage
-                        src={story.image || "/placeholder.svg"}
-                        alt={story.name}
-                        className="object-cover"
-                      />
-                      <AvatarFallback className="rounded-none text-4xl">🐕</AvatarFallback>
-                    </Avatar>
-                    <Badge
-                      className="absolute top-4 right-4"
-                      variant={story.status === "Adopted" ? "default" : "secondary"}
-                    >
-                      {story.status}
-                    </Badge>
-                  </div>
-
-                  <CardHeader>
-                    <CardTitle className="text-2xl">{story.name}</CardTitle>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {story.location}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {story.date}
-                      </div>
+                <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                  <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full border-none">
+                    <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-blue-50 to-green-50">
+                      <Avatar className="w-full h-full rounded-none">
+                        <AvatarImage
+                          src={story.image || "/placeholder.svg"}
+                          alt={story.name}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="rounded-none text-4xl">🐕</AvatarFallback>
+                      </Avatar>
+                      <Badge
+                        className="absolute top-4 right-4"
+                        variant={story.status === "Adopted" ? "default" : "secondary"}
+                      >
+                        {story.status}
+                      </Badge>
                     </div>
-                  </CardHeader>
 
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed mb-4">{story.story}</p>
-                    <div className="text-sm">
-                      <span className="font-medium">Rescued by:</span> {story.rescueOrg}
-                    </div>
-                  </CardContent>
-                </Card>
+                    <CardHeader>
+                      <CardTitle className="text-2xl">{story.name}</CardTitle>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <MapPin className="w-4 h-4" />
+                          {story.location}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {story.date}
+                        </div>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent>
+                      <p className="text-muted-foreground leading-relaxed mb-4">{story.story}</p>
+                      <div className="text-sm">
+                        <span className="font-medium">Rescued by:</span> {story.rescueOrg}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </GradientText>
               </div>
             ))}
           </div>
         </div>
 
         {/* Call to Action */}
-        <div
-          className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up"
-          style={{ animationDelay: "450ms" }}
-        >
-          <h2 className="text-3xl font-bold mb-4">Be Part of the Next Success Story</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Whether you're a shelter with dogs in need or a rescue with space to help, join our platform and help us
-            save more lives.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Badge variant="outline" className="text-base px-6 py-2">
-              Join as a Rescue
-            </Badge>
-            <Badge variant="outline" className="text-base px-6 py-2">
-              Join as a Shelter
-            </Badge>
+        <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
+          <div
+            className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up border-none"
+            style={{ animationDelay: "450ms" }}
+          >
+            <h2 className="text-3xl font-bold mb-4">Be Part of the Next Success Story</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Whether you're a shelter with dogs in need or a rescue with space to help, join our platform and help us
+              save more lives.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Badge variant="outline" className="text-base px-6 py-2">
+                Join as a Rescue
+              </Badge>
+              <Badge variant="outline" className="text-base px-6 py-2">
+                Join as a Shelter
+              </Badge>
+            </div>
           </div>
-        </div>
+        </GradientText>
       </div>
     </div>
   )
