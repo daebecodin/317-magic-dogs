@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react" // Added GraduationCap, MessageCircle, ArrowRight
+import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
-// Removed import for ChromaGrid
+import Link from "next/link" // Import Link for navigation
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
@@ -80,11 +80,28 @@ export default function AboutPage() {
                 <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                   <GraduationCap className="w-12 h-12 text-primary" />
                 </div>
-                <div className="text-center md:text-left">
+                <div className="text-center md:text-left flex-1"> {/* Added flex-1 to make text content take available space */}
                   <CardTitle className="text-2xl font-bold mb-3">SFSU Research Initiative</CardTitle>
-                  <CardDescription className="text-lg text-muted-foreground">
+                  <CardDescription className="text-lg text-muted-foreground mb-6"> {/* Added margin-bottom */}
                     SafeDawgs began as a dedicated research project at San Francisco State University, exploring how advanced technology and data science can revolutionize animal welfare. Our foundation is built on academic principles, rigorous testing, and a commitment to evidence-based solutions for saving at-risk dogs.
                   </CardDescription>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3"> {/* Added flex-wrap for responsiveness */}
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href="https://sfsu.edu" target="_blank" rel="noopener noreferrer">
+                        SFSU
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href="https://stanford.edu" target="_blank" rel="noopener noreferrer">
+                        Stanford
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href="https://berkeley.edu" target="_blank" rel="noopener noreferrer">
+                        UC Berkeley
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             </Card>
