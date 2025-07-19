@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, Scale, Lightbulb, BarChart } from "lucide-react" // Added new icons
+import { Heart, Users, Scale, Lightbulb, BarChart, Cpu } from "lucide-react" // Added Cpu icon
 import { GradientText } from "@/components/animations/gradient-text"
 
 export const metadata: Metadata = {
@@ -30,6 +30,11 @@ export default function ImpactPage() {
       icon: Lightbulb,
       title: "Fostering Collaboration",
       description: "We envision a future where shelters and rescues seamlessly collaborate, sharing information and resources to create a more efficient and compassionate animal welfare ecosystem.",
+    },
+    {
+      icon: Cpu, // Using Cpu icon for hardware
+      title: "Developing Hardware Solutions",
+      description: "We are exploring the development of innovative hardware devices to further assist shelters and rescues with real-time monitoring and data collection, enhancing animal welfare efforts.",
     },
   ]
 
@@ -77,7 +82,7 @@ export default function ImpactPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"> {/* Adjusted grid columns */}
             {impactAreas.map((area, index) => (
               <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${150 + index * 100}ms` }}>
                 <GradientText showBorder={true} className="h-full" animationSpeed={5}>
