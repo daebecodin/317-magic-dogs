@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, Scale, Lightbulb, BarChart, Cpu } from "lucide-react" // Added Cpu icon
+import { Heart, Users, Scale, Lightbulb, BarChart, Cpu, MessageSquare, CalendarDays, ClipboardCheck, Clock, Link as LinkIcon, ArrowRight } from "lucide-react" // Added new icons
 import { GradientText } from "@/components/animations/gradient-text"
+import Link from "next/link" // Added Link import for the CTA button
+import { Button } from "@/components/ui/button" // Added Button import for the CTA button
 
 export const metadata: Metadata = {
   title: "Our Vision for Impact - SafeDawgs",
@@ -103,6 +105,51 @@ export default function ImpactPage() {
           </div>
         </div>
 
+        {/* Our Core Focus: The Volunteer Engagement Engine */}
+        <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "450ms" }}>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Our Core Focus: Empowering the Human Heart of Rescue</h2>
+            <p className="text-lg text-muted-foreground">
+              We believe the greatest leverage for saving lives lies in supporting the dedicated staff and volunteers.
+            </p>
+          </div>
+
+          <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
+            <Card className="bg-muted/50 rounded-2xl p-8 md:p-12 border-none">
+              <CardTitle className="text-2xl font-bold mb-6 text-center">The SafeDawgs Volunteer Engagement Engine</CardTitle>
+              <CardDescription className="text-lg text-muted-foreground text-center mb-8">
+                Our initial development is laser-focused on building a robust platform to address the critical challenges faced by animal welfare volunteers and coordinators. By streamlining operations and fostering community, we aim to reduce burnout and maximize impact.
+              </CardDescription>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><MessageSquare className="w-5 h-5 text-primary" /> Centralized Communication</h3>
+                  <p className="text-muted-foreground text-sm">Bringing order to chaotic message threads with dedicated channels for teams and announcements.</p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><CalendarDays className="w-5 h-5 text-primary" /> Unified Scheduling</h3>
+                  <p className="text-muted-foreground text-sm">A simple, visual calendar for volunteers to sign up for shifts and events with ease.</p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><Users className="w-5 h-5 text-primary" /> Skill-Based Matching</h3>
+                  <p className="text-muted-foreground text-sm">A directory to quickly find volunteers with specific skills for urgent tasks.</p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><ClipboardCheck className="w-5 h-5 text-primary" /> Structured Onboarding</h3>
+                  <p className="text-muted-foreground text-sm">Formalized training modules and checklists for new recruits to ensure consistent understanding.</p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><Clock className="w-5 h-5 text-primary" /> Automated Hours Tracking</h3>
+                  <p className="text-muted-foreground text-sm">Effortlessly track volunteer contributions for reporting and recognition.</p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-xl flex items-center gap-2"><LinkIcon className="w-5 h-5 text-primary" /> Seamless Integrations</h3>
+                  <p className="text-muted-foreground text-sm">Designed to connect with existing shelter management systems, not replace them.</p>
+                </div>
+              </div>
+            </Card>
+          </GradientText>
+        </div>
+
         {/* How We Plan to Measure Success */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
@@ -137,20 +184,24 @@ export default function ImpactPage() {
         <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
           <div
             className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up border-none"
-            style={{ animationDelay: "450ms" }}
+            style={{ animationDelay: "600ms" }}
           >
-            <h2 className="text-3xl font-bold mb-4">Be Part of Our Journey</h2>
+            <h2 className="text-3xl font-bold mb-4">Join Us in Building the Future of Animal Welfare Tech</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Whether you're a shelter with dogs in need or a rescue with space to help, join our platform and help us
-              build the future of animal welfare.
+              We are a research and startup initiative, actively seeking collaborators, early adopters, and passionate individuals to help us develop and refine the SafeDawgs platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Badge variant="outline" className="text-base px-6 py-2">
-                Join as a Rescue
-              </Badge>
-              <Badge variant="outline" className="text-base px-6 py-2">
-                Join as a Shelter
-              </Badge>
+              <Button size="lg" asChild>
+                <Link href="/signup">
+                  Get Involved
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/contact">
+                  Contact Us
+                </Link>
+              </Button>
             </div>
           </div>
         </GradientText>
