@@ -210,7 +210,11 @@ class Media {
     img.crossOrigin = "anonymous";
 
     // Assign image to texture immediately. OGL will handle the texture update when img.onload fires.
-    texture.image = img;
+    // Initialize with a small transparent canvas to avoid WebGL errors before image loads
+    const initialCanvas = document.createElement('canvas');
+    initialCanvas.width = 1;
+    initialCanvas.height = 1;
+    texture.image = initialCanvas;
 
     this.program = new Program(this.gl, {
       depthTest: false,
@@ -275,16 +279,18 @@ class Media {
     });
 
     img.onload = () => {
-      // Only update uImageSizes here, texture.image is already set
+      texture.image = img; // Assign the loaded image
+      texture.needsUpdate = true; // Explicitly tell OGL to update the texture
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
     };
     img.onerror = (e) => {
       console.error(`Failed to load image for CircularGallery: ${this.image}`, e);
-      // Optionally, load a fallback image if the primary one fails
       const fallbackImg = new Image();
+      fallbackImg.crossOrigin = "anonymous"; // Ensure CORS for fallback too
       fallbackImg.src = "/placeholder.svg"; // Ensure this path is correct and accessible
       fallbackImg.onload = () => {
         texture.image = fallbackImg; // Update texture with fallback
+        texture.needsUpdate = true; // Explicitly update fallback texture
         this.program.uniforms.uImageSizes.value = [fallbackImg.naturalWidth, fallbackImg.naturalHeight];
       };
       fallbackImg.onerror = (err) => {
