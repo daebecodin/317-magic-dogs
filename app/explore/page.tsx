@@ -18,7 +18,6 @@ import { Label } from "@/components/ui/label"
 export default function ExplorePage() {
   const [dogs, setDogs] = useState<PetfinderDog[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [locationError, setLocationError] = useState(false)
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
@@ -30,7 +29,6 @@ export default function ExplorePage() {
   const fetchDogs = useCallback(async (location: string) => {
     console.log("fetchDogs called with location:", location);
     setIsLoading(true)
-    setLocationError(false)
     try {
       const fetchedDogs = await getAdoptableDogs(location, 48)
       setDogs(fetchedDogs)
@@ -84,25 +82,25 @@ export default function ExplorePage() {
       y: 0,
       opacity: 1,
     },
-  } // Removed trailing comma here
+  }
 
   return (
     <div className="py-12 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="text-center mb-16 animate-fade-in-up">
+        <div className="text-center mb-8 animate-fade-in-up"> {/* Reduced mb-16 to mb-8 */}
           <Badge variant="secondary" className="mb-4">
             Explore Adoptable Dogs
           </Badge>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4"> {/* Reduced mb-6 to mb-4 */}
             Find Your New Best Friend
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Showing dogs near {currentLocation}.
           </p>
         </div>
 
-        {/* Location Input always visible for searching */}
-        <div className="max-w-md mx-auto mb-12 animate-fade-in-up">
+        {/* Location Input now compact */}
+        <div className="mb-12 animate-fade-in-up">
           <LocationInput onSearch={fetchDogs} initialLocation={currentLocation} isLoading={isLoading} />
         </div>
 
