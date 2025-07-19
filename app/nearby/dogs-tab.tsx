@@ -7,28 +7,28 @@ import { Switch } from "@/components/ui/switch"
 import { Filter } from "lucide-react"
 import { DogCard } from "@/components/dog-card"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
-import type { Dog } from "@/lib/types"
+import type { Dog } from "@/lib/types" // Ensure it uses our internal Dog type
 import { GradientText } from "@/components/animations/gradient-text"
 
 interface DogsTabProps {
-  dogs: Dog[]
+  dogs: Dog[] // Now expects our internal Dog type
   isLoading: boolean
 }
 
 export function DogsTab({ dogs, isLoading }: DogsTabProps) {
   const [breedFilter, setBreedFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
-  const [urgentOnly, setUrgentOnly] = useState(false)
+  const [urgentOnly, setUrgentOnly] = useState(false) // Keep this filter, it relies on our custom 'urgent' field
 
   const breeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breed)))], [dogs])
-  const genders = ["all", "Male", "Female"]
+  const genders = ["all", "Male", "Female", "Unknown"] // Petfinder can return "Unknown"
 
   const filteredDogs = useMemo(
     () =>
       dogs.filter((dog) => {
         const breedMatch = breedFilter === "all" || dog.breed === breedFilter
         const genderMatch = genderFilter === "all" || dog.gender === genderFilter
-        const urgentMatch = !urgentOnly || dog.urgent
+        const urgentMatch = !urgentOnly || dog.urgent // Use our custom 'urgent' field
         return breedMatch && genderMatch && urgentMatch
       }),
     [dogs, breedFilter, genderFilter, urgentOnly],

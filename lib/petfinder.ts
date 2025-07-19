@@ -58,6 +58,8 @@ export type PetfinderDog = {
     full: string;
   }>;
   contact: {
+    email: string | null; // Added email as it's often present
+    phone: string | null; // Added phone
     address: {
       address1: string | null;
       address2: string | null;
@@ -66,6 +68,7 @@ export type PetfinderDog = {
       postcode: string;
       country: string;
     };
+    organization_id?: string; // Added missing property
   };
   url: string;
   description: string | null;

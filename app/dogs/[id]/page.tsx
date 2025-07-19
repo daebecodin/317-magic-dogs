@@ -127,7 +127,7 @@ export default async function DogProfilePage({
                   </div>
                 )}
 
-                {dog.adoptionFee !== null && (
+                {dog.adoptionFee !== null && typeof dog.adoptionFee === 'number' && (
                   <div className="mb-6">
                     <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
                       <Tag className="w-5 h-5 text-primary" />

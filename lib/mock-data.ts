@@ -92,6 +92,7 @@ export const mockDogs: Dog[] = [
     breed: "Golden Retriever",
     age: "2 years",
     gender: "Male",
+    size: "Large", // Added missing property
     shelter: "Bay Area Animal Shelter",
     distance: "2.3 miles",
     photos: [{
@@ -106,6 +107,8 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Other dogs", "Children"],
     adoptionFee: 300,
+    url: "https://www.petfinder.com/dog-profile/buddy-1", // Added missing property
+    status: "adoptable", // Added missing property
   },
   {
     id: 2,
@@ -113,6 +116,7 @@ export const mockDogs: Dog[] = [
     breed: "German Shepherd Mix",
     age: "1 year",
     gender: "Female",
+    size: "Large", // Added missing property
     shelter: "Golden Gate Humane Society",
     distance: "8.7 miles",
     photos: [{
@@ -127,6 +131,8 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Other dogs", "Children"],
     adoptionFee: 350,
+    url: "https://www.petfinder.com/dog-profile/luna-2", // Added missing property
+    status: "adoptable", // Added missing property
   },
   {
     id: 3,
@@ -134,6 +140,7 @@ export const mockDogs: Dog[] = [
     breed: "Beagle",
     age: "4 years",
     gender: "Male",
+    size: "Medium", // Added missing property
     shelter: "Peninsula Pet Rescue",
     distance: "12.1 miles",
     photos: [{
@@ -148,6 +155,8 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Other dogs"],
     adoptionFee: 250,
+    url: "https://www.petfinder.com/dog-profile/max-3", // Added missing property
+    status: "adoptable", // Added missing property
   },
   {
     id: 4,
@@ -155,6 +164,7 @@ export const mockDogs: Dog[] = [
     breed: "Pit Bull Mix",
     age: "3 years",
     gender: "Female",
+    size: "Medium", // Added missing property
     shelter: "Bay Area Animal Shelter",
     distance: "2.3 miles",
     photos: [{
@@ -169,6 +179,8 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Children"],
     adoptionFee: 275,
+    url: "https://www.petfinder.com/dog-profile/daisy-4", // Added missing property
+    status: "adoptable", // Added missing property
   },
   {
     id: 5,
@@ -176,6 +188,7 @@ export const mockDogs: Dog[] = [
     breed: "Labrador Mix",
     age: "5 years",
     gender: "Male",
+    size: "Large", // Added missing property
     shelter: "Loving Paws Sanctuary",
     distance: "15.2 miles",
     photos: [{
@@ -190,6 +203,8 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Other dogs", "Children"],
     adoptionFee: 320,
+    url: "https://www.petfinder.com/dog-profile/rocky-5", // Added missing property
+    status: "adoptable", // Added missing property
   },
   {
     id: 6,
@@ -197,6 +212,7 @@ export const mockDogs: Dog[] = [
     breed: "Australian Shepherd",
     age: "1.5 years",
     gender: "Female",
+    size: "Medium", // Added missing property
     shelter: "Golden Gate Humane Society",
     distance: "8.7 miles",
     photos: [{
@@ -211,5 +227,7 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Other dogs"],
     adoptionFee: 380,
+    url: "https://www.petfinder.com/dog-profile/sadie-6", // Added missing property
+    status: "adoptable", // Added missing property
   },
 ]

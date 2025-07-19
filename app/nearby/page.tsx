@@ -1,15 +1,49 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import dynamic from "next/dynamic"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MapPin, Loader } from "lucide-react"
-import { mockOrganizations, mockDogs } from "@/lib/mock-data"
+import { mockOrganizations } from "@/lib/mock-data" // Keep for shelters/rescues tabs
 import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
+import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API
+import type { Dog } from "@/lib/types" // Import our internal Dog type
+import { toast } from "sonner" // For notifications
+
+// Utility function to decode HTML entities (moved here for reusability)
+function decodeHtmlEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
+// Utility function to map PetfinderDog to our internal Dog type
+function mapPetfinderDogToInternalDog(pfDog: PetfinderDog): Dog {
+  return {
+    id: pfDog.id,
+    name: pfDog.name,
+    breed: pfDog.breeds.primary,
+    age: pfDog.age,
+    gender: pfDog.gender,
+    size: pfDog.size,
+    photos: pfDog.photos,
+    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
+    url: pfDog.url,
+    status: pfDog.status,
+    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`, // Use org ID or city/state
+    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
+    urgent: false, // Default to false, as Petfinder doesn't have this directly
+    characteristics: [], // Not available from Petfinder directly
+    health: [], // Not available from Petfinder directly
+    goodInHomeWith: [], // Not available from Petfinder directly
+    adoptionFee: null, // Not available from Petfinder directly
+  };
+}
+
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -25,20 +59,48 @@ const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
 
 export default function NearbyPage() {
   const [location, setLocation] = useState("San Francisco, CA")
-  const [isLoading, setIsLoading] = useState(true)
+  const [dogs, setDogs] = useState<Dog[]>([]) // Use internal Dog type
+  const [isLoadingDogs, setIsLoadingDogs] = useState(true) // Separate loading state for dogs
+
+  const fetchDogsForNearby = useCallback(async (currentLocation: string) => {
+    setIsLoadingDogs(true)
+    try {
+      const fetchedPfDogs = await getAdoptableDogs(currentLocation, 24) // Fetch fewer for nearby
+      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog)
+      setDogs(mappedDogs)
+      toast.success(`Found ${mappedDogs.length} dogs near ${currentLocation}!`)
+    } catch (error) {
+      console.error("Error fetching dogs for Nearby page:", error)
+      setDogs([])
+      toast.error("Failed to load dogs for your location. Please try again.")
+    } finally {
+      setIsLoadingDogs(false)
+    }
+  }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          () => setLocation("San Francisco, CA"),
-          () => setLocation("San Francisco, CA"),
-        )
-      }
-      setIsLoading(false)
-    }, 1500)
-    return () => clearTimeout(timer)
-  }, [])
+    // Initial fetch for San Francisco, CA on component mount
+    fetchDogsForNearby(location);
+
+    // Optional: Attempt geolocation for more accurate initial load
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          const geoLoc = `${latitude},${longitude}`
+          setLocation(geoLoc) // Update location state
+          fetchDogsForNearby(geoLoc) // Fetch dogs for new location
+        },
+        (error) => {
+          console.warn("Geolocation error:", error.message);
+          toast.info("Could not detect your precise location. Showing dogs for San Francisco, CA.")
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      )
+    } else {
+      toast.info("Geolocation not supported. Showing dogs for San Francisco, CA.")
+    }
+  }, [fetchDogsForNearby, location]) // Depend on location to re-fetch if changed by geolocation
 
   return (
     <div className="py-12 md:py-24">
@@ -53,13 +115,14 @@ export default function NearbyPage() {
           </p>
           <Button variant="outline" size="sm">
             <MapPin className="w-4 h-4 mr-2" />
-            Change Location
+            Change Location {/* This button would ideally open a location input modal */}
           </Button>
         </div>
 
         <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
           <div className="bg-muted/50 rounded-2xl p-4 md:p-8 mb-12 animate-fade-in-up border-none" style={{ animationDelay: "200ms" }}>
             <div className="w-full h-64 md:h-96 bg-muted rounded-xl shadow-inner">
+              {/* InteractiveMap still uses mock data for shelters/rescues */}
               <InteractiveMap shelters={mockOrganizations.shelters} rescues={mockOrganizations.rescues} />
             </div>
           </div>
@@ -73,15 +136,15 @@ export default function NearbyPage() {
           </TabsList>
 
           <TabsContent value="dogs">
-            <DogsTab dogs={mockDogs} isLoading={isLoading} />
+            <DogsTab dogs={dogs} isLoading={isLoadingDogs} /> {/* Pass fetched dogs */}
           </TabsContent>
 
           <TabsContent value="shelters">
-            <SheltersTab shelters={mockOrganizations.shelters} isLoading={isLoading} />
+            <SheltersTab shelters={mockOrganizations.shelters} isLoading={false} /> {/* Keep mock for now */}
           </TabsContent>
 
           <TabsContent value="rescues">
-            <RescuesTab rescues={mockOrganizations.rescues} isLoading={isLoading} />
+            <RescuesTab rescues={mockOrganizations.rescues} isLoading={false} /> {/* Keep mock for now */}
           </TabsContent>
         </Tabs>
       </div>
