@@ -17,8 +17,7 @@ export function DogCard({ dog }: { dog: Dog }) {
   return (
     <GradientText showBorder={true} className="h-full" animationSpeed={5}>
       <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col border-none">
-        {/* Removed aspect-square and added a fixed height (h-64) to ensure image displays */}
-        <div className="relative w-full h-64 bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="relative w-full h-72 bg-gradient-to-br from-blue-50 to-green-50"> {/* Increased height to h-72 */}
           <Image
             src={imageUrl}
             alt={dog.name}

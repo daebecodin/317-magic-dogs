@@ -31,7 +31,7 @@ export default function ExplorePage() {
     console.log("fetchDogs called with location:", location);
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/dogs?location=${encodeURIComponent(location)}&limit=48`);
+      const response = await fetch(`/api/dogs?location=${encodeURIComponent(location)}&limit=96`); // Increased limit to 96
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
