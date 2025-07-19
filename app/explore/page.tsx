@@ -28,6 +28,7 @@ export default function ExplorePage() {
   const [sizeFilter, setSizeFilter] = useState("all")
 
   const fetchDogs = useCallback(async (location: string) => {
+    console.log("fetchDogs called with location:", location);
     setIsLoading(true)
     setLocationError(false)
     try {
@@ -36,7 +37,7 @@ export default function ExplorePage() {
       setCurrentLocation(location)
       toast.success(`Found ${fetchedDogs.length} dogs near ${location}!`)
     } catch (error) {
-      console.error("Error fetching dogs:", error)
+      console.error("Error in fetchDogs:", error)
       setDogs([])
       setLocationError(true)
       toast.error("Failed to fetch dogs. Please try a different location.")
@@ -46,14 +47,16 @@ export default function ExplorePage() {
   }, [])
 
   useEffect(() => {
+    console.log("useEffect triggered for geolocation.");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords
+          console.log("Geolocation successful. Lat:", latitude, "Lng:", longitude);
           fetchDogs(`${latitude},${longitude}`)
         },
         (error) => {
-          console.error("Geolocation error:", error)
+          console.error("Geolocation error:", error);
           setLocationError(true)
           setIsLoading(false)
           toast.warning("Geolocation denied or failed. Please enter your location manually.")
@@ -61,6 +64,7 @@ export default function ExplorePage() {
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       )
     } else {
+      console.log("Geolocation not supported by browser.");
       setLocationError(true)
       setIsLoading(false)
       toast.warning("Geolocation is not supported by your browser. Please enter your location manually.")
@@ -123,6 +127,14 @@ export default function ExplorePage() {
         {locationError && !isLoading && (
           <div className="max-w-md mx-auto mb-12 animate-fade-in-up">
             <LocationInput onSearch={fetchDogs} isLoading={isLoading} />
+          </div>
+        )}
+
+        {isLoading && !locationError && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 12 }).map((_, index) => (
+              <DogCardSkeleton key={index} />
+            ))}
           </div>
         )}
 
@@ -197,14 +209,6 @@ export default function ExplorePage() {
               </div>
             </Card>
           </GradientText>
-        )}
-
-        {isLoading && !locationError && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {Array.from({ length: 12 }).map((_, index) => (
-              <DogCardSkeleton key={index} />
-            ))}
-          </div>
         )}
 
         {!isLoading && filteredDogs.length > 0 && (
