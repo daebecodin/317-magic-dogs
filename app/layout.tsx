@@ -33,9 +33,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3040479527190148"
           crossOrigin="anonymous"></script>
+      </head>
+      <body className={inter.className}>
         <ParticlesBackground />
         <div className="min-h-screen flex flex-col relative z-0"> {/* Ensure content is above particles */}
           <Navbar />
