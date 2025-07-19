@@ -33,7 +33,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center space-x-2 mb-4">
               <Heart className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">SafeDawgs</span>
+              <span className="font-bold text-xl">OnlyPets</span>
             </Link>
             <p className="text-muted-foreground mb-6 max-w-md">
               Connecting at-risk dogs in high-kill shelters with vetted, loving rescue organizations. Together, we can
@@ -94,7 +94,7 @@ export function Footer() {
             {/* Discord Link */}
             <div className="mt-6">
               <Button variant="outline" size="sm" asChild>
-                <Link href="https://discord.gg/safedawgs" target="_blank" rel="noopener noreferrer">
+                <Link href="https://discord.gg/onlypets" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Join Discord
                 </Link>
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
 
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} SafeDawgs. All Rights Reserved.</p>
+          <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} OnlyPets. All Rights Reserved.</p>
           <div className="flex items-center gap-4 mt-4 md:mt-0">
             <span className="text-sm text-muted-foreground">Made with</span>
             <Heart className="w-4 h-4 text-red-500" />

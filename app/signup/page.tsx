@@ -27,7 +27,7 @@ export default function SignupPage() {
                   </div>
                   <CardTitle className="text-2xl">Application Submitted!</CardTitle>
                   <CardDescription>
-                    Thank you for joining SafeDawgs. We'll review your application and get back to you within 2-3 business
+                    Thank you for joining OnlyPets. We'll review your application and get back to you within 2-3 business
                     days.
                   </CardDescription>
                 </CardHeader>
@@ -61,7 +61,7 @@ export default function SignupPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <Badge variant="secondary" className="mb-4">
-            Join SafeDawgs
+            Join OnlyPets
           </Badge>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Start Saving Lives Today</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

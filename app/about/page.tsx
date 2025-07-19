@@ -7,9 +7,9 @@ import { GradientText } from "@/components/animations/gradient-text"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "About Us - SafeDawgs",
+  title: "About Us - OnlyPets",
   description:
-    "Meet the team behind SafeDawgs and learn about our mission to save pets through smarter rescue matching.", // Updated description
+    "Meet the team behind OnlyPets and learn about our mission to save pets through smarter rescue matching.", // Updated description
 }
 
 export default function AboutPage() {
@@ -73,11 +73,11 @@ export default function AboutPage() {
             style={{ animationDelay: "150ms" }}
           >
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">Why We Started SafeDawgs</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">Why We Started OnlyPets</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Every year, millions of healthy, loving pets are euthanized in shelters simply because there isn't enough {/* Updated text */}
                 space or resources. Meanwhile, rescue organizations across the country have the capacity and desire to
-                help, but lack an efficient way to connect with shelters in need. SafeDawgs bridges this gap with smart
+                help, but lack an efficient way to connect with shelters in need. OnlyPets bridges this gap with smart
                 technology that saves lives.
               </p>
             </div>

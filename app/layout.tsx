@@ -13,16 +13,16 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "SafeDawgs - Helping Every Pet Find Their Forever Home",
+  title: "OnlyPets - Helping Every Pet Find Their Forever Home",
   description:
     "We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.",
-  keywords: "pet rescue, animal shelter, pet adoption, pet matching, rescue organizations, dogs, cats, rabbits, birds, reptiles",
-  authors: [{ name: "SafeDawgs Team" }],
+  keywords: "pet rescue, animal shelter, pet adoption, pet matching, rescue organizations, dogs, cats, rabbits, birds, reptiles, onlypets",
+  authors: [{ name: "OnlyPets Team" }],
   openGraph: {
-    title: "SafeDawgs - Helping Every Pet Find Their Forever Home",
+    title: "OnlyPets - Helping Every Pet Find Their Forever Home",
     description: "Connecting at-risk pets with loving rescue organizations",
     type: "website",
-    url: "https://safedawgs.com",
+    url: "https://onlypets.com",
   },
     generator: 'v0.dev'
 }

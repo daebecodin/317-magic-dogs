@@ -7,8 +7,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: "Our Vision for Impact - SafeDawgs",
-  description: "Learn about SafeDawgs' vision for impact and how we plan to save more pets through smarter rescue matching.", // Updated description
+  title: "Our Vision for Impact - OnlyPets",
+  description: "Learn about OnlyPets' vision for impact and how we plan to save more pets through smarter rescue matching.", // Updated description
 }
 
 export default function ImpactPage() {
@@ -43,7 +43,7 @@ export default function ImpactPage() {
   const measurementPlans = [
     {
       title: "Live Release Rate Tracking",
-      description: "We plan to track the percentage of animals leaving shelters alive, directly correlating with successful placements facilitated by SafeDawgs.",
+      description: "We plan to track the percentage of animals leaving shelters alive, directly correlating with successful placements facilitated by OnlyPets.",
     },
     {
       title: "Rescue Partner Growth",
@@ -71,7 +71,7 @@ export default function ImpactPage() {
             Building a Future of Impact
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            As a research and startup initiative, SafeDawgs is laying the groundwork for a future where every at-risk pet finds a second chance. Here's our vision for the impact we aim to create. {/* Updated text */}
+            As a research and startup initiative, OnlyPets is laying the groundwork for a future where every at-risk pet finds a second chance. Here's our vision for the impact we aim to create. {/* Updated text */}
           </p>
         </div>
 
@@ -116,7 +116,7 @@ export default function ImpactPage() {
 
           <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
             <Card className="bg-muted/50 rounded-2xl p-8 md:p-12 border-none">
-              <CardTitle className="text-2xl font-bold mb-6 text-center">The SafeDawgs Volunteer Engagement Engine</CardTitle>
+              <CardTitle className="text-2xl font-bold mb-6 text-center">The OnlyPets Volunteer Engagement Engine</CardTitle>
               <CardDescription className="text-lg text-muted-foreground text-center mb-8">
                 Our initial development is laser-focused on building a robust platform to address the critical challenges faced by animal welfare volunteers and coordinators. By streamlining operations and fostering community, we aim to reduce burnout and maximize impact.
               </CardDescription>
@@ -188,7 +188,7 @@ export default function ImpactPage() {
           >
             <h2 className="text-3xl font-bold mb-4">Join Us in Building the Future of Animal Welfare Tech</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              We are a research and startup initiative, actively seeking collaborators, early adopters, and passionate individuals to help us develop and refine the SafeDawgs platform.
+              We are a research and startup initiative, actively seeking collaborators, early adopters, and passionate individuals to help us develop and refine the OnlyPets platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild>

@@ -40,7 +40,7 @@ export function ImpactPreview() {
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Every Pet Has a Story</h2> {/* Updated text */}
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Meet some of the amazing pets who found their second chance through SafeDawgs. {/* Updated text */}
+            Meet some of the amazing pets who found their second chance through OnlyPets. {/* Updated text */}
           </p>
         </div>
 
