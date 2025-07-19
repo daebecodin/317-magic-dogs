@@ -131,8 +131,8 @@ export const ChromaGrid = ({
       duration: damping,
       ease,
       onUpdate: () => {
-        setX.current?.(pos.current.x);
-        setY.current?.(pos.current.y);
+        setX.current?.(pos.current.x); // Added optional chaining
+        setY.current?.(pos.current.y); // Added optional chaining
       },
       overwrite: true,
     });
