@@ -5,20 +5,20 @@ import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { MapPin, AlertTriangle, PawPrint } from "lucide-react" // Changed Heart to PawPrint for generic pet icon
-import type { Pet } from "@/lib/types" // Updated import
+import { MapPin, AlertTriangle, PawPrint } from "lucide-react"
+import type { Pet } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
 import PixelTransition from "@/components/animations/pixel-transition"
 import { useRouter } from "next/navigation"
 
-export function PetCard({ pet }: { pet: Pet }) { // Renamed prop from dog to pet
+export function PetCard({ pet }: { pet: Pet }) {
   const router = useRouter();
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = pet.photos[0]?.medium || pet.photos[0]?.small || "/placeholder.svg";
 
   // Function to prefetch the pet's profile page data
   const handleMouseEnter = () => {
-    router.prefetch(`/pets/${pet.id}`); // Updated path
+    router.prefetch(`/pets/${pet.id}`);
   };
 
   return (
@@ -68,7 +68,7 @@ export function PetCard({ pet }: { pet: Pet }) { // Renamed prop from dog to pet
                 {pet.breed} • {pet.age}
               </CardDescription>
             </div>
-            <Badge variant="outline">{pet.type}</Badge> {/* Display pet type */}
+            <Badge variant="outline">{pet.type}</Badge>
           </div>
           <p className="text-muted-foreground text-sm mt-2 h-10 overflow-hidden flex-grow">{pet.description}</p>
           <div className="flex items-center gap-1 mt-3 text-sm text-muted-foreground">
@@ -78,7 +78,9 @@ export function PetCard({ pet }: { pet: Pet }) { // Renamed prop from dog to pet
             </span>
           </div>
           <Button size="sm" className="w-full mt-4" asChild>
-            <Link href={`/pets/${pet.id}`}>View Profile</Link> {/* Updated link */}
+            <Link href={`/pets/${pet.id}`}>
+              <span>View Profile</span>
+            </Link>
           </Button>
         </CardContent>
       </Card>
