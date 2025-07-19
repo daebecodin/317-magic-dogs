@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { GraduationCap, MessageCircle, ArrowRight, PawPrint } from "lucide-react" // Added PawPrint
+import { GraduationCap, MessageCircle, ArrowRight, PawPrint } from "lucide-react" // Added PawPrint  anr]
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import Link from "next/link"
