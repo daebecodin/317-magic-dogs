@@ -83,10 +83,16 @@ export default function NearbyPage() {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
             Connect with shelters and rescue organizations near {location}
           </p>
-          <Button variant="outline" size="sm" onClick={() => handleLocationChange("New York, NY")}> {/* Example: change location */}
-            <MapPin className="w-4 h-4 mr-2" />
-            Change Location (Example)
-          </Button>
+          <div className="flex justify-center gap-4 mt-4">
+            <Button variant="outline" size="sm" onClick={() => handleLocationChange("New York, NY")}>
+              <MapPin className="w-4 h-4 mr-2" />
+              Try New York, NY
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => handleLocationChange("Los Angeles, CA")}>
+              <MapPin className="w-4 h-4 mr-2" />
+              Try Los Angeles, CA
+            </Button>
+          </div>
         </div>
 
         <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
