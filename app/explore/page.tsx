@@ -6,7 +6,7 @@ import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
-import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder"
+import { getAdoptableDogs } from "@/lib/petfinder"
 import { PetCard } from "@/components/PetCard"
 import { LocationInput } from "@/components/LocationInput"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
@@ -14,11 +14,13 @@ import { GradientText } from "@/components/animations/gradient-text"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
+import type { Dog } from "@/lib/types" // Import our internal Dog type
+import { mapPetfinderDogToDog } from "@/lib/utils" // Import centralized mapping utility
 
 export default function ExplorePage() {
-  const [dogs, setDogs] = useState<PetfinderDog[]>([])
+  const [dogs, setDogs] = useState<Dog[]>([]) // Use internal Dog type
   const [isLoading, setIsLoading] = useState(true)
-  const [locationError, setLocationError] = useState(false)
+  const [locationError, setLocationError] = useState(false) // This state is not currently used, but kept for potential future use
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
@@ -28,14 +30,14 @@ export default function ExplorePage() {
   const [sizeFilter, setSizeFilter] = useState("all")
 
   const fetchDogs = useCallback(async (location: string) => {
-    console.log("fetchDogs called with location:", location);
     setIsLoading(true)
     setLocationError(false)
     try {
-      const fetchedDogs = await getAdoptableDogs(location, 48)
-      setDogs(fetchedDogs)
+      const fetchedPfDogs = await getAdoptableDogs(location, 48)
+      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToDog) // Use centralized mapping
+      setDogs(mappedDogs)
       setCurrentLocation(location) // Update current location after successful fetch
-      toast.success(`Found ${fetchedDogs.length} dogs near ${location}!`)
+      toast.success(`Found ${mappedDogs.length} dogs near ${location}!`)
     } catch (error) {
       console.error("Error in fetchDogs:", error)
       setDogs([])
@@ -51,7 +53,7 @@ export default function ExplorePage() {
   }, [fetchDogs]);
 
   // Extract unique filter options from fetched dogs
-  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breeds.primary)))], [dogs])
+  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breed)))], [dogs])
   const uniqueAges = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.age)))], [dogs])
   const uniqueGenders = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.gender)))], [dogs])
   const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.size)))], [dogs])
@@ -59,7 +61,7 @@ export default function ExplorePage() {
   // Filtered dogs based on selected filters
   const filteredDogs = useMemo(() => {
     return dogs.filter((dog) => {
-      const breedMatch = breedFilter === "all" || dog.breeds.primary === breedFilter
+      const breedMatch = breedFilter === "all" || dog.breed === breedFilter
       const ageMatch = ageFilter === "all" || dog.age === ageFilter
       const genderMatch = genderFilter === "all" || dog.gender === genderFilter
       const sizeMatch = sizeFilter === "all" || dog.size === sizeFilter
@@ -84,7 +86,7 @@ export default function ExplorePage() {
       y: 0,
       opacity: 1,
     },
-  } // Removed trailing comma here
+  }
 
   return (
     <div className="py-12 md:py-24">

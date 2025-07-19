@@ -6,48 +6,13 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
-import { getAnimalById, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API function
+import { getAnimalById } from "@/lib/petfinder" // Import Petfinder API function
 import type { Dog } from "@/lib/types" // Import our internal Dog type
-import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
+import { mapPetfinderDogToDog } from "@/lib/utils" // Import centralized mapping utility
 
 interface DogProfilePageProps {
   params: {
     id: string;
-  };
-}
-
-// Utility function to map PetfinderDog to our internal Dog type for the profile page
-function mapPetfinderDogToInternalDogProfile(pfDog: PetfinderDog): Dog {
-  const characteristics: string[] = pfDog.tags || [];
-  const health: string[] = [];
-  if (pfDog.attributes.spayed_neutered) health.push("Spayed / Neutered");
-  if (pfDog.attributes.shots_current) health.push("Vaccinations up to date");
-  if (pfDog.attributes.special_needs) health.push("Special Needs");
-  if (pfDog.attributes.house_trained) health.push("House Trained");
-
-  const goodInHomeWith: string[] = [];
-  if (pfDog.environment.children === true) goodInHomeWith.push("Children");
-  if (pfDog.environment.dogs === true) goodInHomeWith.push("Other dogs");
-  if (pfDog.environment.cats === true) goodInHomeWith.push("Cats");
-
-  return {
-    id: pfDog.id,
-    name: pfDog.name,
-    breed: pfDog.breeds.primary,
-    age: pfDog.age,
-    gender: pfDog.gender,
-    size: pfDog.size,
-    photos: pfDog.photos,
-    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
-    url: pfDog.url,
-    status: pfDog.status,
-    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`,
-    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
-    urgent: false, // Petfinder API doesn't have a direct 'urgent' flag, default to false
-    characteristics: characteristics,
-    health: health,
-    goodInHomeWith: goodInHomeWith,
-    adoptionFee: pfDog.adoption_fee,
   };
 }
 
@@ -58,10 +23,9 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
     notFound();
   }
 
-  const dog = mapPetfinderDogToInternalDogProfile(pfDog);
+  const dog = mapPetfinderDogToDog(pfDog); // Use centralized mapping
 
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
-  console.log(`DogProfilePage: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
 
   return (
     <div className="py-12 md:py-24 bg-muted/20">
@@ -167,9 +131,8 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
                     <MapPin className="w-4 h-4 text-primary" />
                     <span>{dog.shelter}</span>
                   </div>
-                  {/* Removed Calendar icon as 'distance' is not a date */}
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-primary" /> {/* Re-using MapPin for distance */}
+                    <MapPin className="w-4 h-4 text-primary" />
                     <span>{dog.distance} away</span>
                   </div>
                 </div>

@@ -7,7 +7,14 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'dl5zpyw5k3jeb.cloudfront.net',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 }
 
