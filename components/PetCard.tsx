@@ -8,10 +8,16 @@ import { MapPin } from "lucide-react"
 import { motion } from "framer-motion"
 import type { PetfinderDog } from "@/lib/petfinder"
 import { GradientText } from "@/components/animations/gradient-text"
-import { decode } from "html-entities" // Import decode from html-entities
 
 interface PetCardProps {
   dog: PetfinderDog
+}
+
+// Function to decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
 }
 
 export function PetCard({ dog }: PetCardProps) {
@@ -20,8 +26,8 @@ export function PetCard({ dog }: PetCardProps) {
   const breedText = secondaryBreed && !dog.breeds.mixed ? `${primaryBreed}, ${secondaryBreed}` : primaryBreed;
   const locationText = `${dog.contact.address.city}, ${dog.contact.address.state}`;
 
-  // Clean and truncate description using html-entities decode
-  const cleanedDescription = dog.description ? decode(dog.description) : "No description available.";
+  // Clean and truncate description
+  const cleanedDescription = dog.description ? decodeHtmlEntities(dog.description) : "No description available.";
   const truncatedDescription = cleanedDescription.length > 100 ? cleanedDescription.substring(0, 100) + "..." : cleanedDescription;
 
   // Determine image source, prioritizing medium, then small, then fallback

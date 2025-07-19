@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
 import { PetfinderDog } from "@/lib/petfinder"
-import { decode } from "html-entities" // Import decode from html-entities
+
+// Function to decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
 
 interface DogProfilePageProps {
   params: {
@@ -40,8 +46,8 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
   const breedText = secondaryBreed && !dog.breeds.mixed ? `${primaryBreed}, ${secondaryBreed}` : primaryBreed;
   const locationText = `${dog.contact.address.city}, ${dog.contact.address.state}`;
 
-  // Clean description using html-entities decode
-  const cleanedDescription = dog.description ? decode(dog.description) : "No description available.";
+  // Clean description
+  const cleanedDescription = dog.description ? decodeHtmlEntities(dog.description) : "No description available.";
 
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";

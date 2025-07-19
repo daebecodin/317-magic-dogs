@@ -3,39 +3,35 @@ import { useState, useMemo } from "react"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { Filter } from "lucide-react"
 import { DogCard } from "@/components/dog-card"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
-import type { PetfinderDog } from "@/lib/petfinder" // Changed import to PetfinderDog
+import type { Dog } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
 
 interface DogsTabProps {
-  dogs: PetfinderDog[] // Changed type to PetfinderDog[]
+  dogs: Dog[]
   isLoading: boolean
 }
 
 export function DogsTab({ dogs, isLoading }: DogsTabProps) {
   const [breedFilter, setBreedFilter] = useState("all")
-  const [ageFilter, setAgeFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
-  const [sizeFilter, setSizeFilter] = useState("all")
+  const [urgentOnly, setUrgentOnly] = useState(false)
 
-  // Derive unique filter options from the fetched dogs
-  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breeds.primary)))], [dogs])
-  const uniqueAges = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.age)))], [dogs])
-  const uniqueGenders = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.gender)))], [dogs])
-  const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.size)))], [dogs])
+  const breeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breed)))], [dogs])
+  const genders = ["all", "Male", "Female"]
 
   const filteredDogs = useMemo(
     () =>
       dogs.filter((dog) => {
-        const breedMatch = breedFilter === "all" || dog.breeds.primary === breedFilter
-        const ageMatch = ageFilter === "all" || dog.age === ageFilter
+        const breedMatch = breedFilter === "all" || dog.breed === breedFilter
         const genderMatch = genderFilter === "all" || dog.gender === genderFilter
-        const sizeMatch = sizeFilter === "all" || dog.size === sizeFilter
-        return breedMatch && ageMatch && genderMatch && sizeMatch
+        const urgentMatch = !urgentOnly || dog.urgent
+        return breedMatch && genderMatch && urgentMatch
       }),
-    [dogs, breedFilter, ageFilter, genderFilter, sizeFilter],
+    [dogs, breedFilter, genderFilter, urgentOnly],
   )
 
   const renderSkeletons = (count: number) =>
@@ -63,24 +59,9 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
                   <SelectValue placeholder="Select Breed" />
                 </SelectTrigger>
                 <SelectContent>
-                  {uniqueBreeds.map((breed) => (
+                  {breeds.map((breed) => (
                     <SelectItem key={breed} value={breed}>
                       {breed === "all" ? "All Breeds" : breed}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="age-filter">Age</Label>
-              <Select value={ageFilter} onValueChange={setAgeFilter}>
-                <SelectTrigger id="age-filter" className="w-[120px]">
-                  <SelectValue placeholder="Select Age" />
-                </SelectTrigger>
-                <SelectContent>
-                  {uniqueAges.map((age) => (
-                    <SelectItem key={age} value={age}>
-                      {age === "all" ? "All Ages" : age}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -93,7 +74,7 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
                   <SelectValue placeholder="Select Gender" />
                 </SelectTrigger>
                 <SelectContent>
-                  {uniqueGenders.map((gender) => (
+                  {genders.map((gender) => (
                     <SelectItem key={gender} value={gender}>
                       {gender === "all" ? "All Genders" : gender}
                     </SelectItem>
@@ -101,22 +82,10 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="size-filter">Size</Label>
-              <Select value={sizeFilter} onValueChange={setSizeFilter}>
-                <SelectTrigger id="size-filter" className="w-[120px]">
-                  <SelectValue placeholder="Select Size" />
-                </SelectTrigger>
-                <SelectContent>
-                  {uniqueSizes.map((size) => (
-                    <SelectItem key={size} value={size}>
-                      {size === "all" ? "All Sizes" : size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex items-center space-x-2 pt-5">
+              <Switch id="urgent-only" checked={urgentOnly} onCheckedChange={setUrgentOnly} />
+              <Label htmlFor="urgent-only">Urgent Only</Label>
             </div>
-            {/* Removed Urgent Only switch as Petfinder API does not provide this directly */}
           </div>
         </Card>
       </GradientText>
