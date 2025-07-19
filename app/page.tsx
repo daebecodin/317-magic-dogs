@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Hero } from "@/components/hero"
 import { HowItWorksPreview } from "@/components/how-it-works-preview"
 import { CallToAction } from "@/components/call-to-action"
-import { DogCarousel } from "@/components/dog-carousel" // Import the new DogCarousel
+import CircularGallery from "@/components/animations/circular-gallery" // Import CircularGallery
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons" // For loading state
 import { toast } from "sonner"
 import type { Dog, PetfinderDog } from "@/lib/types"
@@ -18,7 +18,7 @@ export default function HomePage() {
     const fetchDogsForHomepage = async () => {
       setIsLoadingDogs(true)
       try {
-        const response = await fetch(`/api/dogs?location=90210&limit=12`); // Fetch 12 dogs for the carousel
+        const response = await fetch(`/api/dogs?location=90210&limit=12`); // Fetch 12 dogs for the gallery
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -37,6 +37,12 @@ export default function HomePage() {
     fetchDogsForHomepage();
   }, []);
 
+  // Map the fetched Dog data to the format required by CircularGallery
+  const galleryItems = dogs.map(dog => ({
+    image: dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg",
+    text: dog.name,
+  }));
+
   return (
     <>
       <Hero />
@@ -50,7 +56,15 @@ export default function HomePage() {
               ))}
             </div>
           ) : dogs.length > 0 ? (
-            <DogCarousel dogs={dogs} />
+            <div style={{ height: '600px', position: 'relative' }}>
+              <CircularGallery
+                items={galleryItems}
+                bend={3}
+                textColor="#ffffff"
+                borderRadius={0.05}
+                scrollEase={0.02}
+              />
+            </div>
           ) : (
             <p className="text-muted-foreground">No dogs available right now. Check back soon!</p>
           )}
