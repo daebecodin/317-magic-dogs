@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Loader } from "lucide-react"
+import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
@@ -11,12 +11,21 @@ import { PetCard } from "@/components/PetCard"
 import { LocationInput } from "@/components/LocationInput"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
 import { GradientText } from "@/components/animations/gradient-text"
+import { Card } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 
 export default function ExplorePage() {
   const [dogs, setDogs] = useState<PetfinderDog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [locationError, setLocationError] = useState(false)
   const [currentLocation, setCurrentLocation] = useState<string | null>(null)
+
+  // Filter states
+  const [breedFilter, setBreedFilter] = useState("all")
+  const [ageFilter, setAgeFilter] = useState("all")
+  const [genderFilter, setGenderFilter] = useState("all")
+  const [sizeFilter, setSizeFilter] = useState("all")
 
   const fetchDogs = useCallback(async (location: string) => {
     setIsLoading(true)
@@ -41,9 +50,6 @@ export default function ExplorePage() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords
-          // Reverse geocoding is not directly available in browser,
-          // so we'll use a generic placeholder or prompt for manual input.
-          // For a real app, you'd use a reverse geocoding API here.
           fetchDogs(`${latitude},${longitude}`)
         },
         (error) => {
@@ -60,6 +66,23 @@ export default function ExplorePage() {
       toast.warning("Geolocation is not supported by your browser. Please enter your location manually.")
     }
   }, [fetchDogs])
+
+  // Extract unique filter options from fetched dogs
+  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breeds.primary)))], [dogs])
+  const uniqueAges = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.age)))], [dogs])
+  const uniqueGenders = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.gender)))], [dogs])
+  const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.size)))], [dogs])
+
+  // Filtered dogs based on selected filters
+  const filteredDogs = useMemo(() => {
+    return dogs.filter((dog) => {
+      const breedMatch = breedFilter === "all" || dog.breeds.primary === breedFilter
+      const ageMatch = ageFilter === "all" || dog.age === ageFilter
+      const genderMatch = genderFilter === "all" || dog.gender === genderFilter
+      const sizeMatch = sizeFilter === "all" || dog.size === sizeFilter
+      return breedMatch && ageMatch && genderMatch && sizeMatch
+    })
+  }, [dogs, breedFilter, ageFilter, genderFilter, sizeFilter])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -103,6 +126,79 @@ export default function ExplorePage() {
           </div>
         )}
 
+        {!locationError && !isLoading && dogs.length > 0 && (
+          <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+            <Card className="mb-8 p-4 border-none">
+              <div className="flex flex-wrap items-center gap-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <Filter className="w-5 h-5" />
+                  Filters
+                </h3>
+                <div className="grid gap-2">
+                  <Label htmlFor="breed-filter">Breed</Label>
+                  <Select value={breedFilter} onValueChange={setBreedFilter}>
+                    <SelectTrigger id="breed-filter" className="w-[180px]">
+                      <SelectValue placeholder="Select Breed" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueBreeds.map((breed) => (
+                        <SelectItem key={breed} value={breed}>
+                          {breed === "all" ? "All Breeds" : breed}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="age-filter">Age</Label>
+                  <Select value={ageFilter} onValueChange={setAgeFilter}>
+                    <SelectTrigger id="age-filter" className="w-[120px]">
+                      <SelectValue placeholder="Select Age" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueAges.map((age) => (
+                        <SelectItem key={age} value={age}>
+                          {age === "all" ? "All Ages" : age}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="gender-filter">Gender</Label>
+                  <Select value={genderFilter} onValueChange={setGenderFilter}>
+                    <SelectTrigger id="gender-filter" className="w-[120px]">
+                      <SelectValue placeholder="Select Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueGenders.map((gender) => (
+                        <SelectItem key={gender} value={gender}>
+                          {gender === "all" ? "All Genders" : gender}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="size-filter">Size</Label>
+                  <Select value={sizeFilter} onValueChange={setSizeFilter}>
+                    <SelectTrigger id="size-filter" className="w-[120px]">
+                      <SelectValue placeholder="Select Size" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {uniqueSizes.map((size) => (
+                        <SelectItem key={size} value={size}>
+                          {size === "all" ? "All Sizes" : size}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </Card>
+          </GradientText>
+        )}
+
         {isLoading && !locationError && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 12 }).map((_, index) => (
@@ -111,14 +207,14 @@ export default function ExplorePage() {
           </div>
         )}
 
-        {!isLoading && dogs.length > 0 && (
+        {!isLoading && filteredDogs.length > 0 && (
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            {dogs.map((dog) => (
+            {filteredDogs.map((dog) => (
               <motion.div key={dog.id} variants={itemVariants}>
                 <PetCard dog={dog} />
               </motion.div>
@@ -126,12 +222,12 @@ export default function ExplorePage() {
           </motion.div>
         )}
 
-        {!isLoading && dogs.length === 0 && !locationError && (
+        {!isLoading && filteredDogs.length === 0 && !locationError && (
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <div className="text-center py-12 border-none">
-              <h3 className="text-xl font-semibold">No dogs found for your location.</h3>
+              <h3 className="text-xl font-semibold">No dogs found matching your criteria.</h3>
               <p className="text-muted-foreground mt-2">
-                Try a different ZIP code or city, or check back later!
+                Try adjusting your filters or searching a different location.
               </p>
             </div>
           </GradientText>
