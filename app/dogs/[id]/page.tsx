@@ -3,15 +3,16 @@
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { MapPin, AlertTriangle, Tag, PawPrint, Stethoscope, Home } from "lucide-react"
+import { MapPin, AlertTriangle, Tag, PawPrint, Stethoscope, Home, Loader } from "lucide-react" // Added Loader
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
-import { getAnimalById } from "@/lib/petfinder" // Fixed: Changed '=>' to 'from'
-import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
-import { mapPetfinderDogToInternalDog } from "@/lib/utils" // Import utility function
-import { toast } from "sonner" // Import toast for client-side error feedback
+import { getAnimalById } from "@/lib/petfinder"
+import type { Dog, PetfinderDog } from "@/lib/types"
+import { mapPetfinderDogToInternalDog } from "@/lib/utils"
+import { toast } from "sonner"
+import { useEffect, useState, useCallback } from "react" // Added hooks
 
 interface DogProfilePageProps {
   params: {
@@ -19,29 +20,60 @@ interface DogProfilePageProps {
   };
 }
 
-export default async function DogProfilePage({ params }: DogProfilePageProps) {
-  let dog: Dog | null = null;
-  let errorOccurred = false;
+export default function DogProfilePage({ params }: DogProfilePageProps) {
+  const [dog, setDog] = useState<Dog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  try {
-    const pfDog = await getAnimalById(parseInt(params.id));
+  const fetchDogData = useCallback(async () => {
+    setIsLoading(true);
+    setHasError(false);
+    setDog(null); // Clear previous dog data
 
-    if (!pfDog) {
-      // If dog not found by ID, trigger Next.js notFound()
-      notFound();
+    try {
+      const pfDog = await getAnimalById(parseInt(params.id));
+
+      if (!pfDog) {
+        setHasError(true);
+        toast.error("Dog profile not found.");
+        // Optionally, you could still call notFound() here if you want a hard 404 for truly non-existent IDs
+        // notFound();
+        return;
+      }
+
+      const mappedDog = mapPetfinderDogToInternalDog(pfDog);
+      setDog(mappedDog);
+      toast.success(`Successfully loaded ${mappedDog.name}'s profile!`);
+    } catch (error: any) {
+      console.error("Error fetching dog profile data:", error);
+      setHasError(true);
+      toast.error("Failed to load dog profile. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
+  }, [params.id]);
 
-    // Use the existing utility function to map Petfinder data to our internal Dog type
-    dog = mapPetfinderDogToInternalDog(pfDog);
-  } catch (error: any) {
-    console.error("Error fetching dog profile data during SSR:", error);
-    errorOccurred = true;
-    // We can't use `toast` directly here as it's SSR.
-    // The client will see a fallback UI.
+  useEffect(() => {
+    fetchDogData();
+  }, [fetchDogData]);
+
+  if (isLoading) {
+    return (
+      <div className="py-12 md:py-24 bg-muted/20 flex items-center justify-center min-h-[500px] text-center">
+        <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+          <Card className="p-8 border-none">
+            <CardTitle className="text-2xl mb-4">Loading Dog Profile...</CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
+              <Loader className="w-8 h-8 animate-spin mx-auto mb-4" />
+              Please wait while we fetch the details.
+            </CardDescription>
+          </Card>
+        </GradientText>
+      </div>
+    );
   }
 
-  if (errorOccurred || !dog) {
-    // Fallback UI for when data fetching fails or dog is null/undefined
+  if (hasError || !dog) {
     return (
       <div className="py-12 md:py-24 bg-muted/20 flex items-center justify-center min-h-[500px] text-center">
         <GradientText showBorder={true} className="h-full" animationSpeed={5}>
@@ -50,7 +82,7 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
             <CardDescription className="text-lg text-muted-foreground">
               We couldn't load this dog's profile right now. This might be a temporary network issue or the profile no longer exists.
             </CardDescription>
-            <Button onClick={() => window.location.reload()} className="mt-6">
+            <Button onClick={fetchDogData} className="mt-6">
               Try Again
             </Button>
           </Card>
