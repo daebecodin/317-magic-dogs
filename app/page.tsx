@@ -30,7 +30,11 @@ export default function HomePage() {
           throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
         const fetchedPfDogs: PetfinderDog[] = await response.json();
-        const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog);
+        // Map to internal Dog type and filter out dogs without photos
+        const mappedDogs = fetchedPfDogs
+          .map(mapPetfinderDogToInternalDog)
+          .filter(dog => dog.photos && dog.photos.length > 0); // Filter out dogs without photos
+        
         console.log("Fetched and mapped dogs successfully:", mappedDogs.length, "dogs");
         setDogs(mappedDogs);
       } catch (error: any) {
