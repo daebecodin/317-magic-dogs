@@ -8,9 +8,14 @@ export function cn(...inputs: ClassValue[]) {
 
 // Function to decode HTML entities
 export function decodeHtmlEntities(text: string): string {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = text;
-  return textarea.value;
+  if (typeof document !== 'undefined') {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = text;
+    return textarea.value;
+  }
+  // If running on the server (where 'document' is not defined), return the text as is.
+  // The client-side rendering will handle the decoding once the component hydrates.
+  return text;
 }
 
 // Utility function to map PetfinderDog to our internal Dog type
