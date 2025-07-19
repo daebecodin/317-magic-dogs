@@ -1,42 +1,65 @@
-import { mockDogs } from "@/lib/mock-data"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { MapPin, AlertTriangle, Heart, Calendar, Tag, PawPrint, Stethoscope, Home } from "lucide-react"
+import { MapPin, AlertTriangle, Tag, PawPrint, Stethoscope, Home } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
+import { getAnimalById, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API function
+import type { Dog } from "@/lib/types" // Import our internal Dog type
+import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
 
-// Explicitly define the props type for clarity and to potentially override bad inference
 interface DogProfilePageProps {
   params: {
     id: string;
   };
-  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-// Function to decode HTML entities (copied from PetCard for consistency)
-function decodeHtmlEntities(text: string): string {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = text;
-  return textarea.value;
+// Utility function to map PetfinderDog to our internal Dog type for the profile page
+function mapPetfinderDogToInternalDogProfile(pfDog: PetfinderDog): Dog {
+  const characteristics: string[] = pfDog.tags || [];
+  const health: string[] = [];
+  if (pfDog.attributes.spayed_neutered) health.push("Spayed / Neutered");
+  if (pfDog.attributes.shots_current) health.push("Vaccinations up to date");
+  if (pfDog.attributes.special_needs) health.push("Special Needs");
+  if (pfDog.attributes.house_trained) health.push("House Trained");
+
+  const goodInHomeWith: string[] = [];
+  if (pfDog.environment.children === true) goodInHomeWith.push("Children");
+  if (pfDog.environment.dogs === true) goodInHomeWith.push("Other dogs");
+  if (pfDog.environment.cats === true) goodInHomeWith.push("Cats");
+
+  return {
+    id: pfDog.id,
+    name: pfDog.name,
+    breed: pfDog.breeds.primary,
+    age: pfDog.age,
+    gender: pfDog.gender,
+    size: pfDog.size,
+    photos: pfDog.photos,
+    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
+    url: pfDog.url,
+    status: pfDog.status,
+    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`,
+    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
+    urgent: false, // Petfinder API doesn't have a direct 'urgent' flag, default to false
+    characteristics: characteristics,
+    health: health,
+    goodInHomeWith: goodInHomeWith,
+    adoptionFee: pfDog.adoption_fee,
+  };
 }
 
-export default async function DogProfilePage({
-  params,
-  searchParams,
-}: DogProfilePageProps) { // Use the explicit interface here
-  const dog = mockDogs.find((d) => d.id === parseInt(params.id))
+export default async function DogProfilePage({ params }: DogProfilePageProps) {
+  const pfDog = await getAnimalById(parseInt(params.id));
 
-  if (!dog) {
-    notFound()
+  if (!pfDog) {
+    notFound();
   }
 
-  // Clean and truncate description
-  const cleanedDescription = dog.description ? decodeHtmlEntities(dog.description) : "No description available.";
+  const dog = mapPetfinderDogToInternalDogProfile(pfDog);
 
-  // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
 
   return (
@@ -53,7 +76,7 @@ export default async function DogProfilePage({
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   onError={(e) => {
-                    e.currentTarget.src = "/placeholder.svg"; // Fallback image on error
+                    e.currentTarget.src = "/placeholder.svg";
                   }}
                 />
               </div>
@@ -63,7 +86,7 @@ export default async function DogProfilePage({
                     <h1 className="text-3xl md:text-4xl font-bold">{dog.name}</h1>
                     <p className="text-lg text-muted-foreground">{dog.breed}</p>
                   </div>
-                  {dog.urgent && (
+                  {dog.urgent && ( // This 'urgent' flag is not from Petfinder API, will always be false unless custom logic is added
                     <Badge variant="destructive" className="flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
                       Urgent
@@ -80,11 +103,10 @@ export default async function DogProfilePage({
                     <span>{dog.gender}</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed mb-6 flex-grow">{cleanedDescription}</p>
+                <p className="text-muted-foreground leading-relaxed mb-6 flex-grow">{dog.description}</p>
 
                 <Separator className="my-4" />
 
-                {/* New Sections */}
                 {dog.characteristics && dog.characteristics.length > 0 && (
                   <div className="mb-4">
                     <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
@@ -144,12 +166,17 @@ export default async function DogProfilePage({
                     <MapPin className="w-4 h-4 text-primary" />
                     <span>{dog.shelter}</span>
                   </div>
+                  {/* Removed Calendar icon as 'distance' is not a date */}
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-primary" />
+                    <MapPin className="w-4 h-4 text-primary" /> {/* Re-using MapPin for distance */}
                     <span>{dog.distance} away</span>
                   </div>
                 </div>
-                <Button className="w-full mt-6">Request to Match</Button>
+                <Button className="w-full mt-6" asChild>
+                  <a href={dog.url} target="_blank" rel="noopener noreferrer">
+                    View on Petfinder
+                  </a>
+                </Button>
               </div>
             </div>
           </Card>

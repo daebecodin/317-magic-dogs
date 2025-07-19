@@ -15,14 +15,14 @@ export type Dog = {
   url: string // From Petfinder, for external link
   status: string // From Petfinder (e.g., 'adoptable')
 
-  // Custom fields, might not come directly from Petfinder API
+  // Custom fields, now mapped from Petfinder API
   shelter?: string // Name of the shelter/organization, derived from Petfinder data
   distance?: string // Distance, if available from Petfinder or calculated
-  urgent?: boolean // Custom flag, not directly from Petfinder
-  characteristics?: string[]
-  health?: string[]
-  goodInHomeWith?: string[]
-  adoptionFee?: number | null
+  urgent?: boolean // Custom flag, not directly from Petfinder, but can be inferred or set
+  characteristics?: string[] // Mapped from Petfinder 'tags'
+  health?: string[] // Mapped from Petfinder 'attributes'
+  goodInHomeWith?: string[] // Mapped from Petfinder 'environment'
+  adoptionFee?: number | null // Mapped from Petfinder 'adoption_fee'
 }
 
 export type Shelter = {

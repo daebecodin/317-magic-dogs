@@ -58,8 +58,8 @@ export type PetfinderDog = {
     full: string;
   }>;
   contact: {
-    email: string | null; // Added email as it's often present
-    phone: string | null; // Added phone
+    email: string | null;
+    phone: string | null;
     address: {
       address1: string | null;
       address2: string | null;
@@ -68,12 +68,26 @@ export type PetfinderDog = {
       postcode: string;
       country: string;
     };
-    organization_id?: string; // Added missing property
+    organization_id?: string;
   };
   url: string;
   description: string | null;
   status: string;
-  distance?: number; // Added for potential future use with location
+  distance?: number;
+  attributes: { // Added attributes for health/characteristics
+    spayed_neutered: boolean;
+    house_trained: boolean;
+    declawed: boolean | null;
+    special_needs: boolean;
+    shots_current: boolean;
+  };
+  environment: { // Added environment for goodInHomeWith
+    children: boolean | null;
+    dogs: boolean | null;
+    cats: boolean | null;
+  };
+  tags: string[]; // Added tags for characteristics
+  adoption_fee: number | null; // Added adoption_fee
 };
 
 export async function getAdoptableDogs(location: string, limit = 48): Promise<PetfinderDog[]> {
@@ -102,6 +116,38 @@ export async function getAdoptableDogs(location: string, limit = 48): Promise<Pe
     return data.animals;
   } catch (error) {
     console.error("Error fetching adoptable dogs:", error);
+    throw error;
+  }
+}
+
+export async function getAnimalById(id: number): Promise<PetfinderDog | null> {
+  console.log(`Attempting to fetch animal by ID: ${id}`);
+  try {
+    const token = await getPetfinderToken();
+    const apiUrl = `https://api.petfinder.com/v2/animals/${id}`;
+    console.log("Fetching animal from URL:", apiUrl);
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      next: { revalidate: 3600 }, // Revalidate animal data every hour
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.warn(`Animal with ID ${id} not found.`);
+        return null;
+      }
+      const errorData = await response.json();
+      console.error(`Petfinder animal fetch failed for ID ${id}:`, response.status, errorData);
+      throw new Error(`Failed to fetch animal by ID: ${errorData.detail || response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log(`Successfully fetched animal with ID ${id}.`);
+    return data.animal;
+  } catch (error) {
+    console.error(`Error fetching animal by ID ${id}:`, error);
     throw error;
   }
 }
