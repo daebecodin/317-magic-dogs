@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
-import Link from "next/link" // Import Link for navigation
+import Link from "next/link" // Import Link for navigatioss
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
