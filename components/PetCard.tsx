@@ -8,16 +8,10 @@ import { MapPin } from "lucide-react"
 import { motion } from "framer-motion"
 import type { PetfinderDog } from "@/lib/petfinder"
 import { GradientText } from "@/components/animations/gradient-text"
+import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
 
 interface PetCardProps {
   dog: PetfinderDog
-}
-
-// Function to decode HTML entities
-function decodeHtmlEntities(text: string): string {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = text;
-  return textarea.value;
 }
 
 export function PetCard({ dog }: PetCardProps) {
@@ -32,6 +26,7 @@ export function PetCard({ dog }: PetCardProps) {
 
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
+  console.log(`PetCard: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
 
   return (
     <motion.div

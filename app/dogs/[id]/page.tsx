@@ -61,6 +61,7 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
   const dog = mapPetfinderDogToInternalDogProfile(pfDog);
 
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
+  console.log(`DogProfilePage: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
 
   return (
     <div className="py-12 md:py-24 bg-muted/20">
