@@ -3,7 +3,7 @@ const PETFINDER_SECRET = process.env.PETFINDER_SECRET || "8pJdsjPU3zptM4yujZrmu4
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
-async function getPetfinderToken(): Promise<string> {
+export async function getPetfinderToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
     console.log("Using cached Petfinder token.");
     return cachedToken.token;

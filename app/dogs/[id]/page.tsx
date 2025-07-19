@@ -1,39 +1,52 @@
-import { mockDogs } from "@/lib/mock-data"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { MapPin, AlertTriangle, Heart, Calendar, Tag, PawPrint, Stethoscope, Home } from "lucide-react"
+import { MapPin, AlertTriangle, Calendar } from "lucide-react"
 import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
+import { PetfinderDog } from "@/lib/petfinder"
 
-// Explicitly define the props type for clarity and to potentially override bad inference
-interface DogProfilePageProps {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-// Function to decode HTML entities (copied from PetCard for consistency)
+// Function to decode HTML entities
 function decodeHtmlEntities(text: string): string {
   const textarea = document.createElement('textarea');
   textarea.innerHTML = text;
   return textarea.value;
 }
 
-export default async function DogProfilePage({
-  params,
-  searchParams,
-}: DogProfilePageProps) { // Use the explicit interface here
-  const dog = mockDogs.find((d) => d.id === parseInt(params.id))
+interface DogProfilePageProps {
+  params: {
+    id: string;
+  };
+}
 
-  if (!dog) {
-    notFound()
+export default async function DogProfilePage({ params }: DogProfilePageProps) {
+  const { id } = params;
+  let dog: PetfinderDog | null = null;
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/dogs/${id}`);
+    if (!response.ok) {
+      console.error(`Failed to fetch dog data for ID ${id}:`, response.status, response.statusText);
+      notFound();
+    }
+    dog = await response.json();
+  } catch (error) {
+    console.error(`Error fetching dog with ID ${id}:`, error);
+    notFound();
   }
 
-  // Clean and truncate description
+  if (!dog) {
+    notFound();
+  }
+
+  const primaryBreed = dog.breeds.primary;
+  const secondaryBreed = dog.breeds.secondary;
+  const breedText = secondaryBreed && !dog.breeds.mixed ? `${primaryBreed}, ${secondaryBreed}` : primaryBreed;
+  const locationText = `${dog.contact.address.city}, ${dog.contact.address.state}`;
+
+  // Clean description
   const cleanedDescription = dog.description ? decodeHtmlEntities(dog.description) : "No description available.";
 
   // Determine image source, prioritizing medium, then small, then fallback
@@ -61,12 +74,11 @@ export default async function DogProfilePage({
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h1 className="text-3xl md:text-4xl font-bold">{dog.name}</h1>
-                    <p className="text-lg text-muted-foreground">{dog.breed}</p>
+                    <p className="text-lg text-muted-foreground">{breedText}</p>
                   </div>
-                  {dog.urgent && (
-                    <Badge variant="destructive" className="flex items-center gap-1">
-                      <AlertTriangle className="w-3 h-3" />
-                      Urgent
+                  {dog.status === "adoptable" && ( // Assuming 'urgent' status can be inferred or added later
+                    <Badge variant="secondary" className="flex items-center gap-1">
+                      Adoptable
                     </Badge>
                   )}
                 </div>
@@ -84,72 +96,22 @@ export default async function DogProfilePage({
 
                 <Separator className="my-4" />
 
-                {/* New Sections */}
-                {dog.characteristics && dog.characteristics.length > 0 && (
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                      <PawPrint className="w-5 h-5 text-primary" />
-                      About {dog.name} (Characteristics)
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {dog.characteristics.map((char, index) => (
-                        <Badge key={index} variant="secondary">{char}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {dog.health && dog.health.length > 0 && (
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                      <Stethoscope className="w-5 h-5 text-primary" />
-                      Health
-                    </h3>
-                    <ul className="list-disc list-inside text-muted-foreground text-sm space-y-1">
-                      {dog.health.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {dog.goodInHomeWith && dog.goodInHomeWith.length > 0 && (
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                      <Home className="w-5 h-5 text-primary" />
-                      Good in a home with
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {dog.goodInHomeWith.map((item, index) => (
-                        <Badge key={index} variant="secondary">{item}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {dog.adoptionFee !== null && (
-                  <div className="mb-6">
-                    <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                      <Tag className="w-5 h-5 text-primary" />
-                      Adoption Fee
-                    </h3>
-                    <p className="text-2xl font-bold text-primary">${dog.adoptionFee.toFixed(2)}</p>
-                  </div>
-                )}
-
-                <Separator className="my-4" />
-
                 <div className="space-y-3 text-sm pt-6">
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4 text-primary" />
-                    <span>{dog.shelter}</span>
+                    <span>{locationText}</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  {/* Petfinder API does not directly provide 'distance' for a single animal lookup without a specific origin point */}
+                  {/* <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-primary" />
                     <span>{dog.distance} away</span>
-                  </div>
+                  </div> */}
                 </div>
-                <Button className="w-full mt-6">Request to Match</Button>
+                <Button className="w-full mt-6" asChild>
+                  <a href={dog.url} target="_blank" rel="noopener noreferrer">
+                    View on Petfinder
+                  </a>
+                </Button>
               </div>
             </div>
           </Card>
