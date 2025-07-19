@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Linkedin, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
+import { ChromaGrid } from "@/components/animations/chroma-grid" // Import ChromaGrid
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
@@ -13,20 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  const team = [
-    {
-      name: "Aaron",
-      role: "Engineer",
-      description:
-        "Leads platform development with focus on usability and security. Aaron brings extensive experience in building scalable platforms and has a passion for using technology for social good.",
-      avatar: "/placeholder.svg?height=100&width=100",
-      initials: "AA",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-      },
-    },
-  ]
+  // Removed the old 'team' array as it will be replaced by ChromaGrid's items
 
   const values = [
     {
@@ -45,6 +33,64 @@ export default function AboutPage() {
       description: "We use technology thoughtfully to solve real problems in animal rescue.",
     },
   ]
+
+  const teamMembers = [
+    {
+      image: "https://i.pravatar.cc/300?img=8",
+      title: "Alex Rivera",
+      subtitle: "Full Stack Developer",
+      handle: "@alexrivera",
+      borderColor: "#4F46E5",
+      gradient: "linear-gradient(145deg, #4F46E5, #000)",
+      url: "https://github.com/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=11",
+      title: "Jordan Chen",
+      subtitle: "DevOps Engineer",
+      handle: "@jordanchen",
+      borderColor: "#10B981",
+      gradient: "linear-gradient(210deg, #10B981, #000)",
+      url: "https://linkedin.com/in/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=3",
+      title: "Morgan Blake",
+      subtitle: "UI/UX Designer",
+      handle: "@morganblake",
+      borderColor: "#F59E0B",
+      gradient: "linear-gradient(165deg, #F59E0B, #000)",
+      url: "https://dribbble.com/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=16",
+      title: "Casey Park",
+      subtitle: "Data Scientist",
+      handle: "@caseypark",
+      borderColor: "#EF4444",
+      gradient: "linear-gradient(195deg, #EF4444, #000)",
+      url: "https://kaggle.com/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=25",
+      title: "Sam Kim",
+      subtitle: "Mobile Developer",
+      handle: "@thesamkim",
+      borderColor: "#8B5CF6",
+      gradient: "linear-gradient(225deg, #8B5CF6, #000)",
+      url: "https://github.com/",
+    },
+    {
+      image: "https://i.pravatar.cc/300?img=60",
+      title: "Tyler Rodriguez",
+      subtitle: "Cloud Architect",
+      handle: "@tylerrod",
+      borderColor: "#06B6D4",
+      gradient: "linear-gradient(135deg, #06B6D4, #000)",
+      url: "https://aws.amazon.com/",
+    },
+  ];
+
 
   return (
     <div className="py-12 md:py-24">
@@ -81,7 +127,7 @@ export default function AboutPage() {
           </div>
         </GradientText>
 
-        {/* Team Section */}
+        {/* Team Section with ChromaGrid */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Team</h2>
@@ -90,40 +136,16 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {team.map((member, index) => (
-              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 150}ms` }}>
-                <GradientText showBorder={true} className="h-full" animationSpeed={5}>
-                  <Card className="text-center h-full hover:shadow-lg transition-shadow border-none">
-                    <CardHeader>
-                      <div className="relative w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
-                        <Avatar className="w-full h-full">
-                          <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
-                          <AvatarFallback className="text-lg">{member.initials}</AvatarFallback>
-                        </Avatar>
-                      </div>
-                      <CardTitle className="text-xl">{member.name}</CardTitle>
-                      <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-6 leading-relaxed">{member.description}</p>
-                      <div className="flex justify-center gap-2">
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Linkedin className="w-4 h-4" />
-                          </a>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={member.social.twitter} target="_blank" rel="noopener noreferrer">
-                            <Twitter className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </GradientText>
-              </div>
-            ))}
+          <div style={{ height: '600px', position: 'relative' }}>
+            <ChromaGrid
+              items={teamMembers}
+              radius={300}
+              damping={0.45}
+              fadeOut={0.6}
+              ease="power3.out"
+              columns={3} // You can adjust columns as needed
+              rows={2} // You can adjust rows as needed
+            />
           </div>
         </div>
 
