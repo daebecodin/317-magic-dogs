@@ -206,6 +206,12 @@ class Media {
   }
   createShader() {
     const texture = new Texture(this.gl, { generateMipmaps: false });
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+
+    // Assign image to texture immediately. OGL will handle the texture update when img.onload fires.
+    texture.image = img;
+
     this.program = new Program(this.gl, {
       depthTest: false,
       depthWrite: false,
@@ -260,20 +266,32 @@ class Media {
       uniforms: {
         tMap: { value: texture },
         uPlaneSizes: { value: [0, 0] },
-        uImageSizes: { value: [0, 0] },
+        uImageSizes: { value: [1, 1] }, // Initialize with a safe default
         uSpeed: { value: 0 },
         uTime: { value: 100 * Math.random() },
         uBorderRadius: { value: this.borderRadius },
       },
       transparent: true,
     });
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = this.image;
+
     img.onload = () => {
-      texture.image = img;
+      // Only update uImageSizes here, texture.image is already set
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight];
     };
+    img.onerror = (e) => {
+      console.error(`Failed to load image for CircularGallery: ${this.image}`, e);
+      // Optionally, load a fallback image if the primary one fails
+      const fallbackImg = new Image();
+      fallbackImg.src = "/placeholder.svg"; // Ensure this path is correct and accessible
+      fallbackImg.onload = () => {
+        texture.image = fallbackImg; // Update texture with fallback
+        this.program.uniforms.uImageSizes.value = [fallbackImg.naturalWidth, fallbackImg.naturalHeight];
+      };
+      fallbackImg.onerror = (err) => {
+        console.error(`Failed to load fallback image: /placeholder.svg`, err);
+      };
+    };
+    img.src = this.image; // Start loading the image
   }
   createMesh() {
     this.plane = new Mesh(this.gl, {
