@@ -1,0 +1,96 @@
+const PETFINDER_API_KEY = process.env.PETFINDER_API_KEY || "JToFwlTXGc7Q3LwD0c0ALgNVcf0ca0v0fzHsqlpUHndqL8U5ms";
+const PETFINDER_SECRET = process.env.PETFINDER_SECRET || "8pJdsjPU3zptM4yujZrmu4AEnO6UrVMPRTgPgzn3";
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
+async function getPetfinderToken(): Promise<string> {
+  if (cachedToken && Date.now() < cachedToken.expiresAt) {
+    return cachedToken.token;
+  }
+
+  try {
+    const response = await fetch("https://api.petfinder.com/v2/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `grant_type=client_credentials&client_id=${PETFINDER_API_KEY}&client_secret=${PETFINDER_SECRET}`,
+      next: { revalidate: 3600 }, // Revalidate token every hour
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Failed to get Petfinder token: ${errorData.detail || response.statusText}`);
+    }
+
+    const data = await response.json();
+    cachedToken = {
+      token: data.access_token,
+      expiresAt: Date.now() + data.expires_in * 1000 - 60000, // Cache for (expires_in - 60) seconds to be safe
+    };
+    return data.access_token;
+  } catch (error) {
+    console.error("Error fetching Petfinder token:", error);
+    throw error;
+  }
+}
+
+export type PetfinderDog = {
+  id: number;
+  name: string;
+  breeds: {
+    primary: string;
+    secondary: string | null;
+    mixed: boolean;
+    unknown: boolean;
+  };
+  age: string;
+  gender: string;
+  size: string;
+  photos: Array<{
+    small: string;
+    medium: string;
+    large: string;
+    full: string;
+  }>;
+  contact: {
+    address: {
+      address1: string | null;
+      address2: string | null;
+      city: string;
+      state: string;
+      postcode: string;
+      country: string;
+    };
+  };
+  url: string;
+  description: string | null;
+  status: string;
+  distance?: number; // Added for potential future use with location
+};
+
+export async function getAdoptableDogs(location: string, limit = 48): Promise<PetfinderDog[]> {
+  try {
+    const token = await getPetfinderToken();
+    const response = await fetch(
+      `https://api.petfinder.com/v2/animals?type=dog&location=${encodeURIComponent(location)}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        next: { revalidate: 3600 }, // Revalidate dog data every hour
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Failed to fetch adoptable dogs: ${errorData.detail || response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.animals;
+  } catch (error) {
+    console.error("Error fetching adoptable dogs:", error);
+    throw error;
+  }
+}

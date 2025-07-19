@@ -5,7 +5,7 @@ import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ParticlesBackground } from "@/components/particles-background"
-// Removed: import { Background3DModel } from "@/components/background-3d-model"
+import { Toaster } from "@/components/ui/sonner" // Import Toaster from sonner
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -32,13 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* Removed: <Background3DModel /> */}
         <ParticlesBackground />
         <div className="min-h-screen flex flex-col relative z-0"> {/* Ensure content is above particles */}
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <Toaster /> {/* Add the Toaster component here */}
       </body>
     </html>
   )
