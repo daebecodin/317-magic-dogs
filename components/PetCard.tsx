@@ -68,7 +68,9 @@ export function PetCard({ dog }: PetCardProps) {
               <span>{locationText}</span>
             </div>
             <Button size="sm" className="w-full mt-4" asChild>
-              <Link href={`/dogs/${dog.id}`}>View Profile</Link>
+              <Link href={dog.url} target="_blank" rel="noopener noreferrer">
+                View Profile
+              </Link>
             </Button>
           </CardContent>
         </Card>
