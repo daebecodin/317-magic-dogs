@@ -1,5 +1,5 @@
-const PETFINDER_API_KEY = process.env.PETFINDER_API_KEY || "JToFwlTXGc7Q3LwD0c0ALgNVcf0ca0v0fzHsqlpUHndqL8U5ms";
-const PETFINDER_SECRET = process.env.PETFINDER_SECRET || "8pJdsjPU3zptM4yujZrmu4AEnO6UrVMPRTgPgzn3";
+const PETFINDER_API_KEY = process.env.PETFINDER_API_KEY || "s2CkkeMwAE6luISbtabkbE7hf4Ur0DGvNmuRQdJJ9MpN1eEpq3";
+const PETFINDER_SECRET = process.env.PETFINDER_SECRET || "L8ZggyFRfYaMKgPJuA3RshPKMprcR3wIu3VSmghj";
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
