@@ -12,11 +12,20 @@ function PixelTransition({
   className = '',
   style = {},
   aspectRatio = '100%',
+}: {
+  firstContent: React.ReactNode;
+  secondContent: React.ReactNode;
+  gridSize?: number;
+  pixelColor?: string;
+  animationStepDuration?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  aspectRatio?: string;
 }) {
-  const containerRef = useRef(null);
-  const pixelGridRef = useRef(null);
-  const activeRef = useRef(null);
-  const delayedCallRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pixelGridRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLDivElement>(null);
+  const delayedCallRef = useRef<gsap.core.Tween | null>(null);
 
   const [isActive, setIsActive] = useState(false);
 
@@ -48,7 +57,7 @@ function PixelTransition({
     }
   }, [gridSize, pixelColor]);
 
-  const animatePixels = (activate) => {
+  const animatePixels = (activate: boolean) => {
     setIsActive(activate);
 
     const pixelGridEl = pixelGridRef.current;
@@ -79,7 +88,7 @@ function PixelTransition({
 
     delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
       activeEl.style.display = activate ? 'block' : 'none';
-      activeEl.style.pointerEvents = activate ? 'auto' : 'none'; // Changed to 'auto' when active
+      activeEl.style.pointerEvents = activate ? 'auto' : 'none';
     });
 
     gsap.to(pixels, {

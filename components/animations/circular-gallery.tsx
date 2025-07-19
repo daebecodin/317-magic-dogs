@@ -3,19 +3,30 @@ import { useEffect, useRef } from "react";
 
 import "./CircularGallery.css";
 
-function debounce(func, wait) {
-  let timeout;
-  return function (...args) {
+// Type definitions for OGL classes (simplified for quick fix)
+// OGL's Renderer.gl is typically WebGL2RenderingContext with added properties.
+type OGLGl = WebGL2RenderingContext & { renderer: Renderer; canvas: HTMLCanvasElement; };
+type OGLRenderer = Renderer;
+type OGLCamera = Camera;
+type OGLMesh = Mesh;
+type OGLProgram = Program;
+type OGLTexture = Texture;
+type OGLTransform = Transform;
+type OGLPlane = Plane;
+
+function debounce(func: (...args: any[]) => any, wait: number) {
+  let timeout: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
 
-function lerp(p1, p2, t) {
+function lerp(p1: number, p2: number, t: number) {
   return p1 + (p2 - p1) * t;
 }
 
-function autoBind(instance) {
+function autoBind(instance: any) {
   const proto = Object.getPrototypeOf(instance);
   Object.getOwnPropertyNames(proto).forEach((key) => {
     if (key !== "constructor" && typeof instance[key] === "function") {
@@ -24,9 +35,11 @@ function autoBind(instance) {
   });
 }
 
-function createTextTexture(gl, text, font = "bold 30px monospace", color = "black") {
+function createTextTexture(gl: OGLGl, text: string, font: string = "bold 30px monospace", color: string = "black") {
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
+  if (!context) throw new Error("2D context not available");
+
   context.font = font;
   const metrics = context.measureText(text);
   const textWidth = Math.ceil(metrics.width);
@@ -44,8 +57,25 @@ function createTextTexture(gl, text, font = "bold 30px monospace", color = "blac
   return { texture, width: canvas.width, height: canvas.height };
 }
 
+interface TitleProps {
+  gl: OGLGl;
+  plane: OGLMesh;
+  renderer: OGLRenderer;
+  text: string;
+  textColor?: string;
+  font?: string;
+}
+
 class Title {
-  constructor({ gl, plane, renderer, text, textColor = "#545050", font = "30px sans-serif" }) {
+  gl: OGLGl;
+  plane: OGLMesh;
+  renderer: OGLRenderer;
+  text: string;
+  textColor: string;
+  font: string;
+  mesh!: OGLMesh; // Definite assignment assertion
+
+  constructor({ gl, plane, renderer, text, textColor = "#545050", font = "30px sans-serif" }: TitleProps) {
     autoBind(this);
     this.gl = gl;
     this.plane = plane;
@@ -93,7 +123,51 @@ class Title {
   }
 }
 
+interface MediaProps {
+  geometry: OGLPlane;
+  gl: OGLGl;
+  image: string;
+  index: number;
+  length: number;
+  renderer: OGLRenderer;
+  scene: OGLTransform;
+  screen: { width: number; height: number };
+  text: string;
+  viewport: { width: number; height: number };
+  bend: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+}
+
 class Media {
+  extra!: number; // Definite assignment assertion
+  geometry: OGLPlane;
+  gl: OGLGl;
+  image: string;
+  index: number;
+  length: number;
+  renderer: OGLRenderer;
+  scene: OGLTransform;
+  screen!: { width: number; height: number }; // Definite assignment assertion
+  text: string;
+  viewport!: { width: number; height: number }; // Definite assignment assertion
+  bend: number;
+  textColor: string;
+  borderRadius: number;
+  font: string;
+  program!: OGLProgram; // Definite assignment assertion
+  plane!: OGLMesh; // Definite assignment assertion
+  title!: Title; // Definite assignment assertion
+  speed!: number; // Definite assignment assertion
+  isBefore!: boolean; // Definite assignment assertion
+  isAfter!: boolean; // Definite assignment assertion
+  scale!: number; // Definite assignment assertion
+  padding!: number; // Definite assignment assertion
+  width!: number; // Definite assignment assertion
+  widthTotal!: number; // Definite assignment assertion
+  x!: number; // Definite assignment assertion
+
   constructor({
     geometry,
     gl,
@@ -106,10 +180,10 @@ class Media {
     text,
     viewport,
     bend,
-    textColor,
+    textColor = "#545050",
     borderRadius = 0,
-    font,
-  }) {
+    font = "bold 30px sans-serif",
+  }: MediaProps) {
     this.extra = 0;
     this.geometry = geometry;
     this.gl = gl;
@@ -218,7 +292,7 @@ class Media {
       font: this.font,
     });
   }
-  update(scroll, direction) {
+  update(scroll: { current: number; last: number }, direction: string) {
     this.plane.position.x = this.x - scroll.current - this.extra;
 
     const x = this.plane.position.x;
@@ -259,7 +333,7 @@ class Media {
       this.isBefore = this.isAfter = false;
     }
   }
-  onResize({ screen, viewport } = {}) {
+  onResize({ screen, viewport }: { screen?: { width: number; height: number }; viewport?: { width: number; height: number } } = {}) {
     if (screen) this.screen = screen;
     if (viewport) {
       this.viewport = viewport;
@@ -278,9 +352,42 @@ class Media {
   }
 }
 
+interface AppProps {
+  items?: { image: string; text: string }[];
+  bend?: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+  scrollSpeed?: number;
+  scrollEase?: number;
+}
+
 class App {
+  container: HTMLDivElement;
+  scrollSpeed: number;
+  scroll: { ease: number; current: number; target: number; last: number; position?: number };
+  onCheckDebounce: () => void;
+  renderer!: OGLRenderer; // Definite assignment assertion
+  gl!: OGLGl; // Definite assignment assertion
+  camera!: OGLCamera; // Definite assignment assertion
+  scene!: OGLTransform; // Definite assignment assertion
+  planeGeometry!: OGLPlane; // Definite assignment assertion
+  mediasImages!: { image: string; text: string }[]; // Definite assignment assertion
+  medias!: Media[]; // Definite assignment assertion
+  isDown!: boolean; // Definite assignment assertion
+  start!: number; // Definite assignment assertion
+  raf!: number; // Definite assignment assertion
+  screen!: { width: number; height: number }; // Definite assignment assertion
+  viewport!: { width: number; height: number }; // Definite assignment assertion
+
+  boundOnResize!: () => void; // Definite assignment assertion
+  boundOnWheel!: (e: WheelEvent) => void; // Definite assignment assertion
+  boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void; // Definite assignment assertion
+  boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void; // Definite assignment assertion
+  boundOnTouchUp!: (e: MouseEvent | TouchEvent) => void; // Definite assignment assertion
+
   constructor(
-    container,
+    container: HTMLDivElement,
     {
       items,
       bend,
@@ -289,7 +396,7 @@ class App {
       font = "bold 30px Figtree",
       scrollSpeed = 2,
       scrollEase = 0.05,
-    } = {}
+    }: AppProps = {}
   ) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
@@ -306,10 +413,10 @@ class App {
     this.addEventListeners();
   }
   createRenderer() {
-    this.renderer = new Renderer({ alpha: true });
-    this.gl = this.renderer.gl;
+    this.renderer = new Renderer({ alpha: true, webgl: 2 }); // Explicitly request WebGL2
+    this.gl = this.renderer.gl as OGLGl; // Cast to OGLGl
     this.gl.clearColor(0, 0, 0, 0);
-    this.container.appendChild(this.gl.canvas);
+    this.container.appendChild(this.gl.canvas as Node); // Cast to Node
   }
   createCamera() {
     this.camera = new Camera(this.gl);
@@ -325,7 +432,7 @@ class App {
       widthSegments: 100,
     });
   }
-  createMedias(items, bend = 1, textColor, borderRadius, font) {
+  createMedias(items: { image: string; text: string }[] | undefined, bend: number | undefined, textColor: string, borderRadius: number, font: string) {
     const defaultItems = [
       { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: "Bridge" },
       { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: "Desk Setup" },
@@ -354,30 +461,30 @@ class App {
         screen: this.screen,
         text: data.text,
         viewport: this.viewport,
-        bend,
+        bend: bend || 1, // Provide a default for bend if undefined
         textColor,
         borderRadius,
         font,
       });
     });
   }
-  onTouchDown(e) {
+  onTouchDown(e: MouseEvent | TouchEvent) {
     this.isDown = true;
     this.scroll.position = this.scroll.current;
-    this.start = e.touches ? e.touches[0].clientX : e.clientX;
+    this.start = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
   }
-  onTouchMove(e) {
+  onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const x = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
     const distance = (this.start - x) * (this.scrollSpeed * 0.025);
-    this.scroll.target = this.scroll.position + distance;
+    this.scroll.target = (this.scroll.position || 0) + distance;
   }
   onTouchUp() {
     this.isDown = false;
     this.onCheck();
   }
-  onWheel(e) {
-    const delta = e.deltaY || e.wheelDelta || e.detail;
+  onWheel(e: WheelEvent) {
+    const delta = e.deltaY || (e as any).wheelDelta || (e as any).detail;
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 0.2;
     this.onCheckDebounce();
   }
@@ -422,8 +529,7 @@ class App {
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     window.addEventListener("resize", this.boundOnResize);
-    window.addEventListener("mousewheel", this.boundOnWheel);
-    window.addEventListener("wheel", this.boundOnWheel);
+    window.addEventListener("wheel", this.boundOnWheel); // Changed from 'mousewheel'
     window.addEventListener("mousedown", this.boundOnTouchDown);
     window.addEventListener("mousemove", this.boundOnTouchMove);
     window.addEventListener("mouseup", this.boundOnTouchUp);
@@ -434,8 +540,7 @@ class App {
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener("resize", this.boundOnResize);
-    window.removeEventListener("mousewheel", this.boundOnWheel);
-    window.removeEventListener("wheel", this.boundOnWheel);
+    window.removeEventListener("wheel", this.boundOnWheel); // Changed from 'mousewheel'
     window.removeEventListener("mousedown", this.boundOnTouchDown);
     window.removeEventListener("mousemove", this.boundOnTouchMove);
     window.removeEventListener("mouseup", this.boundOnTouchUp);
@@ -448,6 +553,16 @@ class App {
   }
 }
 
+interface CircularGalleryProps {
+  items?: { image: string; text: string }[];
+  bend?: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+  scrollSpeed?: number;
+  scrollEase?: number;
+}
+
 export default function CircularGallery({
   items,
   bend = 3,
@@ -456,13 +571,15 @@ export default function CircularGallery({
   font = "bold 30px Figtree",
   scrollSpeed = 2,
   scrollEase = 0.05,
-}) {
-  const containerRef = useRef(null);
+}: CircularGalleryProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
-    return () => {
-      app.destroy();
-    };
+    if (containerRef.current) {
+      const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase });
+      return () => {
+        app.destroy();
+      };
+    }
   }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
   return <div className="circular-gallery" ref={containerRef} />;
 }
