@@ -8,33 +8,48 @@ import { Button } from "@/components/ui/button"
 import { MapPin, AlertTriangle } from "lucide-react"
 import type { Dog } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
+import PixelTransition from "@/components/animations/pixel-transition" // Import PixelTransition
 
 export function DogCard({ dog }: { dog: Dog }) {
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
-  console.log(`DogCard: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
 
   return (
     <GradientText showBorder={true} className="h-full" animationSpeed={5}>
       <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col border-none">
-        <div className="relative w-full h-72 bg-gradient-to-br from-blue-50 to-green-50"> {/* Increased height to h-72 */}
-          <Image
-            src={imageUrl}
-            alt={dog.name}
-            fill
-            className="object-cover rounded-t-lg"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            onError={(e) => {
-              e.currentTarget.src = "/placeholder.svg"; // Fallback image on error
-            }}
-          />
-          {dog.urgent && (
-            <Badge variant="destructive" className="absolute top-3 right-3 z-10 flex items-center gap-1">
-              <AlertTriangle className="w-3 h-3" />
-              Urgent
-            </Badge>
-          )}
-        </div>
+        <PixelTransition
+          firstContent={
+            <div className="relative w-full h-full">
+              <Image
+                src={imageUrl}
+                alt={dog.name}
+                fill
+                className="object-cover rounded-t-lg"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
+              />
+              {dog.urgent && (
+                <Badge variant="destructive" className="absolute top-3 right-3 z-10 flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3" />
+                  Urgent
+                </Badge>
+              )}
+              <div className="absolute inset-0 bg-blue-500 opacity-10 mix-blend-multiply rounded-t-lg"></div> {/* Blue hue */}
+              <div className="absolute inset-0 border-4 border-blue-500 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg"></div> {/* Blue border on hover */}
+            </div>
+          }
+          secondContent={
+            <div className="w-full h-full flex flex-col items-center justify-center bg-primary text-primary-foreground p-4 text-center">
+              <h3 className="text-2xl font-bold">{dog.name}</h3>
+              <p className="text-lg">{dog.age} • {dog.gender}</p>
+            </div>
+          }
+          gridSize={8}
+          pixelColor='hsl(var(--primary))'
+          animationStepDuration={0.4}
+          className="relative w-full h-72 bg-gradient-to-br from-blue-50 to-green-50 rounded-t-lg"
+        />
+
         <CardContent className="p-4 flex flex-col flex-grow">
           <div className="flex justify-between items-start">
             <div>

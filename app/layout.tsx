@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import "../styles/PixelTransition.css" // Import the new CSS file
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ParticlesBackground } from "@/components/particles-background"
