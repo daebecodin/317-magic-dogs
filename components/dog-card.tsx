@@ -12,7 +12,9 @@ import PixelTransition from "@/components/animations/pixel-transition" // Import
 
 export function DogCard({ dog }: { dog: Dog }) {
   // Determine image source, prioritizing medium, then small, then fallback
-  const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
+  const rawImageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
+  // Use the image proxy for all external images
+  const proxiedImageUrl = rawImageUrl.startsWith('/') ? rawImageUrl : `/api/image-proxy?url=${encodeURIComponent(rawImageUrl)}`;
 
   return (
     <GradientText showBorder={true} className="h-full" animationSpeed={5}>
@@ -21,7 +23,7 @@ export function DogCard({ dog }: { dog: Dog }) {
           firstContent={
             <div className="relative w-full h-full">
               <Image
-                src={imageUrl}
+                src={proxiedImageUrl}
                 alt={dog.name}
                 fill
                 className="object-cover rounded-t-lg"
