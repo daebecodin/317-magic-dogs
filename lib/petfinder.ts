@@ -22,7 +22,7 @@ async function getPetfinderToken(): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Petfinder token fetch failed:", response.status, errorData);
+      console.error("Petfinder token fetch failed:", response.status, response.statusText, errorData);
       throw new Error(`Failed to get Petfinder token: ${errorData.detail || response.statusText}`);
     }
 
@@ -64,7 +64,7 @@ export async function getAdoptableAnimals(location: string, type: string = 'dog'
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Petfinder animals fetch failed:", response.status, errorData);
+      console.error("Petfinder animals fetch failed:", response.status, response.statusText, errorData);
       throw new Error(`Failed to fetch adoptable animals: ${errorData.detail || response.statusText}`);
     }
 
@@ -96,7 +96,7 @@ export async function getAnimalById(id: number): Promise<PetfinderAnimal | null>
         return null;
       }
       const errorData = await response.json();
-      console.error(`Petfinder animal fetch failed for ID ${id}:`, response.status, errorData);
+      console.error(`Petfinder animal fetch failed for ID ${id}:`, response.status, response.statusText, errorData);
       throw new Error(`Failed to fetch animal by ID: ${errorData.detail || response.statusText}`);
     }
 
