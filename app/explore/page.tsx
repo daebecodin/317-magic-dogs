@@ -19,7 +19,7 @@ export default function ExplorePage() {
   const [dogs, setDogs] = useState<PetfinderDog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [locationError, setLocationError] = useState(false)
-  const [currentLocation, setCurrentLocation] = useState<string | null>(null)
+  const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
   const [breedFilter, setBreedFilter] = useState("all")
@@ -34,12 +34,11 @@ export default function ExplorePage() {
     try {
       const fetchedDogs = await getAdoptableDogs(location, 48)
       setDogs(fetchedDogs)
-      setCurrentLocation(location)
+      setCurrentLocation(location) // Update current location after successful fetch
       toast.success(`Found ${fetchedDogs.length} dogs near ${location}!`)
     } catch (error) {
       console.error("Error in fetchDogs:", error)
       setDogs([])
-      setLocationError(true)
       toast.error("Failed to fetch dogs. Please try a different location.")
     } finally {
       setIsLoading(false)
@@ -47,29 +46,9 @@ export default function ExplorePage() {
   }, [])
 
   useEffect(() => {
-    console.log("useEffect triggered for geolocation.");
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords
-          console.log("Geolocation successful. Lat:", latitude, "Lng:", longitude);
-          fetchDogs(`${latitude},${longitude}`)
-        },
-        (error) => {
-          console.error("Geolocation error:", error);
-          setLocationError(true)
-          setIsLoading(false)
-          toast.warning("Geolocation denied or failed. Please enter your location manually.")
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      )
-    } else {
-      console.log("Geolocation not supported by browser.");
-      setLocationError(true)
-      setIsLoading(false)
-      toast.warning("Geolocation is not supported by your browser. Please enter your location manually.")
-    }
-  }, [fetchDogs])
+    // Initial fetch for San Francisco, CA on component mount
+    fetchDogs("San Francisco, CA");
+  }, [fetchDogs]);
 
   // Extract unique filter options from fetched dogs
   const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breeds.primary)))], [dogs])
@@ -105,7 +84,7 @@ export default function ExplorePage() {
       y: 0,
       opacity: 1,
     },
-  }
+  } // Removed trailing comma here
 
   return (
     <div className="py-12 md:py-24">
@@ -118,19 +97,16 @@ export default function ExplorePage() {
             Find Your New Best Friend
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-            {currentLocation
-              ? `Showing dogs near ${currentLocation}`
-              : "Enter your location to see adoptable dogs near you."}
+            Showing dogs near {currentLocation}.
           </p>
         </div>
 
-        {locationError && !isLoading && (
-          <div className="max-w-md mx-auto mb-12 animate-fade-in-up">
-            <LocationInput onSearch={fetchDogs} isLoading={isLoading} />
-          </div>
-        )}
+        {/* Location Input always visible for searching */}
+        <div className="max-w-md mx-auto mb-12 animate-fade-in-up">
+          <LocationInput onSearch={fetchDogs} initialLocation={currentLocation} isLoading={isLoading} />
+        </div>
 
-        {isLoading && !locationError && (
+        {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 12 }).map((_, index) => (
               <DogCardSkeleton key={index} />
@@ -138,7 +114,7 @@ export default function ExplorePage() {
           </div>
         )}
 
-        {!locationError && !isLoading && dogs.length > 0 && (
+        {!isLoading && dogs.length > 0 && (
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <Card className="mb-8 p-4 border-none">
               <div className="flex flex-wrap items-center gap-4">
@@ -226,7 +202,7 @@ export default function ExplorePage() {
           </motion.div>
         )}
 
-        {!isLoading && filteredDogs.length === 0 && !locationError && (
+        {!isLoading && filteredDogs.length === 0 && (
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <div className="text-center py-12 border-none">
               <h3 className="text-xl font-semibold">No dogs found matching your criteria.</h3>

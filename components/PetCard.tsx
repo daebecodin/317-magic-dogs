@@ -13,11 +13,25 @@ interface PetCardProps {
   dog: PetfinderDog
 }
 
+// Function to decode HTML entities
+function decodeHtmlEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
 export function PetCard({ dog }: PetCardProps) {
   const primaryBreed = dog.breeds.primary;
   const secondaryBreed = dog.breeds.secondary;
   const breedText = secondaryBreed && !dog.breeds.mixed ? `${primaryBreed}, ${secondaryBreed}` : primaryBreed;
   const locationText = `${dog.contact.address.city}, ${dog.contact.address.state}`;
+
+  // Clean and truncate description
+  const cleanedDescription = dog.description ? decodeHtmlEntities(dog.description) : "No description available.";
+  const truncatedDescription = cleanedDescription.length > 100 ? cleanedDescription.substring(0, 100) + "..." : cleanedDescription;
+
+  // Determine image source, prioritizing medium, then small, then fallback
+  const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
 
   return (
     <motion.div
@@ -31,7 +45,7 @@ export function PetCard({ dog }: PetCardProps) {
         <Card className="overflow-hidden h-full flex flex-col border-none">
           <div className="relative aspect-square w-full bg-gradient-to-br from-blue-50 to-green-50">
             <Image
-              src={dog.photos[0]?.medium || "/placeholder.svg"}
+              src={imageUrl} // Use the determined image URL
               alt={dog.name}
               fill
               className="object-cover rounded-t-lg"
@@ -47,7 +61,7 @@ export function PetCard({ dog }: PetCardProps) {
               {breedText} • {dog.age}
             </CardDescription>
             <p className="text-muted-foreground text-sm mt-2 h-10 overflow-hidden flex-grow">
-              {dog.description ? dog.description.substring(0, 100) + "..." : "No description available."}
+              {truncatedDescription}
             </p>
             <div className="flex items-center gap-1 mt-3 text-sm text-muted-foreground">
               <MapPin className="w-4 h-4" />
