@@ -79,8 +79,8 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="py-8 md:py-12"> {/* Adjusted top padding */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl"> {/* Keep header contained */}
+    <div className="py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-8 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Explore Adoptable Dogs
@@ -94,8 +94,7 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      {/* New container for wider main content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8"> {/* Removed max-w-7xl here */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl"> {/* Reverted to max-w-7xl */}
         <div className="grid lg:grid-cols-[280px_1fr] gap-8">
           {/* Left Column: Filters and Location Input */}
           <div className="lg:sticky lg:top-24 h-fit space-y-6 animate-fade-in-up">

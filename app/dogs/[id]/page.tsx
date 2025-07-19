@@ -8,9 +8,10 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
-import { getAnimalById } from "@/lib/petfinder" // Import Petfinder API function
+import { getAnimalById } from "@/lib/petfinder" // Fixed: Changed '=>' to 'from'
 import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
 import { mapPetfinderDogToInternalDog } from "@/lib/utils" // Import utility function
+import { toast } from "sonner" // Import toast for client-side error feedback
 
 interface DogProfilePageProps {
   params: {
@@ -19,18 +20,44 @@ interface DogProfilePageProps {
 }
 
 export default async function DogProfilePage({ params }: DogProfilePageProps) {
-  // Fetch data on the client side now that it's a client component
-  // For initial load, Next.js will still pre-render, but the `document` error will be avoided.
-  // In a real-world scenario, you might use SWR or React Query for client-side fetching.
-  // For simplicity, we'll keep the async function and rely on Next.js's client component behavior.
-  const pfDog = await getAnimalById(parseInt(params.id));
+  let dog: Dog | null = null;
+  let errorOccurred = false;
 
-  if (!pfDog) {
-    notFound();
+  try {
+    const pfDog = await getAnimalById(parseInt(params.id));
+
+    if (!pfDog) {
+      // If dog not found by ID, trigger Next.js notFound()
+      notFound();
+    }
+
+    // Use the existing utility function to map Petfinder data to our internal Dog type
+    dog = mapPetfinderDogToInternalDog(pfDog);
+  } catch (error: any) {
+    console.error("Error fetching dog profile data during SSR:", error);
+    errorOccurred = true;
+    // We can't use `toast` directly here as it's SSR.
+    // The client will see a fallback UI.
   }
 
-  // Use the existing utility function to map Petfinder data to our internal Dog type
-  const dog = mapPetfinderDogToInternalDog(pfDog);
+  if (errorOccurred || !dog) {
+    // Fallback UI for when data fetching fails or dog is null/undefined
+    return (
+      <div className="py-12 md:py-24 bg-muted/20 flex items-center justify-center min-h-[500px] text-center">
+        <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+          <Card className="p-8 border-none">
+            <CardTitle className="text-2xl mb-4">Oops! Something went wrong.</CardTitle>
+            <CardDescription className="text-lg text-muted-foreground">
+              We couldn't load this dog's profile right now. This might be a temporary network issue or the profile no longer exists.
+            </CardDescription>
+            <Button onClick={() => window.location.reload()} className="mt-6">
+              Try Again
+            </Button>
+          </Card>
+        </GradientText>
+      </div>
+    );
+  }
 
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
   console.log(`DogProfilePage: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
