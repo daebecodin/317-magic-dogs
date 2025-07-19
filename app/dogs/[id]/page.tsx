@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -8,7 +10,7 @@ import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
 import { getAnimalById } from "@/lib/petfinder" // Import Petfinder API function
 import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
-import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
+import { mapPetfinderDogToInternalDog } from "@/lib/utils" // Import utility function
 
 interface DogProfilePageProps {
   params: {
@@ -16,49 +18,19 @@ interface DogProfilePageProps {
   };
 }
 
-// Utility function to map PetfinderDog to our internal Dog type for the profile page
-function mapPetfinderDogToInternalDogProfile(pfDog: PetfinderDog): Dog {
-  const characteristics: string[] = pfDog.tags || [];
-  const health: string[] = [];
-  if (pfDog.attributes.spayed_neutered) health.push("Spayed / Neutered");
-  if (pfDog.attributes.shots_current) health.push("Vaccinations up to date");
-  if (pfDog.attributes.special_needs) health.push("Special Needs");
-  if (pfDog.attributes.house_trained) health.push("House Trained");
-
-  const goodInHomeWith: string[] = [];
-  if (pfDog.environment.children === true) goodInHomeWith.push("Children");
-  if (pfDog.environment.dogs === true) goodInHomeWith.push("Other dogs");
-  if (pfDog.environment.cats === true) goodInHomeWith.push("Cats");
-
-  return {
-    id: pfDog.id,
-    name: pfDog.name,
-    breed: pfDog.breeds.primary,
-    age: pfDog.age,
-    gender: pfDog.gender,
-    size: pfDog.size,
-    photos: pfDog.photos,
-    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
-    url: pfDog.url,
-    status: pfDog.status,
-    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`,
-    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
-    urgent: false, // Petfinder API doesn't have a direct 'urgent' flag, default to false
-    characteristics: characteristics,
-    health: health,
-    goodInHomeWith: goodInHomeWith,
-    adoptionFee: pfDog.adoption_fee,
-  };
-}
-
 export default async function DogProfilePage({ params }: DogProfilePageProps) {
+  // Fetch data on the client side now that it's a client component
+  // For initial load, Next.js will still pre-render, but the `document` error will be avoided.
+  // In a real-world scenario, you might use SWR or React Query for client-side fetching.
+  // For simplicity, we'll keep the async function and rely on Next.js's client component behavior.
   const pfDog = await getAnimalById(parseInt(params.id));
 
   if (!pfDog) {
     notFound();
   }
 
-  const dog = mapPetfinderDogToInternalDogProfile(pfDog);
+  // Use the existing utility function to map Petfinder data to our internal Dog type
+  const dog = mapPetfinderDogToInternalDog(pfDog);
 
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
   console.log(`DogProfilePage: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
@@ -87,7 +59,7 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
                     <h1 className="text-3xl md:text-4xl font-bold">{dog.name}</h1>
                     <p className="text-lg text-muted-foreground">{dog.breed}</p>
                   </div>
-                  {dog.urgent && ( // This 'urgent' flag is not from Petfinder API, will always be false unless custom logic is added
+                  {dog.urgent && (
                     <Badge variant="destructive" className="flex items-center gap-1">
                       <AlertTriangle className="w-3 h-3" />
                       Urgent
@@ -167,9 +139,8 @@ export default async function DogProfilePage({ params }: DogProfilePageProps) {
                     <MapPin className="w-4 h-4 text-primary" />
                     <span>{dog.shelter}</span>
                   </div>
-                  {/* Removed Calendar icon as 'distance' is not a date */}
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-primary" /> {/* Re-using MapPin for distance */}
+                    <MapPin className="w-4 h-4 text-primary" />
                     <span>{dog.distance} away</span>
                   </div>
                 </div>
