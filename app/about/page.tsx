@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Linkedin, Twitter } from "lucide-react"
+import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
+import Link from "next/link" // Import Link for navigation
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
@@ -13,21 +13,6 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  const team = [
-    {
-      name: "Aaron",
-      role: "Engineer",
-      description:
-        "Leads platform development with focus on usability and security. Aaron brings extensive experience in building scalable platforms and has a passion for using technology for social good.",
-      avatar: "/placeholder.svg?height=100&width=100",
-      initials: "AA",
-      social: {
-        linkedin: "#",
-        twitter: "#",
-      },
-    },
-  ]
-
   const values = [
     {
       emoji: "🐕",
@@ -43,6 +28,24 @@ export default function AboutPage() {
       emoji: "💡",
       title: "Innovation",
       description: "We use technology thoughtfully to solve real problems in animal rescue.",
+    },
+  ]
+
+  const universityCollaborations = [
+    {
+      name: "San Francisco State University",
+      description: "Our foundational research and initial development began here, focusing on innovative solutions for animal welfare.",
+      link: "https://sfsu.edu",
+    },
+    {
+      name: "Stanford University",
+      description: "Collaborating on advanced data science and AI models to optimize dog matching algorithms.",
+      link: "https://stanford.edu",
+    },
+    {
+      name: "University of California, Berkeley",
+      description: "Partnering on community engagement strategies and ethical considerations in technology for social good.",
+      link: "https://berkeley.edu",
     },
   ]
 
@@ -81,44 +84,33 @@ export default function AboutPage() {
           </div>
         </GradientText>
 
-        {/* Team Section */}
+        {/* Our Roots & Research Section */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
+            <h2 className="text-3xl font-bold mb-4">Our Roots & Research</h2>
             <p className="text-lg text-muted-foreground">
-              Meet the passionate individuals working to save dogs every day.
+              Driven by academic rigor and a passion for innovation.
             </p>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {team.map((member, index) => (
-              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 150}ms` }}>
+          <div className="grid md:grid-cols-3 gap-8">
+            {universityCollaborations.map((uni, index) => (
+              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 100}ms` }}>
                 <GradientText showBorder={true} className="h-full" animationSpeed={5}>
-                  <Card className="text-center h-full hover:shadow-lg transition-shadow border-none">
+                  <Card className="text-center h-full border-none">
                     <CardHeader>
-                      <div className="relative w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
-                        <Avatar className="w-full h-full">
-                          <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
-                          <AvatarFallback className="text-lg">{member.initials}</AvatarFallback>
-                        </Avatar>
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <GraduationCap className="w-8 h-8 text-primary" />
                       </div>
-                      <CardTitle className="text-xl">{member.name}</CardTitle>
-                      <CardDescription className="text-primary font-medium">{member.role}</CardDescription>
+                      <CardTitle className="text-xl">{uni.name}</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground mb-6 leading-relaxed">{member.description}</p>
-                      <div className="flex justify-center gap-2">
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Linkedin className="w-4 h-4" />
-                          </a>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={member.social.twitter} target="_blank" rel="noopener noreferrer">
-                            <Twitter className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
+                    <CardContent className="flex flex-col items-center">
+                      <CardDescription className="text-base mb-4">{uni.description}</CardDescription>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link href={uni.link} target="_blank" rel="noopener noreferrer">
+                          Learn More
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
                     </CardContent>
                   </Card>
                 </GradientText>
@@ -153,6 +145,25 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </GradientText>
+
+        {/* Join Our Community Call to Action */}
+        <GradientText showBorder={true} className="rounded-2xl mt-16" animationSpeed={5}>
+          <div
+            className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up border-none"
+            style={{ animationDelay: "600ms" }}
+          >
+            <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Connect with our team, fellow developers, and animal welfare advocates on Discord.
+            </p>
+            <Button size="lg" asChild>
+              <a href="https://discord.gg/8k6uXqD4Xt" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Join Our Discord (Engineers & All)
+              </a>
+            </Button>
           </div>
         </GradientText>
       </div>
