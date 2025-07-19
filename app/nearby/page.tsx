@@ -11,6 +11,7 @@ import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
 import { getAdoptableDogs, PetfinderDog } from "@/lib/petfinder" // Import getAdoptableDogs and PetfinderDog
+import { toast } from "sonner" // Import toast from sonner
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -34,9 +35,10 @@ export default function NearbyPage() {
     try {
       const fetchedDogs = await getAdoptableDogs(currentLocation, 48) // Fetch up to 48 dogs
       setDogs(fetchedDogs)
+      toast.success(`Found ${fetchedDogs.length} dogs near ${currentLocation}!`)
     } catch (error) {
       console.error("Error fetching dogs for Nearby page:", error)
-      // Optionally show a toast error here
+      toast.error("Failed to fetch dogs. Please ensure your Petfinder API keys are correct and try a different location.")
     } finally {
       setIsLoading(false)
     }

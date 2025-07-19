@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
-import { toast } from "sonner"
+import { toast } from "sonner" // Ensure toast is imported from sonner
 
 import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder"
 import { PetCard } from "@/components/PetCard"
@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label"
 export default function ExplorePage() {
   const [dogs, setDogs] = useState<PetfinderDog[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [locationError, setLocationError] = useState(false)
+  const [locationError, setLocationError] = useState(false) // This state is not currently used, but kept for potential future use
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
@@ -30,7 +30,7 @@ export default function ExplorePage() {
   const fetchDogs = useCallback(async (location: string) => {
     console.log("fetchDogs called with location:", location);
     setIsLoading(true)
-    setLocationError(false)
+    // setLocationError(false) // Reset location error on new search
     try {
       const fetchedDogs = await getAdoptableDogs(location, 48)
       setDogs(fetchedDogs)
@@ -39,7 +39,7 @@ export default function ExplorePage() {
     } catch (error) {
       console.error("Error in fetchDogs:", error)
       setDogs([])
-      toast.error("Failed to fetch dogs. Please try a different location.")
+      toast.error("Failed to fetch dogs. Please ensure your Petfinder API keys are correct and try a different location.")
     } finally {
       setIsLoading(false)
     }
@@ -84,7 +84,7 @@ export default function ExplorePage() {
       y: 0,
       opacity: 1,
     },
-  } // Removed trailing comma here
+  }
 
   return (
     <div className="py-12 md:py-24">
