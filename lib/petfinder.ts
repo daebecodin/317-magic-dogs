@@ -5,9 +5,11 @@ let cachedToken: { token: string; expiresAt: number } | null = null;
 
 async function getPetfinderToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
+    console.log("Using cached Petfinder token.");
     return cachedToken.token;
   }
 
+  console.log("Fetching new Petfinder token...");
   try {
     const response = await fetch("https://api.petfinder.com/v2/oauth2/token", {
       method: "POST",
@@ -20,6 +22,7 @@ async function getPetfinderToken(): Promise<string> {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error("Petfinder token fetch failed:", response.status, errorData);
       throw new Error(`Failed to get Petfinder token: ${errorData.detail || response.statusText}`);
     }
 
@@ -28,9 +31,10 @@ async function getPetfinderToken(): Promise<string> {
       token: data.access_token,
       expiresAt: Date.now() + data.expires_in * 1000 - 60000, // Cache for (expires_in - 60) seconds to be safe
     };
+    console.log("Successfully fetched Petfinder token. Expires in:", data.expires_in, "seconds.");
     return data.access_token;
   } catch (error) {
-    console.error("Petfinder API: Error fetching token:", error);
+    console.error("Error fetching Petfinder token:", error);
     throw error;
   }
 }
@@ -87,9 +91,11 @@ export type PetfinderDog = {
 };
 
 export async function getAdoptableDogs(location: string, limit = 48): Promise<PetfinderDog[]> {
+  console.log(`Attempting to fetch adoptable dogs for location: ${location}`);
   try {
     const token = await getPetfinderToken();
     const apiUrl = `https://api.petfinder.com/v2/animals?type=dog&location=${encodeURIComponent(location)}&limit=${limit}`;
+    console.log("Fetching dogs from URL:", apiUrl);
     const response = await fetch(apiUrl,
       {
         headers: {
@@ -101,21 +107,25 @@ export async function getAdoptableDogs(location: string, limit = 48): Promise<Pe
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error("Petfinder dogs fetch failed:", response.status, errorData);
       throw new Error(`Failed to fetch adoptable dogs: ${errorData.detail || response.statusText}`);
     }
 
     const data = await response.json();
+    console.log(`Successfully fetched ${data.animals.length} dogs.`);
     return data.animals;
   } catch (error) {
-    console.error("Petfinder API: Error fetching adoptable dogs:", error);
+    console.error("Error fetching adoptable dogs:", error);
     throw error;
   }
 }
 
 export async function getAnimalById(id: number): Promise<PetfinderDog | null> {
+  console.log(`Attempting to fetch animal by ID: ${id}`);
   try {
     const token = await getPetfinderToken();
     const apiUrl = `https://api.petfinder.com/v2/animals/${id}`;
+    console.log("Fetching animal from URL:", apiUrl);
     const response = await fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -125,16 +135,19 @@ export async function getAnimalById(id: number): Promise<PetfinderDog | null> {
 
     if (!response.ok) {
       if (response.status === 404) {
+        console.warn(`Animal with ID ${id} not found.`);
         return null;
       }
       const errorData = await response.json();
+      console.error(`Petfinder animal fetch failed for ID ${id}:`, response.status, errorData);
       throw new Error(`Failed to fetch animal by ID: ${errorData.detail || response.statusText}`);
     }
 
     const data = await response.json();
+    console.log(`Successfully fetched animal with ID ${id}.`);
     return data.animal;
   } catch (error) {
-    console.error(`Petfinder API: Error fetching animal by ID ${id}:`, error);
+    console.error(`Error fetching animal by ID ${id}:`, error);
     throw error;
   }
 }

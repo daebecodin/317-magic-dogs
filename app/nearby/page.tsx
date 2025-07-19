@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useEffect, useCallback } from "react"
 import dynamic from "next/dynamic"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -10,8 +10,40 @@ import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
+import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API
 import type { Dog } from "@/lib/types" // Import our internal Dog type
 import { toast } from "sonner" // For notifications
+
+// Utility function to decode HTML entities (moved here for reusability)
+function decodeHtmlEntities(text: string): string {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+}
+
+// Utility function to map PetfinderDog to our internal Dog type
+function mapPetfinderDogToInternalDog(pfDog: PetfinderDog): Dog {
+  return {
+    id: pfDog.id,
+    name: pfDog.name,
+    breed: pfDog.breeds.primary,
+    age: pfDog.age,
+    gender: pfDog.gender,
+    size: pfDog.size,
+    photos: pfDog.photos,
+    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
+    url: pfDog.url,
+    status: pfDog.status,
+    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`, // Use org ID or city/state
+    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
+    urgent: false, // Default to false, as Petfinder doesn't have this directly
+    characteristics: [], // Not available from Petfinder directly
+    health: [], // Not available from Petfinder directly
+    goodInHomeWith: [], // Not available from Petfinder directly
+    adoptionFee: null, // Not available from Petfinder directly
+  };
+}
+
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -33,21 +65,18 @@ export default function NearbyPage() {
   const fetchDogsForNearby = useCallback(async (currentLocation: string) => {
     setIsLoadingDogs(true)
     try {
-      const response = await fetch(`/api/dogs?location=${encodeURIComponent(currentLocation)}&limit=24`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data: Dog[] = await response.json();
-      setDogs(data);
-      toast.success(`Found ${data.length} dogs near ${currentLocation}!`);
+      const fetchedPfDogs = await getAdoptableDogs(currentLocation, 24) // Fetch fewer for nearby
+      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog)
+      setDogs(mappedDogs)
+      toast.success(`Found ${mappedDogs.length} dogs near ${currentLocation}!`)
     } catch (error) {
-      console.error("Error fetching dogs for Nearby page:", error);
-      setDogs([]);
-      toast.error("Failed to load dogs for your location. Please try again.");
+      console.error("Error fetching dogs for Nearby page:", error)
+      setDogs([])
+      toast.error("Failed to load dogs for your location. Please try again.")
     } finally {
-      setIsLoadingDogs(false);
+      setIsLoadingDogs(false)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     // Initial fetch for San Francisco, CA on component mount

@@ -12,6 +12,7 @@ import { GradientText } from "@/components/animations/gradient-text"
 export function DogCard({ dog }: { dog: Dog }) {
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
+  console.log(`DogCard: Dog ${dog.name} (ID: ${dog.id}) using image URL: ${imageUrl}`);
 
   return (
     <GradientText showBorder={true} className="h-full" animationSpeed={5}>
