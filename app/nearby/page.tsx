@@ -1,15 +1,16 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import dynamic from "next/dynamic"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MapPin, Loader } from "lucide-react"
-import { mockOrganizations, mockDogs } from "@/lib/mock-data"
+import { mockOrganizations } from "@/lib/mock-data" // Keep mockOrganizations
 import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
+import { getAdoptableDogs, PetfinderDog } from "@/lib/petfinder" // Import getAdoptableDogs and PetfinderDog
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -26,19 +27,48 @@ const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
 export default function NearbyPage() {
   const [location, setLocation] = useState("San Francisco, CA")
   const [isLoading, setIsLoading] = useState(true)
+  const [dogs, setDogs] = useState<PetfinderDog[]>([]) // State for Petfinder dogs
+
+  const fetchDogs = useCallback(async (currentLocation: string) => {
+    setIsLoading(true)
+    try {
+      const fetchedDogs = await getAdoptableDogs(currentLocation, 48) // Fetch up to 48 dogs
+      setDogs(fetchedDogs)
+    } catch (error) {
+      console.error("Error fetching dogs for Nearby page:", error)
+      // Optionally show a toast error here
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          () => setLocation("San Francisco, CA"),
-          () => setLocation("San Francisco, CA"),
-        )
-      }
-      setIsLoading(false)
-    }, 1500)
-    return () => clearTimeout(timer)
-  }, [])
+    // Initial fetch for San Francisco, CA on component mount
+    fetchDogs(location)
+
+    // Attempt to get user's current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // In a real app, you'd reverse geocode these coords to a city/state
+          // For now, we'll just keep the default or allow manual input
+          console.log("User location:", position.coords.latitude, position.coords.longitude);
+          // You might want to update 'location' state here based on reverse geocoding
+          // For simplicity, we'll stick to the default 'San Francisco, CA' or user input
+        },
+        (error) => {
+          console.warn("Geolocation error:", error);
+          // Handle error, e.g., user denied location access
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    }
+  }, [fetchDogs, location]) // Re-run if location changes
+
+  const handleLocationChange = (newLocation: string) => {
+    setLocation(newLocation);
+    fetchDogs(newLocation);
+  };
 
   return (
     <div className="py-12 md:py-24">
@@ -51,9 +81,9 @@ export default function NearbyPage() {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
             Connect with shelters and rescue organizations near {location}
           </p>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={() => handleLocationChange("New York, NY")}> {/* Example: change location */}
             <MapPin className="w-4 h-4 mr-2" />
-            Change Location
+            Change Location (Example)
           </Button>
         </div>
 
@@ -73,7 +103,7 @@ export default function NearbyPage() {
           </TabsList>
 
           <TabsContent value="dogs">
-            <DogsTab dogs={mockDogs} isLoading={isLoading} />
+            <DogsTab dogs={dogs} isLoading={isLoading} /> {/* Pass fetched dogs */}
           </TabsContent>
 
           <TabsContent value="shelters">

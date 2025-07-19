@@ -1,25 +1,3 @@
-export type Dog = {
-  id: number
-  name: string
-  breed: string
-  age: string
-  gender: "Male" | "Female"
-  shelter: string
-  distance: string
-  photos: Array<{
-    small: string;
-    medium: string;
-    large: string;
-    full: string;
-  }>;
-  urgent: boolean
-  description: string
-  characteristics: string[]
-  health: string[]
-  goodInHomeWith: string[]
-  adoptionFee: number | null
-}
-
 export type Shelter = {
   id: number
   name: string
