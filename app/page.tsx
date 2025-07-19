@@ -5,50 +5,51 @@ import { Hero } from "@/components/hero"
 import { HowItWorksPreview } from "@/components/how-it-works-preview"
 import { CallToAction } from "@/components/call-to-action"
 import CircularGallery from "@/components/animations/circular-gallery"
-import { PetCardSkeleton } from "@/components/skeletons/card-skeletons" // Updated import
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons"
 import { toast } from "sonner"
-import type { Pet, PetfinderAnimal } from "@/lib/types" // Updated import
-import { mapPetfinderAnimalToInternalPet } from "@/lib/utils" // Updated import
+import type { Pet, PetfinderAnimal } from "@/lib/types"
+import { mapPetfinderAnimalToInternalPet } from "@/lib/utils"
 
 export default function HomePage() {
-  const [pets, setPets] = useState<Pet[]>([]) // Renamed state
-  const [isLoadingPets, setIsLoadingPets] = useState(true) // Renamed loading state
+  const [pets, setPets] = useState<Pet[]>([])
+  const [isLoadingPets, setIsLoadingPets] = useState(true)
 
   useEffect(() => {
-    console.log("HomePage useEffect: Fetching pets..."); // Updated console message
-    const fetchPetsForHomepage = async () => { // Renamed function
+    console.log("HomePage useEffect: Fetching pets...");
+    const fetchPetsForHomepage = async () => {
       setIsLoadingPets(true)
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
       try {
-        const response = await fetch(`/api/pets?location=90210&limit=12&type=dog`, { signal: controller.signal });
+        // Request 'all' animal types for the homepage carousel
+        const response = await fetch(`/api/pets?location=90210&limit=12&type=all`, { signal: controller.signal });
         clearTimeout(timeoutId); // Clear timeout if fetch completes within time
 
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
-        const fetchedPfAnimals: PetfinderAnimal[] = await response.json(); // Updated type
+        const fetchedPfAnimals: PetfinderAnimal[] = await response.json();
         // Map to internal Pet type and filter out pets without photos
         const mappedPets = fetchedPfAnimals
-          .map(mapPetfinderAnimalToInternalPet) // Updated mapping function
-          .filter(pet => pet.photos && pet.photos.length > 0); // Filter out pets without photos
+          .map(mapPetfinderAnimalToInternalPet)
+          .filter(pet => pet.photos && pet.photos.length > 0);
         
-        console.log("Fetched and mapped pets successfully:", mappedPets.length, "pets"); // Updated console message
-        setPets(mappedPets); // Updated state
+        console.log("Fetched and mapped pets successfully:", mappedPets.length, "pets");
+        setPets(mappedPets);
       } catch (error: any) {
         if (error.name === 'AbortError') {
-          console.error("Fetch for pets timed out:", error); // Updated console message
-          toast.error("Loading pets timed out. Please try refreshing the page."); // Updated toast message
+          console.error("Fetch for pets timed out:", error);
+          toast.error("Loading pets timed out. Please try refreshing the page.");
         } else {
-          console.error("Error fetching pets for homepage:", error); // Updated console message
-          toast.error("Failed to load some furry friends for the homepage."); // Updated toast message
+          console.error("Error fetching pets for homepage:", error);
+          toast.error("Failed to load some furry friends for the homepage.");
         }
         setPets([]); // Ensure pets array is empty on error
       } finally {
         setIsLoadingPets(false);
-        console.log("Finished fetching pets. isLoadingPets set to false."); // Updated console message
+        console.log("Finished fetching pets. isLoadingPets set to false.");
       }
     };
 
@@ -56,12 +57,12 @@ export default function HomePage() {
   }, []);
 
   // Map the fetched Pet data to the format required by CircularGallery
-  const galleryItems = pets.map(pet => ({ // Renamed variable
+  const galleryItems = pets.map(pet => ({
     image: pet.photos[0]?.medium || pet.photos[0]?.small || "/placeholder.svg",
     text: pet.name,
   }));
 
-  console.log("HomePage render: isLoadingPets =", isLoadingPets, "pets.length =", pets.length); // Updated console message
+  console.log("HomePage render: isLoadingPets =", isLoadingPets, "pets.length =", pets.length);
   console.log("Gallery items for CircularGallery:", galleryItems);
 
   return (
@@ -70,7 +71,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-background">
         {/* Title and description remain centered and contained */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold">Meet Our Adoptable Pets</h2> {/* Updated text */}
+          <h2 className="text-3xl md:text-4xl font-bold">Meet Our Adoptable Pets</h2>
           <p className="text-xl text-muted-foreground">Swipe to see more furry friends!</p>
         </div>
 

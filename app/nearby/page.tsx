@@ -5,13 +5,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MapPin, Loader } from "lucide-react"
-import { mockOrganizations, mockPets } from "@/lib/mock-data" // Updated import for mockPets
-import { PetsTab } from "./pets-tab" // Updated import
+import { mockOrganizations, mockPets } from "@/lib/mock-data"
+import { PetsTab } from "./pets-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
-import type { Pet, PetfinderAnimal } from "@/lib/types" // Updated import
-import { mapPetfinderAnimalToInternalPet } from "@/lib/utils" // Updated import
+import type { Pet, PetfinderAnimal } from "@/lib/types"
+import { mapPetfinderAnimalToInternalPet } from "@/lib/utils"
 import { toast } from "sonner"
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
@@ -28,25 +28,25 @@ const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
 
 export default function NearbyPage() {
   const [location, setLocation] = useState("San Francisco, CA")
-  const [pets, setPets] = useState<Pet[]>([]) // Renamed state from dogs to pets
-  const [isLoadingPets, setIsLoadingPets] = useState(true) // Renamed loading state
+  const [pets, setPets] = useState<Pet[]>([])
+  const [isLoadingPets, setIsLoadingPets] = useState(true)
 
-  const fetchPetsForNearby = useCallback(async (currentLocation: string) => { // Renamed function
+  const fetchPetsForNearby = useCallback(async (currentLocation: string) => {
     setIsLoadingPets(true)
     try {
-      // Call our own API route, now supporting 'type' parameter
-      const response = await fetch(`/api/pets?location=${encodeURIComponent(currentLocation)}&limit=24`); // Updated API route
+      // Call our own API route, now requesting 'all' animal types
+      const response = await fetch(`/api/pets?location=${encodeURIComponent(currentLocation)}&limit=24&type=all`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const fetchedPfAnimals: PetfinderAnimal[] = await response.json(); // Updated type
-      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet) // Updated mapping function
-      setPets(mappedPets) // Updated state
-      toast.success(`Found ${mappedPets.length} pets near ${currentLocation}!`) // Updated toast message
+      const fetchedPfAnimals: PetfinderAnimal[] = await response.json();
+      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet)
+      setPets(mappedPets)
+      toast.success(`Found ${mappedPets.length} pets near ${currentLocation}!`)
     } catch (error) {
-      console.error("Error fetching pets for Nearby page:", error) // Updated console message
-      setPets([]) // Updated state
-      toast.error("Failed to load pets for your location. Please try again.") // Updated toast message
+      console.error("Error fetching pets for Nearby page:", error)
+      setPets([])
+      toast.error("Failed to load pets for your location. Please try again.")
     } finally {
       setIsLoadingPets(false)
     }
@@ -67,12 +67,12 @@ export default function NearbyPage() {
         },
         (error) => {
           console.warn("Geolocation error:", error.message);
-          toast.info("Could not detect your precise location. Showing pets for San Francisco, CA.") // Updated toast message
+          toast.info("Could not detect your precise location. Showing pets for San Francisco, CA.")
         },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       )
     } else {
-      toast.info("Geolocation not supported. Showing pets for San Francisco, CA.") // Updated toast message
+      toast.info("Geolocation not supported. Showing pets for San Francisco, CA.")
     }
   }, [fetchPetsForNearby, location])
 
@@ -104,13 +104,13 @@ export default function NearbyPage() {
 
         <Tabs defaultValue="pets" className="max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: "400ms" }}>
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="pets">Pets</TabsTrigger> {/* Updated tab name */}
+            <TabsTrigger value="pets">Pets</TabsTrigger>
             <TabsTrigger value="shelters">Shelters</TabsTrigger>
             <TabsTrigger value="rescues">Rescues</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pets">
-            <PetsTab pets={pets} isLoading={isLoadingPets} /> {/* Updated component and props */}
+            <PetsTab pets={pets} isLoading={isLoadingPets} />
           </TabsContent>
 
           <TabsContent value="shelters">

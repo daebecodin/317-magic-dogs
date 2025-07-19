@@ -39,13 +39,19 @@ async function getPetfinderToken(): Promise<string> {
   }
 }
 
-import type { PetfinderAnimal } from "./types"; // Updated import
+import type { PetfinderAnimal } from "./types";
 
 export async function getAdoptableAnimals(location: string, type: string = 'dog', limit = 48): Promise<PetfinderAnimal[]> {
   console.log(`Attempting to fetch adoptable ${type}s for location: ${location}`);
   try {
     const token = await getPetfinderToken();
-    const apiUrl = `https://api.petfinder.com/v2/animals?type=${encodeURIComponent(type)}&location=${encodeURIComponent(location)}&limit=${limit}`;
+    let apiUrl = `https://api.petfinder.com/v2/animals?location=${encodeURIComponent(location)}&limit=${limit}`;
+    
+    // If type is 'all', omit the type parameter from the URL
+    if (type !== 'all') {
+      apiUrl += `&type=${encodeURIComponent(type)}`;
+    }
+
     console.log("Fetching animals from URL:", apiUrl);
     const response = await fetch(apiUrl,
       {

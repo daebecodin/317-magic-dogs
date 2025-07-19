@@ -6,52 +6,54 @@ import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
-import type { Pet, PetfinderAnimal } from "@/lib/types" // Updated import
-import { PetCard } from "@/components/pet-card" // Updated import
+import type { Pet, PetfinderAnimal } from "@/lib/types"
+import { PetCard } from "@/components/pet-card"
 import { LocationInput } from "@/components/LocationInput"
-import { PetCardSkeleton } from "@/components/skeletons/card-skeletons" // Updated import
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { mapPetfinderAnimalToInternalPet } from "@/lib/utils" // Updated import
+import { mapPetfinderAnimalToInternalPet } from "@/lib/utils"
 
 export default function ExplorePage() {
-  const [pets, setPets] = useState<Pet[]>([]) // Renamed state
+  const [pets, setPets] = useState<Pet[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
-  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // New filter state
+  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // Default to 'all'
   const [breedFilter, setBreedFilter] = useState("all")
   const [ageFilter, setAgeFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
   const [sizeFilter, setSizeFilter] = useState("all")
 
-  const fetchPets = useCallback(async (location: string, type: string = 'dog') => { // Added type parameter
+  const fetchPets = useCallback(async (location: string, type: string) => {
     console.log("fetchPets called with location:", location, "and type:", type);
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/pets?location=${encodeURIComponent(location)}&type=${encodeURIComponent(type)}&limit=96`); // Updated API route and added type
+      // Pass the 'type' parameter directly from the filter state
+      const response = await fetch(`/api/pets?location=${encodeURIComponent(location)}&type=${encodeURIComponent(type)}&limit=96`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const fetchedPfAnimals: PetfinderAnimal[] = await response.json(); // Updated type
-      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet); // Updated mapping function
+      const fetchedPfAnimals: PetfinderAnimal[] = await response.json();
+      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet);
       setPets(mappedPets)
       setCurrentLocation(location)
-      toast.success(`Found ${mappedPets.length} ${type === 'all' ? 'pets' : type.toLowerCase() + 's'} near ${location}!`) // Updated toast message
+      toast.success(`Found ${mappedPets.length} ${type === 'all' ? 'pets' : type.toLowerCase() + 's'} near ${location}!`)
     } catch (error) {
-      console.error("Error in fetchPets:", error) // Updated console message
+      console.error("Error in fetchPets:", error)
       setPets([])
-      toast.error("Failed to fetch pets. Please try a different location.") // Updated toast message
+      toast.error("Failed to fetch pets. Please try a different location.")
     } finally {
       setIsLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    fetchPets("San Francisco, CA", animalTypeFilter); // Initial fetch with default type
+    // Initial fetch with default location and 'all' animal types
+    fetchPets("San Francisco, CA", animalTypeFilter);
   }, [fetchPets, animalTypeFilter]); // Re-fetch when animalTypeFilter changes
 
   // Extract unique filter options from fetched pets
@@ -62,8 +64,8 @@ export default function ExplorePage() {
   const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.size)))], [pets, animalTypeFilter])
 
   // Filtered pets based on selected filters
-  const filteredPets = useMemo(() => { // Renamed variable
-    return pets.filter((pet) => { // Renamed variable
+  const filteredPets = useMemo(() => {
+    return pets.filter((pet) => {
       const typeMatch = animalTypeFilter === "all" || pet.type === animalTypeFilter
       const breedMatch = breedFilter === "all" || pet.breed === breedFilter
       const ageMatch = ageFilter === "all" || pet.age === ageFilter
