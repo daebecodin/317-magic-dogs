@@ -10,10 +10,8 @@ import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
-import { getAdoptableDogs } from "@/lib/petfinder" // Import Petfinder API
 import type { Dog } from "@/lib/types" // Import our internal Dog type
 import { toast } from "sonner" // For notifications
-import { mapPetfinderDogToDog } from "@/lib/utils" // Import centralized mapping utility
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -35,18 +33,21 @@ export default function NearbyPage() {
   const fetchDogsForNearby = useCallback(async (currentLocation: string) => {
     setIsLoadingDogs(true)
     try {
-      const fetchedPfDogs = await getAdoptableDogs(currentLocation, 24) // Fetch fewer for nearby
-      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToDog) // Use centralized mapping
-      setDogs(mappedDogs)
-      toast.success(`Found ${mappedDogs.length} dogs near ${currentLocation}!`)
+      const response = await fetch(`/api/dogs?location=${encodeURIComponent(currentLocation)}&limit=24`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: Dog[] = await response.json();
+      setDogs(data);
+      toast.success(`Found ${data.length} dogs near ${currentLocation}!`);
     } catch (error) {
-      console.error("Error fetching dogs for Nearby page:", error)
-      setDogs([])
-      toast.error("Failed to load dogs for your location. Please try again.")
+      console.error("Error fetching dogs for Nearby page:", error);
+      setDogs([]);
+      toast.error("Failed to load dogs for your location. Please try again.");
     } finally {
-      setIsLoadingDogs(false)
+      setIsLoadingDogs(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     // Initial fetch for San Francisco, CA on component mount

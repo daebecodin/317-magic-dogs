@@ -6,7 +6,6 @@ import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
-import { getAdoptableDogs } from "@/lib/petfinder"
 import { PetCard } from "@/components/PetCard"
 import { LocationInput } from "@/components/LocationInput"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
@@ -15,7 +14,6 @@ import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import type { Dog } from "@/lib/types" // Import our internal Dog type
-import { mapPetfinderDogToDog } from "@/lib/utils" // Import centralized mapping utility
 
 export default function ExplorePage() {
   const [dogs, setDogs] = useState<Dog[]>([]) // Use internal Dog type
@@ -33,21 +31,22 @@ export default function ExplorePage() {
     setIsLoading(true)
     setLocationError(false)
     try {
-      const fetchedPfDogs = await getAdoptableDogs(location, 48)
-      console.log("ExplorePage: Raw fetched Petfinder dogs:", fetchedPfDogs);
-      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToDog) // Use centralized mapping
-      console.log("ExplorePage: Mapped internal Dog objects:", mappedDogs);
-      setDogs(mappedDogs)
-      setCurrentLocation(location) // Update current location after successful fetch
-      toast.success(`Found ${mappedDogs.length} dogs near ${location}!`)
+      const response = await fetch(`/api/dogs?location=${encodeURIComponent(location)}&limit=48`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: Dog[] = await response.json();
+      setDogs(data);
+      setCurrentLocation(location); // Update current location after successful fetch
+      toast.success(`Found ${data.length} dogs near ${location}!`);
     } catch (error) {
-      console.error("ExplorePage: Error in fetchDogs:", error)
-      setDogs([])
-      toast.error("Failed to fetch dogs. Please try a different location.")
+      console.error("ExplorePage: Error in fetchDogs:", error);
+      setDogs([]);
+      toast.error("Failed to fetch dogs. Please try a different location.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     // Initial fetch for San Francisco, CA on component mount

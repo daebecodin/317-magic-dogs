@@ -6,9 +6,7 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
-import { getAnimalById } from "@/lib/petfinder" // Import Petfinder API function
 import type { Dog } from "@/lib/types" // Import our internal Dog type
-import { mapPetfinderDogToDog } from "@/lib/utils" // Import centralized mapping utility
 
 interface DogProfilePageProps {
   params: {
@@ -17,13 +15,19 @@ interface DogProfilePageProps {
 }
 
 export default async function DogProfilePage({ params }: DogProfilePageProps) {
-  const pfDog = await getAnimalById(parseInt(params.id));
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/dogs/${params.id}`, {
+    cache: 'no-store' // Ensure fresh data on each request
+  });
 
-  if (!pfDog) {
-    notFound();
+  if (!response.ok) {
+    if (response.status === 404) {
+      notFound();
+    }
+    console.error(`Failed to fetch dog with ID ${params.id}:`, await response.text());
+    notFound(); // Or handle error gracefully
   }
 
-  const dog = mapPetfinderDogToDog(pfDog); // Use centralized mapping
+  const dog: Dog = await response.json();
 
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
 
