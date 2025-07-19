@@ -6,8 +6,8 @@ import { notFound } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
 import { Separator } from "@/components/ui/separator"
-import { getAnimalById, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API function
-import type { Dog } from "@/lib/types" // Import our internal Dog type
+import { getAnimalById } from "@/lib/petfinder" // Import Petfinder API function
+import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
 import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
 
 interface DogProfilePageProps {

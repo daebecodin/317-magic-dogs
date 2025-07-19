@@ -10,8 +10,7 @@ import { DogsTab } from "./dogs-tab"
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
-import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder" // Import Petfinder API
-import type { Dog } from "@/lib/types" // Import our internal Dog type
+import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
 import { toast } from "sonner" // For notifications
 
 // Utility function to decode HTML entities (moved here for reusability)
@@ -37,10 +36,19 @@ function mapPetfinderDogToInternalDog(pfDog: PetfinderDog): Dog {
     shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`, // Use org ID or city/state
     distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
     urgent: false, // Default to false, as Petfinder doesn't have this directly
-    characteristics: [], // Not available from Petfinder directly
-    health: [], // Not available from Petfinder directly
-    goodInHomeWith: [], // Not available from Petfinder directly
-    adoptionFee: null, // Not available from Petfinder directly
+    characteristics: pfDog.tags || [], // Mapped from Petfinder 'tags'
+    health: [ // Mapped from Petfinder 'attributes'
+      pfDog.attributes.spayed_neutered ? "Spayed / Neutered" : null,
+      pfDog.attributes.shots_current ? "Vaccinations up to date" : null,
+      pfDog.attributes.special_needs ? "Special Needs" : null,
+      pfDog.attributes.house_trained ? "House Trained" : null,
+    ].filter(Boolean) as string[],
+    goodInHomeWith: [ // Mapped from Petfinder 'environment'
+      pfDog.environment.children ? "Children" : null,
+      pfDog.environment.dogs ? "Other dogs" : null,
+      pfDog.environment.cats ? "Cats" : null,
+    ].filter(Boolean) as string[],
+    adoptionFee: pfDog.adoption_fee,
   };
 }
 
@@ -65,7 +73,12 @@ export default function NearbyPage() {
   const fetchDogsForNearby = useCallback(async (currentLocation: string) => {
     setIsLoadingDogs(true)
     try {
-      const fetchedPfDogs = await getAdoptableDogs(currentLocation, 24) // Fetch fewer for nearby
+      // Call our own API route instead of Petfinder directly
+      const response = await fetch(`/api/dogs?location=${encodeURIComponent(currentLocation)}&limit=24`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const fetchedPfDogs: PetfinderDog[] = await response.json();
       const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog)
       setDogs(mappedDogs)
       toast.success(`Found ${mappedDogs.length} dogs near ${currentLocation}!`)

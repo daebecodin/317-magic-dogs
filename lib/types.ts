@@ -1,3 +1,54 @@
+export type PetfinderDog = {
+  id: number;
+  name: string;
+  breeds: {
+    primary: string;
+    secondary: string | null;
+    mixed: boolean;
+    unknown: boolean;
+  };
+  age: string;
+  gender: string;
+  size: string;
+  photos: Array<{
+    small: string;
+    medium: string;
+    large: string;
+    full: string;
+  }>;
+  contact: {
+    email: string | null;
+    phone: string | null;
+    address: {
+      address1: string | null;
+      address2: string | null;
+      city: string;
+      state: string;
+      postcode: string;
+      country: string;
+    };
+    organization_id?: string;
+  };
+  url: string;
+  description: string | null;
+  status: string;
+  distance?: number;
+  attributes: {
+    spayed_neutered: boolean;
+    house_trained: boolean;
+    declawed: boolean | null;
+    special_needs: boolean;
+    shots_current: boolean;
+  };
+  environment: {
+    children: boolean | null;
+    dogs: boolean | null;
+    cats: boolean | null;
+  };
+  tags: string[];
+  adoption_fee: number | null;
+};
+
 export type Dog = {
   id: number
   name: string

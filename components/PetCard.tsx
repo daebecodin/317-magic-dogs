@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { MapPin } from "lucide-react"
 import { motion } from "framer-motion"
-import type { PetfinderDog } from "@/lib/petfinder"
+import type { PetfinderDog } from "@/lib/types" // Import PetfinderDog from shared types
 import { GradientText } from "@/components/animations/gradient-text"
 import { decodeHtmlEntities } from "@/lib/utils" // Import utility function
 

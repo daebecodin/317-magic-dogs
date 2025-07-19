@@ -6,7 +6,7 @@ import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
-import { getAdoptableDogs, type PetfinderDog } from "@/lib/petfinder"
+import type { PetfinderDog } from "@/lib/types" // Import PetfinderDog from shared types
 import { PetCard } from "@/components/PetCard"
 import { LocationInput } from "@/components/LocationInput"
 import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
@@ -30,7 +30,12 @@ export default function ExplorePage() {
     console.log("fetchDogs called with location:", location);
     setIsLoading(true)
     try {
-      const fetchedDogs = await getAdoptableDogs(location, 48)
+      // Call our own API route instead of Petfinder directly
+      const response = await fetch(`/api/dogs?location=${encodeURIComponent(location)}&limit=48`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const fetchedDogs: PetfinderDog[] = await response.json();
       setDogs(fetchedDogs)
       setCurrentLocation(location) // Update current location after successful fetch
       toast.success(`Found ${fetchedDogs.length} dogs near ${location}!`)
@@ -87,11 +92,11 @@ export default function ExplorePage() {
   return (
     <div className="py-12 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="text-center mb-8 animate-fade-in-up"> {/* Reduced mb-16 to mb-8 */}
+        <div className="text-center mb-8 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
             Explore Adoptable Dogs
           </Badge>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4"> {/* Reduced mb-6 to mb-4 */}
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Find Your New Best Friend
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -183,21 +188,6 @@ export default function ExplorePage() {
               </div>
             </Card>
           </GradientText>
-        )}
-
-        {!isLoading && filteredDogs.length > 0 && (
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {filteredDogs.map((dog) => (
-              <motion.div key={dog.id} variants={itemVariants}>
-                <PetCard dog={dog} />
-              </motion.div>
-            ))}
-          </motion.div>
         )}
 
         {!isLoading && filteredDogs.length === 0 && (
