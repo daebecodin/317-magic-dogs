@@ -9,14 +9,24 @@ import { MapPin, AlertTriangle } from "lucide-react"
 import type { Dog } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
 import PixelTransition from "@/components/animations/pixel-transition" // Import PixelTransition
+import { useRouter } from "next/navigation" // Import useRouter for prefetching
 
 export function DogCard({ dog }: { dog: Dog }) {
+  const router = useRouter();
   // Determine image source, prioritizing medium, then small, then fallback
   const imageUrl = dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg";
 
+  // Function to prefetch the dog's profile page data
+  const handleMouseEnter = () => {
+    router.prefetch(`/dogs/${dog.id}`);
+  };
+
   return (
     <GradientText showBorder={true} className="h-full" animationSpeed={5}>
-      <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col border-none">
+      <Card
+        className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden h-full flex flex-col border-none"
+        onMouseEnter={handleMouseEnter} // Add onMouseEnter for prefetching
+      >
         <PixelTransition
           firstContent={
             <div className="relative w-full h-full">
