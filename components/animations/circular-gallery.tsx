@@ -264,7 +264,7 @@ class Media {
             discard;
           }
           
-          gl_FragColor = color; // Changed this line to use texture's alpha
+          gl_FragColor = color;
         }
       `,
       uniforms: {
@@ -297,7 +297,8 @@ class Media {
         console.error(`Failed to load fallback image: /placeholder.svg`, err);
       };
     };
-    img.src = this.image; // Start loading the image
+    // Use the new image proxy route
+    img.src = `/api/image-proxy?url=${encodeURIComponent(this.image)}`;
   }
   createMesh() {
     this.plane = new Mesh(this.gl, {
@@ -555,22 +556,22 @@ class App {
     window.addEventListener("resize", this.boundOnResize);
     window.addEventListener("wheel", this.boundOnWheel); // Changed from 'mousewheel'
     window.addEventListener("mousedown", this.boundOnTouchDown);
-    window.addEventListener("mousemove", this.boundOnTouchMove);
-    window.addEventListener("mouseup", this.boundOnTouchUp);
+    window.addEventListener("mousemove", this.onTouchMove.bind(this)); // Bind here
+    window.addEventListener("mouseup", this.onTouchUp.bind(this)); // Bind here
     window.addEventListener("touchstart", this.boundOnTouchDown);
-    window.addEventListener("touchmove", this.boundOnTouchMove);
-    window.addEventListener("touchend", this.boundOnTouchUp);
+    window.addEventListener("touchmove", this.onTouchMove.bind(this)); // Bind here
+    window.addEventListener("touchend", this.onTouchUp.bind(this)); // Bind here
   }
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener("resize", this.boundOnResize);
     window.removeEventListener("wheel", this.boundOnWheel); // Changed from 'mousewheel'
     window.removeEventListener("mousedown", this.boundOnTouchDown);
-    window.removeEventListener("mousemove", this.boundOnTouchMove);
-    window.removeEventListener("mouseup", this.boundOnTouchUp);
+    window.removeEventListener("mousemove", this.onTouchMove.bind(this)); // Bind here
+    window.removeEventListener("mouseup", this.onTouchUp.bind(this)); // Bind here
     window.removeEventListener("touchstart", this.boundOnTouchDown);
-    window.removeEventListener("touchmove", this.boundOnTouchMove);
-    window.removeEventListener("touchend", this.boundOnTouchUp);
+    window.removeEventListener("touchmove", this.onTouchMove.bind(this)); // Bind here
+    window.removeEventListener("touchend", this.onTouchUp.bind(this)); // Bind here
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas);
     }
