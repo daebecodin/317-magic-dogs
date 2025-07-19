@@ -1,7 +1,7 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from "ogl";
 import { useEffect, useRef } from "react";
 
-import "./CircularGallery.css";
+import "../../styles/CircularGallery.css"; // Corrected import path
 
 // Type definitions for OGL classes (simplified for quick fix)
 // OGL's Renderer.gl is typically WebGL2RenderingContext with added properties.
