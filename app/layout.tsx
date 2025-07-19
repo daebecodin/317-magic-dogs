@@ -8,19 +8,19 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ParticlesBackground } from "@/components/particles-background"
 import { Toaster } from "@/components/ui/sonner"
-import { ThemeProvider } from "@/components/theme-provider" // Import ThemeProvider
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "SafeDawgs - Helping Every Pet Find Their Forever Home", // Updated title
+  title: "SafeDawgs - Helping Every Pet Find Their Forever Home",
   description:
-    "We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.", // Updated description
-  keywords: "pet rescue, animal shelter, pet adoption, pet matching, rescue organizations, dogs, cats, rabbits, birds, reptiles", // Updated keywords
+    "We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.",
+  keywords: "pet rescue, animal shelter, pet adoption, pet matching, rescue organizations, dogs, cats, rabbits, birds, reptiles",
   authors: [{ name: "SafeDawgs Team" }],
   openGraph: {
-    title: "SafeDawgs - Helping Every Pet Find Their Forever Home", // Updated title
-    description: "Connecting at-risk pets with loving rescue organizations", // Updated description
+    title: "SafeDawgs - Helping Every Pet Find Their Forever Home",
+    description: "Connecting at-risk pets with loving rescue organizations",
     type: "website",
     url: "https://safedawgs.com",
   },
@@ -41,8 +41,7 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning={true}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
           disableTransitionOnChange
         >
           <ParticlesBackground />
