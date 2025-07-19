@@ -34,12 +34,14 @@ export default function ExplorePage() {
     setLocationError(false)
     try {
       const fetchedPfDogs = await getAdoptableDogs(location, 48)
+      console.log("ExplorePage: Raw fetched Petfinder dogs:", fetchedPfDogs);
       const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToDog) // Use centralized mapping
+      console.log("ExplorePage: Mapped internal Dog objects:", mappedDogs);
       setDogs(mappedDogs)
       setCurrentLocation(location) // Update current location after successful fetch
       toast.success(`Found ${mappedDogs.length} dogs near ${location}!`)
     } catch (error) {
-      console.error("Error in fetchDogs:", error)
+      console.error("ExplorePage: Error in fetchDogs:", error)
       setDogs([])
       toast.error("Failed to fetch dogs. Please try a different location.")
     } finally {
