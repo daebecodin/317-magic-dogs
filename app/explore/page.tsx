@@ -79,7 +79,7 @@ export default function ExplorePage() {
   }
 
   return (
-    <div className="py-12 md:py-24">
+    <div className="py-8 md:py-12"> {/* Adjusted top padding */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-8 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
@@ -176,14 +176,14 @@ export default function ExplorePage() {
           {/* Right Column: Dog Listings */}
           <div className="min-h-[500px]"> {/* Added min-h to ensure space */}
             {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {Array.from({ length: 12 }).map((_, index) => (
                   <DogCardSkeleton key={index} />
                 ))}
               </div>
             ) : filteredDogs.length > 0 ? (
               <motion.div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                 variants={{
                   hidden: { opacity: 0 },
                   visible: {
