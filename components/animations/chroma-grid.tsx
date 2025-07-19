@@ -4,6 +4,31 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import "../../styles/ChromaGrid.css";
 
+interface ChromaGridItem {
+  image: string;
+  title: string;
+  subtitle: string;
+  handle?: string;
+  borderColor?: string;
+  gradient?: string;
+  url?: string;
+  location?: string;
+}
+
+interface ChromaGridProps {
+  items?: ChromaGridItem[];
+  className?: string;
+  radius?: number;
+  columns?: number;
+  rows?: number;
+  damping?: number;
+  fadeOut?: number;
+  ease?: string;
+}
+
+// Correctly define QuickSetter by inferring the return type of gsap.quickSetter
+type QuickSetter = ReturnType<typeof gsap.quickSetter>;
+
 export const ChromaGrid = ({
   items,
   className = "",
@@ -13,14 +38,14 @@ export const ChromaGrid = ({
   damping = 0.45,
   fadeOut = 0.6,
   ease = "power3.out",
-}) => {
-  const rootRef = useRef(null);
-  const fadeRef = useRef(null);
-  const setX = useRef(null);
-  const setY = useRef(null);
-  const pos = useRef({ x: 0, y: 0 });
+}: ChromaGridProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
+  const setX = useRef<QuickSetter | null>(null);
+  const setY = useRef<QuickSetter | null>(null);
+  const pos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const demo = [
+  const demo: ChromaGridItem[] = [
     {
       image: "https://i.pravatar.cc/300?img=8",
       title: "Alex Rivera",
@@ -89,7 +114,7 @@ export const ChromaGrid = ({
     setY.current(pos.current.y);
   }, []);
 
-  const moveTo = (x, y) => {
+  const moveTo = (x: number, y: number) => {
     gsap.to(pos.current, {
       x,
       y,
@@ -103,28 +128,34 @@ export const ChromaGrid = ({
     });
   };
 
-  const handleMove = (e) => {
-    const r = rootRef.current.getBoundingClientRect();
+  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = rootRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
     moveTo(e.clientX - r.left, e.clientY - r.top);
-    gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
+    if (fadeRef.current) {
+      gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
+    }
   };
 
   const handleLeave = () => {
-    gsap.to(fadeRef.current, {
-      opacity: 1,
-      duration: fadeOut,
-      overwrite: true,
-    });
+    if (fadeRef.current) {
+      gsap.to(fadeRef.current, {
+        opacity: 1,
+        duration: fadeOut,
+        overwrite: true,
+      });
+    }
   };
 
-  const handleCardClick = (url) => {
+  const handleCardClick = (url: string | undefined) => {
     if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
   };
 
-  const handleCardMove = (e) => {
-    const card = e.currentTarget;
+  const handleCardMove = (e: React.MouseEvent<HTMLElement>) => {
+    const card = e.currentTarget as HTMLElement;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -141,12 +172,12 @@ export const ChromaGrid = ({
           "--r": `${radius}px`,
           "--cols": columns,
           "--rows": rows,
-        }
+        } as React.CSSProperties
       }
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
     >
-      {data.map((c, i) => (
+      {data.map((c: ChromaGridItem, i: number) => (
         <article
           key={i}
           className="chroma-card"
@@ -157,7 +188,7 @@ export const ChromaGrid = ({
               "--card-border": c.borderColor || "transparent",
               "--card-gradient": c.gradient,
               cursor: c.url ? "pointer" : "default",
-            }
+            } as React.CSSProperties
           }
         >
           <div className="chroma-img-wrapper">

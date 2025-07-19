@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Linkedin, Twitter } from "lucide-react"
+import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react" // Added GraduationCap, MessageCircle, ArrowRight
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
-import { ChromaGrid } from "@/components/animations/chroma-grid" // Import ChromaGrid
+// Removed import for ChromaGrid
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
@@ -14,8 +13,6 @@ export const metadata: Metadata = {
 }
 
 export default function AboutPage() {
-  // Removed the old 'team' array as it will be replaced by ChromaGrid's items
-
   const values = [
     {
       emoji: "🐕",
@@ -33,64 +30,6 @@ export default function AboutPage() {
       description: "We use technology thoughtfully to solve real problems in animal rescue.",
     },
   ]
-
-  const teamMembers = [
-    {
-      image: "https://i.pravatar.cc/300?img=8",
-      title: "Alex Rivera",
-      subtitle: "Full Stack Developer",
-      handle: "@alexrivera",
-      borderColor: "#4F46E5",
-      gradient: "linear-gradient(145deg, #4F46E5, #000)",
-      url: "https://github.com/",
-    },
-    {
-      image: "https://i.pravatar.cc/300?img=11",
-      title: "Jordan Chen",
-      subtitle: "DevOps Engineer",
-      handle: "@jordanchen",
-      borderColor: "#10B981",
-      gradient: "linear-gradient(210deg, #10B981, #000)",
-      url: "https://linkedin.com/in/",
-    },
-    {
-      image: "https://i.pravatar.cc/300?img=3",
-      title: "Morgan Blake",
-      subtitle: "UI/UX Designer",
-      handle: "@morganblake",
-      borderColor: "#F59E0B",
-      gradient: "linear-gradient(165deg, #F59E0B, #000)",
-      url: "https://dribbble.com/",
-    },
-    {
-      image: "https://i.pravatar.cc/300?img=16",
-      title: "Casey Park",
-      subtitle: "Data Scientist",
-      handle: "@caseypark",
-      borderColor: "#EF4444",
-      gradient: "linear-gradient(195deg, #EF4444, #000)",
-      url: "https://kaggle.com/",
-    },
-    {
-      image: "https://i.pravatar.cc/300?img=25",
-      title: "Sam Kim",
-      subtitle: "Mobile Developer",
-      handle: "@thesamkim",
-      borderColor: "#8B5CF6",
-      gradient: "linear-gradient(225deg, #8B5CF6, #000)",
-      url: "https://github.com/",
-    },
-    {
-      image: "https://i.pravatar.cc/300?img=60",
-      title: "Tyler Rodriguez",
-      subtitle: "Cloud Architect",
-      handle: "@tylerrod",
-      borderColor: "#06B6D4",
-      gradient: "linear-gradient(135deg, #06B6D4, #000)",
-      url: "https://aws.amazon.com/",
-    },
-  ];
-
 
   return (
     <div className="py-12 md:py-24">
@@ -127,26 +66,29 @@ export default function AboutPage() {
           </div>
         </GradientText>
 
-        {/* Team Section with ChromaGrid */}
+        {/* Our Roots & Research Section */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
+            <h2 className="text-3xl font-bold mb-4">Our Roots & Research</h2>
             <p className="text-lg text-muted-foreground">
-              Meet the passionate individuals working to save dogs every day.
+              Driven by academic rigor and a passion for innovation.
             </p>
           </div>
-
-          <div style={{ height: '600px', position: 'relative' }}>
-            <ChromaGrid
-              items={teamMembers}
-              radius={300}
-              damping={0.45}
-              fadeOut={0.6}
-              ease="power3.out"
-              columns={3} // You can adjust columns as needed
-              rows={2} // You can adjust rows as needed
-            />
-          </div>
+          <GradientText showBorder={true} className="rounded-2xl" animationSpeed={5}>
+            <Card className="bg-muted/50 rounded-2xl p-8 md:p-12 border-none">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <GraduationCap className="w-12 h-12 text-primary" />
+                </div>
+                <div className="text-center md:text-left">
+                  <CardTitle className="text-2xl font-bold mb-3">SFSU Research Initiative</CardTitle>
+                  <CardDescription className="text-lg text-muted-foreground">
+                    SafeDawgs began as a dedicated research project at San Francisco State University, exploring how advanced technology and data science can revolutionize animal welfare. Our foundation is built on academic principles, rigorous testing, and a commitment to evidence-based solutions for saving at-risk dogs.
+                  </CardDescription>
+                </div>
+              </div>
+            </Card>
+          </GradientText>
         </div>
 
         {/* Values */}
@@ -175,6 +117,25 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </GradientText>
+
+        {/* Join Our Community Call to Action */}
+        <GradientText showBorder={true} className="rounded-2xl mt-16" animationSpeed={5}>
+          <div
+            className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up border-none"
+            style={{ animationDelay: "600ms" }}
+          >
+            <h2 className="text-3xl font-bold mb-4">Join Our Community</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Connect with our team, fellow developers, and animal welfare advocates on Discord.
+            </p>
+            <Button size="lg" asChild>
+              <a href="https://discord.gg/8k6uXqD4Xt" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Join Our Discord (Engineers & All)
+              </a>
+            </Button>
           </div>
         </GradientText>
       </div>
