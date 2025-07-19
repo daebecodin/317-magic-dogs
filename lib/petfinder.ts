@@ -69,6 +69,11 @@ export async function getAdoptableAnimals(location: string, type: string = 'dog'
     }
 
     const data = await response.json();
+    // Ensure data.animals is an array, otherwise return empty
+    if (!data || !Array.isArray(data.animals)) {
+      console.error("Petfinder API returned unexpected data structure for animals:", data);
+      return []; 
+    }
     console.log(`Successfully fetched ${data.animals.length} ${type}s.`);
     return data.animals;
   } catch (error) {
@@ -101,6 +106,11 @@ export async function getAnimalById(id: number): Promise<PetfinderAnimal | null>
     }
 
     const data = await response.json();
+    // Ensure data.animal is an object, otherwise return null
+    if (!data || typeof data.animal !== 'object' || data.animal === null) {
+      console.error("Petfinder API returned unexpected data structure for single animal:", data);
+      return null;
+    }
     console.log(`Successfully fetched animal with ID ${id}.`);
     return data.animal;
   } catch (error) {
