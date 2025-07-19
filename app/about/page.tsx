@@ -7,7 +7,7 @@ import { GradientText } from "@/components/animations/gradient-text"
 import Link from "next/link" // Import Link for navigation
 
 export const metadata: Metadata = {
-  title: "About Us - SafeDawgs",
+  title: "About Us - SafeDawg",
   description:
     "Meet the team behind SafeDawgs and learn about our mission to save dogs through smarter rescue matching.",
 }
