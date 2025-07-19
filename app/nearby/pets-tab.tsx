@@ -5,18 +5,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Filter } from "lucide-react"
-import { PetCard } from "@/components/pet-card" // Updated import
-import { PetCardSkeleton } from "@/components/skeletons/card-skeletons" // Updated import
-import type { Pet } from "@/lib/types" // Updated import
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons"
+import type { Pet } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
+import dynamic from "next/dynamic"
 
-interface PetsTabProps { // Renamed interface
-  pets: Pet[] // Renamed prop
+const DynamicPetCard = dynamic(() => import("@/components/pet-card").then(mod => mod.PetCard), {
+  ssr: false,
+  loading: () => <PetCardSkeleton />,
+});
+
+interface PetsTabProps {
+  pets: Pet[]
   isLoading: boolean
 }
 
-export function PetsTab({ pets, isLoading }: PetsTabProps) { // Renamed component and prop
-  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // New filter for animal type
+export function PetsTab({ pets, isLoading }: PetsTabProps) {
+  const [animalTypeFilter, setAnimalTypeFilter] = useState("all")
   const [breedFilter, setBreedFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
   const [urgentOnly, setUrgentOnly] = useState(false)
@@ -25,9 +30,9 @@ export function PetsTab({ pets, isLoading }: PetsTabProps) { // Renamed componen
   const breeds = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.breed)))], [pets, animalTypeFilter])
   const genders = ["all", "Male", "Female", "Unknown"]
 
-  const filteredPets = useMemo( // Renamed variable
+  const filteredPets = useMemo(
     () =>
-      pets.filter((pet) => { // Renamed variable
+      pets.filter((pet) => {
         const typeMatch = animalTypeFilter === "all" || pet.type === animalTypeFilter
         const breedMatch = breedFilter === "all" || pet.breed === breedFilter
         const genderMatch = genderFilter === "all" || pet.gender === genderFilter
@@ -42,7 +47,7 @@ export function PetsTab({ pets, isLoading }: PetsTabProps) { // Renamed componen
       .fill(0)
       .map((_, index) => (
         <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-          <PetCardSkeleton /> {/* Updated component */}
+          <PetCardSkeleton />
         </div>
       ))
 
@@ -111,9 +116,9 @@ export function PetsTab({ pets, isLoading }: PetsTabProps) { // Renamed componen
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading
           ? renderSkeletons(6)
-          : filteredPets.map((pet, index) => ( // Renamed variable
+          : filteredPets.map((pet, index) => (
               <div key={pet.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                <PetCard pet={pet} /> {/* Updated component */}
+                <DynamicPetCard pet={pet} />
               </div>
             ))}
         {!isLoading && filteredPets.length === 0 && (

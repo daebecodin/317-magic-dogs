@@ -12,15 +12,21 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin } from "lucide-react"
-import type { Pet } from "@/lib/types" // Updated import
+import type { Pet } from "@/lib/types"
 import { GradientText } from "@/components/animations/gradient-text"
-import { PetCard } from "./pet-card" // Updated import
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons"
+import dynamic from "next/dynamic"
 
-interface PetCarouselProps { // Renamed interface
-  pets: Pet[] // Renamed prop
+const DynamicPetCard = dynamic(() => import("./pet-card").then(mod => mod.PetCard), {
+  ssr: false,
+  loading: () => <PetCardSkeleton />,
+});
+
+interface PetCarouselProps {
+  pets: Pet[]
 }
 
-export function PetCarousel({ pets }: PetCarouselProps) { // Renamed component and prop
+export function PetCarousel({ pets }: PetCarouselProps) {
   return (
     <>
       <Carousel
@@ -30,10 +36,10 @@ export function PetCarousel({ pets }: PetCarouselProps) { // Renamed component a
         className="w-full max-w-5xl mx-auto"
       >
         <CarouselContent className="-ml-4">
-          {pets.map((pet, index) => ( // Renamed variable
+          {pets.map((pet, index) => (
             <CarouselItem key={pet.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
               <div className="p-1">
-                <PetCard pet={pet} /> {/* Updated component */}
+                <DynamicPetCard pet={pet} />
               </div>
             </CarouselItem>
           ))}

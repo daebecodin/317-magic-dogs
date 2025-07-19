@@ -7,7 +7,6 @@ import { motion } from "framer-motion"
 import { toast } from "sonner"
 
 import type { Pet, PetfinderAnimal } from "@/lib/types"
-import { PetCard } from "@/components/pet-card"
 import { LocationInput } from "@/components/LocationInput"
 import { PetCardSkeleton } from "@/components/skeletons/card-skeletons"
 import { GradientText } from "@/components/animations/gradient-text"
@@ -15,6 +14,12 @@ import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { mapPetfinderAnimalToInternalPet } from "@/lib/utils"
+import dynamic from "next/dynamic"
+
+const DynamicPetCard = dynamic(() => import("@/components/pet-card").then(mod => mod.PetCard), {
+  ssr: false,
+  loading: () => <PetCardSkeleton />,
+});
 
 export default function ExplorePage() {
   const [pets, setPets] = useState<Pet[]>([])
@@ -22,7 +27,7 @@ export default function ExplorePage() {
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
-  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // Default to 'all'
+  const [animalTypeFilter, setAnimalTypeFilter] = useState("all")
   const [breedFilter, setBreedFilter] = useState("all")
   const [ageFilter, setAgeFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
@@ -54,7 +59,7 @@ export default function ExplorePage() {
   useEffect(() => {
     // Initial fetch with default location and 'all' animal types
     fetchPets("San Francisco, CA", animalTypeFilter);
-  }, [fetchPets, animalTypeFilter]); // Re-fetch when animalTypeFilter changes
+  }, [fetchPets, animalTypeFilter]);
 
   // Extract unique filter options from fetched pets
   const uniqueAnimalTypes = useMemo(() => ["all", ...Array.from(new Set(pets.map((pet) => pet.type)))], [pets])
@@ -223,7 +228,7 @@ export default function ExplorePage() {
               >
                 {filteredPets.map((pet, index) => (
                   <motion.div key={pet.id} variants={itemVariants}>
-                    <PetCard pet={pet} />
+                    <DynamicPetCard pet={pet} />
                   </motion.div>
                 ))}
               </motion.div>
