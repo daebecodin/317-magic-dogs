@@ -2,24 +2,24 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import "../styles/PixelTransition.css" // Import the new CSS file
-import "../styles/CircularGallery.css" // Import the new CircularGallery CSS file
+import "../styles/PixelTransition.css"
+import "../styles/CircularGallery.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ParticlesBackground } from "@/components/particles-background"
-import { Toaster } from "@/components/ui/sonner" // Import Toaster from sonner
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "SafeDawgs - Saving Dogs Through Smarter Rescue Matching",
+  title: "SafeDawgs - Helping Every Pet Find Their Forever Home", // Updated title
   description:
-    "We connect at-risk dogs in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every dog a chance at a happy life.",
-  keywords: "dog rescue, animal shelter, pet adoption, dog matching, rescue organizations",
+    "We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.", // Updated description
+  keywords: "pet rescue, animal shelter, pet adoption, pet matching, rescue organizations, dogs, cats, rabbits, birds, reptiles", // Updated keywords
   authors: [{ name: "SafeDawgs Team" }],
   openGraph: {
-    title: "SafeDawgs - Saving Dogs Through Smarter Rescue Matching",
-    description: "Connecting at-risk dogs with loving rescue organizations",
+    title: "SafeDawgs - Helping Every Pet Find Their Forever Home", // Updated title
+    description: "Connecting at-risk pets with loving rescue organizations", // Updated description
     type: "website",
     url: "https://safedawgs.com",
   },
@@ -39,12 +39,12 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ParticlesBackground />
-        <div className="min-h-screen flex flex-col relative z-0"> {/* Ensure content is above particles */}
+        <div className="min-h-screen flex flex-col relative z-0">
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
-        <Toaster /> {/* Add the Toaster component here */}
+        <Toaster />
       </body>
     </html>
   )

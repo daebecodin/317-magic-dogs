@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Heart, Users, MapPin, AlertTriangle, CheckCircle, Clock, Plus, Settings } from "lucide-react"
+import { Heart, Users, MapPin, AlertTriangle, CheckCircle, Clock, Plus, Settings, PawPrint }
+  from "lucide-react" // Added PawPrint
 import { GradientText } from "@/components/animations/gradient-text"
 
 // Mock user data - in a real app this would come from authentication
 const mockUser = {
   type: "rescue", // or 'shelter'
-  name: "Second Chance Dog Rescue",
+  name: "Second Chance Dog Rescue", // Keep specific for mock
   location: "Berkeley, CA",
   verified: true,
 }
@@ -23,14 +24,14 @@ export default function DashboardPage() {
   const rescueData = {
     stats: {
       totalCapacity: 25,
-      currentDogs: 18,
+      currentPets: 18, // Changed from currentDogs
       availableSpaces: 7,
       pendingMatches: 3,
     },
     recentMatches: [
       {
         id: 1,
-        dogName: "Buddy",
+        petName: "Buddy", // Changed from dogName
         shelter: "Bay Area Animal Shelter",
         status: "pending",
         date: "2 hours ago",
@@ -38,7 +39,7 @@ export default function DashboardPage() {
       },
       {
         id: 2,
-        dogName: "Luna",
+        petName: "Luna", // Changed from dogName
         shelter: "Golden Gate Humane Society",
         status: "accepted",
         date: "1 day ago",
@@ -46,14 +47,14 @@ export default function DashboardPage() {
       },
       {
         id: 3,
-        dogName: "Max",
+        petName: "Max", // Changed from dogName
         shelter: "Peninsula Pet Rescue",
         status: "completed",
         date: "3 days ago",
         urgent: false,
       },
     ],
-    currentDogs: [
+    currentPets: [
       {
         id: 1,
         name: "Charlie",
@@ -81,12 +82,12 @@ export default function DashboardPage() {
   // Mock data for shelter dashboard
   const shelterData = {
     stats: {
-      totalDogs: 45,
-      urgentDogs: 8,
+      totalPets: 45, // Changed from totalDogs
+      urgentPets: 8, // Changed from urgentDogs
       matchedThisWeek: 12,
       pendingMatches: 5,
     },
-    urgentDogs: [
+    urgentPets: [
       {
         id: 1,
         name: "Rex",
@@ -112,14 +113,14 @@ export default function DashboardPage() {
     recentMatches: [
       {
         id: 1,
-        dogName: "Buddy",
+        petName: "Buddy", // Changed from dogName
         rescue: "Second Chance Dog Rescue",
         status: "accepted",
         date: "2 hours ago",
       },
       {
         id: 2,
-        dogName: "Luna",
+        petName: "Luna", // Changed from dogName
         rescue: "Loving Paws Sanctuary",
         status: "pending",
         date: "1 day ago",
@@ -161,11 +162,11 @@ export default function DashboardPage() {
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <Card className="border-none">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Current Dogs</CardTitle>
-                <Heart className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Current Pets</CardTitle>
+                <PawPrint className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{rescueData.stats.currentDogs}</div>
+                <div className="text-2xl font-bold">{rescueData.stats.currentPets}</div>
               </CardContent>
             </Card>
           </GradientText>
@@ -203,7 +204,7 @@ export default function DashboardPage() {
         <Card className="animate-fade-in-up border-none" style={{ animationDelay: "500ms" }}>
           <CardHeader>
             <CardTitle>Recent Match Requests</CardTitle>
-            <CardDescription>Dogs that have been matched with your rescue</CardDescription>
+            <CardDescription>Pets that have been matched with your rescue</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -215,11 +216,11 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-center gap-4">
                     <Avatar>
-                      <AvatarFallback>🐕</AvatarFallback>
+                      <AvatarFallback>🐾</AvatarFallback>
                     </Avatar>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-semibold">{match.dogName}</h4>
+                        <h4 className="font-semibold">{match.petName}</h4>
                         {match.urgent && (
                           <Badge variant="destructive" className="text-xs">
                             <AlertTriangle className="w-3 h-3 mr-1" />
@@ -250,26 +251,26 @@ export default function DashboardPage() {
         </Card>
       </GradientText>
 
-      {/* Current Dogs */}
+      {/* Current Pets */}
       <GradientText showBorder={true} className="h-full" animationSpeed={5}>
         <Card className="animate-fade-in-up border-none" style={{ animationDelay: "600ms" }}>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Current Dogs in Care</CardTitle>
-                <CardDescription>Dogs currently in your rescue program</CardDescription>
+                <CardTitle>Current Pets in Care</CardTitle>
+                <CardDescription>Pets currently in your rescue program</CardDescription>
               </div>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Dog
+                Add Pet
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {rescueData.currentDogs.map((dog, index) => (
+              {rescueData.currentPets.map((pet, index) => (
                 <div
-                  key={dog.id}
+                  key={pet.id}
                   className="animate-fade-in-up"
                   style={{ animationDelay: `${600 + (index + 1) * 100}ms` }}
                 >
@@ -279,14 +280,14 @@ export default function DashboardPage() {
                         <div className="flex items-center gap-3">
                           <div className="relative w-12 h-12 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
                             <Avatar className="w-full h-full">
-                              <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
-                              <AvatarFallback>🐕</AvatarFallback>
+                              <AvatarImage src={pet.image || "/placeholder.svg"} alt={pet.name} />
+                              <AvatarFallback>🐾</AvatarFallback>
                             </Avatar>
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-semibold">{dog.name}</h4>
-                            <p className="text-sm text-muted-foreground">{dog.status}</p>
-                            <p className="text-xs text-muted-foreground">{dog.daysInCare} days in care</p>
+                            <h4 className="font-semibold">{pet.name}</h4>
+                            <p className="text-sm text-muted-foreground">{pet.status}</p>
+                            <p className="text-xs text-muted-foreground">{pet.daysInCare} days in care</p>
                           </div>
                         </div>
                       </CardContent>
@@ -309,11 +310,11 @@ export default function DashboardPage() {
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <Card className="border-none">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Dogs</CardTitle>
-                <Heart className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">Total Pets</CardTitle>
+                <PawPrint className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{shelterData.stats.totalDogs}</div>
+                <div className="text-2xl font-bold">{shelterData.stats.totalPets}</div>
               </CardContent>
             </Card>
           </GradientText>
@@ -322,11 +323,11 @@ export default function DashboardPage() {
           <GradientText showBorder={true} className="h-full" animationSpeed={5}>
             <Card className="border-none">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Urgent Dogs</CardTitle>
+                <CardTitle className="text-sm font-medium">Urgent Pets</CardTitle>
                 <AlertTriangle className="h-4 w-4 text-red-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-red-600">{shelterData.stats.urgentDogs}</div>
+                <div className="text-2xl font-bold text-red-600">{shelterData.stats.urgentPets}</div>
               </CardContent>
             </Card>
           </GradientText>
@@ -359,7 +360,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Urgent Dogs */}
+      {/* Urgent Pets */}
       <GradientText showBorder={true} className="h-full" animationSpeed={5}>
         <Card className="animate-fade-in-up border-none" style={{ animationDelay: "500ms" }}>
           <CardHeader>
@@ -367,39 +368,39 @@ export default function DashboardPage() {
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-red-500" />
-                  Urgent Dogs
+                  Urgent Pets
                 </CardTitle>
-                <CardDescription>Dogs that need immediate placement</CardDescription>
+                <CardDescription>Pets that need immediate placement</CardDescription>
               </div>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Dog
+                Add Pet
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {shelterData.urgentDogs.map((dog, index) => (
+              {shelterData.urgentPets.map((pet, index) => (
                 <div
-                  key={dog.id}
+                  key={pet.id}
                   className="flex items-center justify-between p-4 border rounded-lg border-red-200 bg-red-50 animate-fade-in-up"
                   style={{ animationDelay: `${500 + (index + 1) * 100}ms` }}
                 >
                   <div className="flex items-center gap-4">
                     <div className="relative w-12 h-12 bg-gradient-to-br from-red-100 to-yellow-100 rounded-full">
                       <Avatar className="w-full h-full">
-                        <AvatarImage src={dog.image || "/placeholder.svg"} alt={dog.name} />
-                        <AvatarFallback>🐕</AvatarFallback>
+                        <AvatarImage src={pet.image || "/placeholder.svg"} alt={pet.name} />
+                        <AvatarFallback>🐾</AvatarFallback>
                       </Avatar>
                     </div>
                     <div>
-                      <h4 className="font-semibold">{dog.name}</h4>
-                      <p className="text-sm text-muted-foreground">{dog.breed}</p>
+                      <h4 className="font-semibold">{pet.name}</h4>
+                      <p className="text-sm text-muted-foreground">{pet.breed}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <Badge variant="destructive">
-                      {dog.daysLeft} day{dog.daysLeft !== 1 ? "s" : ""} left
+                      {pet.daysLeft} day{pet.daysLeft !== 1 ? "s" : ""} left
                     </Badge>
                     <Button size="sm">Find Rescue</Button>
                   </div>
@@ -415,7 +416,7 @@ export default function DashboardPage() {
         <Card className="animate-fade-in-up border-none" style={{ animationDelay: "600ms" }}>
           <CardHeader>
             <CardTitle>Recent Match Responses</CardTitle>
-            <CardDescription>Rescue organizations responding to your dogs</CardDescription>
+            <CardDescription>Rescue organizations responding to your pets</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -427,10 +428,10 @@ export default function DashboardPage() {
                 >
                   <div className="flex items-center gap-4">
                     <Avatar>
-                      <AvatarFallback>🐕</AvatarFallback>
+                      <AvatarFallback>🐾</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h4 className="font-semibold">{match.dogName}</h4>
+                      <h4 className="font-semibold">{match.petName}</h4>
                       <p className="text-sm text-muted-foreground">
                         {match.rescue} • {match.date}
                       </p>

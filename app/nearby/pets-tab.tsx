@@ -5,33 +5,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Filter } from "lucide-react"
-import { DogCard } from "@/components/dog-card"
-import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
-import type { Dog } from "@/lib/types" // Ensure it uses our internal Dog type
+import { PetCard } from "@/components/pet-card" // Updated import
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons" // Updated import
+import type { Pet } from "@/lib/types" // Updated import
 import { GradientText } from "@/components/animations/gradient-text"
 
-interface DogsTabProps {
-  dogs: Dog[] // Now expects our internal Dog type
+interface PetsTabProps { // Renamed interface
+  pets: Pet[] // Renamed prop
   isLoading: boolean
 }
 
-export function DogsTab({ dogs, isLoading }: DogsTabProps) {
+export function PetsTab({ pets, isLoading }: PetsTabProps) { // Renamed component and prop
+  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // New filter for animal type
   const [breedFilter, setBreedFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
-  const [urgentOnly, setUrgentOnly] = useState(false) // Keep this filter, it relies on our custom 'urgent' field
+  const [urgentOnly, setUrgentOnly] = useState(false)
 
-  const breeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breed)))], [dogs])
-  const genders = ["all", "Male", "Female", "Unknown"] // Petfinder can return "Unknown"
+  const animalTypes = useMemo(() => ["all", ...Array.from(new Set(pets.map((pet) => pet.type)))], [pets])
+  const breeds = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.breed)))], [pets, animalTypeFilter])
+  const genders = ["all", "Male", "Female", "Unknown"]
 
-  const filteredDogs = useMemo(
+  const filteredPets = useMemo( // Renamed variable
     () =>
-      dogs.filter((dog) => {
-        const breedMatch = breedFilter === "all" || dog.breed === breedFilter
-        const genderMatch = genderFilter === "all" || dog.gender === genderFilter
-        const urgentMatch = !urgentOnly || dog.urgent // Use our custom 'urgent' field
-        return breedMatch && genderMatch && urgentMatch
+      pets.filter((pet) => { // Renamed variable
+        const typeMatch = animalTypeFilter === "all" || pet.type === animalTypeFilter
+        const breedMatch = breedFilter === "all" || pet.breed === breedFilter
+        const genderMatch = genderFilter === "all" || pet.gender === genderFilter
+        const urgentMatch = !urgentOnly || pet.urgent
+        return typeMatch && breedMatch && genderMatch && urgentMatch
       }),
-    [dogs, breedFilter, genderFilter, urgentOnly],
+    [pets, animalTypeFilter, breedFilter, genderFilter, urgentOnly],
   )
 
   const renderSkeletons = (count: number) =>
@@ -39,7 +42,7 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
       .fill(0)
       .map((_, index) => (
         <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-          <DogCardSkeleton />
+          <PetCardSkeleton /> {/* Updated component */}
         </div>
       ))
 
@@ -52,6 +55,22 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
               <Filter className="w-5 h-5" />
               Filters
             </h3>
+            {/* New Animal Type Filter */}
+            <div className="grid gap-2">
+              <Label htmlFor="animal-type-filter">Animal Type</Label>
+              <Select value={animalTypeFilter} onValueChange={setAnimalTypeFilter}>
+                <SelectTrigger id="animal-type-filter" className="w-[180px]">
+                  <SelectValue placeholder="Select Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {animalTypes.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {type === "all" ? "All Types" : type}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <div className="grid gap-2">
               <Label htmlFor="breed-filter">Breed</Label>
               <Select value={breedFilter} onValueChange={setBreedFilter}>
@@ -92,14 +111,14 @@ export function DogsTab({ dogs, isLoading }: DogsTabProps) {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading
           ? renderSkeletons(6)
-          : filteredDogs.map((dog, index) => (
-              <div key={dog.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                <DogCard dog={dog} />
+          : filteredPets.map((pet, index) => ( // Renamed variable
+              <div key={pet.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                <PetCard pet={pet} /> {/* Updated component */}
               </div>
             ))}
-        {!isLoading && filteredDogs.length === 0 && (
+        {!isLoading && filteredPets.length === 0 && (
           <div className="col-span-full text-center py-12">
-            <h3 className="text-xl font-semibold">No dogs match your criteria</h3>
+            <h3 className="text-xl font-semibold">No pets match your criteria</h3>
             <p className="text-muted-foreground mt-2">Try adjusting your filters to find more furry friends.</p>
           </div>
         )}

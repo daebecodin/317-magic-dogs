@@ -1,5 +1,6 @@
-export type PetfinderDog = {
+export type PetfinderAnimal = {
   id: number;
+  type: string; // e.g., 'Dog', 'Cat', 'Rabbit'
   name: string;
   breeds: {
     primary: string;
@@ -49,12 +50,13 @@ export type PetfinderDog = {
   adoption_fee: number | null;
 };
 
-export type Dog = {
+export type Pet = {
   id: number
+  type: string // e.g., 'Dog', 'Cat', 'Rabbit'
   name: string
   breed: string // Primary breed from Petfinder
   age: string
-  gender: "Male" | "Female" | string // Petfinder uses "Male", "Female", "Unknown"
+  gender: "Male" | "Female" | string // Petfinder can use "Unknown"
   size: string // From Petfinder
   photos: Array<{
     small: string;
@@ -81,8 +83,8 @@ export type Shelter = {
   name: string
   location: string
   distance: string
-  dogsCount: number
-  urgentCount: number
+  dogsCount: number // This will remain dogsCount for now as per mock data
+  urgentCount: number // This will remain urgentCount for now as per mock data
   phone: string
   email: string
   description: string

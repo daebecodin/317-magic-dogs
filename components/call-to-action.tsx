@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Heart, Users, ArrowRight } from "lucide-react"
+import { Heart, Users, ArrowRight, PawPrint } from "lucide-react" // Changed Heart to PawPrint
 import { GradientText } from "@/components/animations/gradient-text"
 import { ShinyText } from "@/components/animations/shiny-text"
 
@@ -13,10 +13,10 @@ export function CallToAction() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <ShinyText>Ready to Save Lives?</ShinyText>
+              <ShinyText>Ready to Help Pets?</ShinyText> {/* Updated text */}
             </h2>
             <p className="text-xl text-muted-foreground">
-              Join thousands of shelters and rescues working together to give every dog a chance.
+              Join thousands of shelters and rescues working together to give every pet a chance. {/* Updated text */}
             </p>
           </div>
 
@@ -45,10 +45,10 @@ export function CallToAction() {
               <Card className="text-center hover:shadow-lg transition-shadow border-none">
                 <CardHeader>
                   <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Heart className="w-8 h-8 text-red-600" />
+                    <PawPrint className="w-8 h-8 text-red-600" /> {/* Changed icon */}
                   </div>
                   <CardTitle className="text-xl">For Shelters</CardTitle>
-                  <CardDescription>Find rescue partners and save more dogs</CardDescription>
+                  <CardDescription>Find rescue partners and save more pets</CardDescription> {/* Updated text */}
                 </CardHeader>
                 <CardContent>
                   <Button className="w-full" asChild>

@@ -6,69 +6,72 @@ import { Loader, Filter } from "lucide-react"
 import { motion } from "framer-motion"
 import { toast } from "sonner"
 
-import type { PetfinderDog, Dog } from "@/lib/types" // Import PetfinderDog and Dog types
-import { DogCard } from "@/components/dog-card" // Use DogCard instead of PetCard
+import type { Pet, PetfinderAnimal } from "@/lib/types" // Updated import
+import { PetCard } from "@/components/pet-card" // Updated import
 import { LocationInput } from "@/components/LocationInput"
-import { DogCardSkeleton } from "@/components/skeletons/card-skeletons"
+import { PetCardSkeleton } from "@/components/skeletons/card-skeletons" // Updated import
 import { GradientText } from "@/components/animations/gradient-text"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
-import { mapPetfinderDogToInternalDog } from "@/lib/utils" // Import utility function
+import { mapPetfinderAnimalToInternalPet } from "@/lib/utils" // Updated import
 
 export default function ExplorePage() {
-  const [dogs, setDogs] = useState<Dog[]>([]) // Store internal Dog type
+  const [pets, setPets] = useState<Pet[]>([]) // Renamed state
   const [isLoading, setIsLoading] = useState(true)
   const [currentLocation, setCurrentLocation] = useState<string>("San Francisco, CA")
 
   // Filter states
+  const [animalTypeFilter, setAnimalTypeFilter] = useState("all") // New filter state
   const [breedFilter, setBreedFilter] = useState("all")
   const [ageFilter, setAgeFilter] = useState("all")
   const [genderFilter, setGenderFilter] = useState("all")
   const [sizeFilter, setSizeFilter] = useState("all")
 
-  const fetchDogs = useCallback(async (location: string) => {
-    console.log("fetchDogs called with location:", location);
+  const fetchPets = useCallback(async (location: string, type: string = 'dog') => { // Added type parameter
+    console.log("fetchPets called with location:", location, "and type:", type);
     setIsLoading(true)
     try {
-      const response = await fetch(`/api/dogs?location=${encodeURIComponent(location)}&limit=96`); // Increased limit to 96
+      const response = await fetch(`/api/pets?location=${encodeURIComponent(location)}&type=${encodeURIComponent(type)}&limit=96`); // Updated API route and added type
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const fetchedPfDogs: PetfinderDog[] = await response.json();
-      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog); // Map to internal Dog type
-      setDogs(mappedDogs)
+      const fetchedPfAnimals: PetfinderAnimal[] = await response.json(); // Updated type
+      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet); // Updated mapping function
+      setPets(mappedPets)
       setCurrentLocation(location)
-      toast.success(`Found ${mappedDogs.length} dogs near ${location}!`)
+      toast.success(`Found ${mappedPets.length} ${type === 'all' ? 'pets' : type.toLowerCase() + 's'} near ${location}!`) // Updated toast message
     } catch (error) {
-      console.error("Error in fetchDogs:", error)
-      setDogs([])
-      toast.error("Failed to fetch dogs. Please try a different location.")
+      console.error("Error in fetchPets:", error) // Updated console message
+      setPets([])
+      toast.error("Failed to fetch pets. Please try a different location.") // Updated toast message
     } finally {
       setIsLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    fetchDogs("San Francisco, CA");
-  }, [fetchDogs]);
+    fetchPets("San Francisco, CA", animalTypeFilter); // Initial fetch with default type
+  }, [fetchPets, animalTypeFilter]); // Re-fetch when animalTypeFilter changes
 
-  // Extract unique filter options from fetched dogs (from the mapped Dog type)
-  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.breed)))], [dogs])
-  const uniqueAges = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.age)))], [dogs])
-  const uniqueGenders = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.gender)))], [dogs])
-  const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(dogs.map((dog) => dog.size)))], [dogs])
+  // Extract unique filter options from fetched pets
+  const uniqueAnimalTypes = useMemo(() => ["all", ...Array.from(new Set(pets.map((pet) => pet.type)))], [pets])
+  const uniqueBreeds = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.breed)))], [pets, animalTypeFilter])
+  const uniqueAges = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.age)))], [pets, animalTypeFilter])
+  const uniqueGenders = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.gender)))], [pets, animalTypeFilter])
+  const uniqueSizes = useMemo(() => ["all", ...Array.from(new Set(pets.filter(pet => animalTypeFilter === "all" || pet.type === animalTypeFilter).map((pet) => pet.size)))], [pets, animalTypeFilter])
 
-  // Filtered dogs based on selected filters
-  const filteredDogs = useMemo(() => {
-    return dogs.filter((dog) => {
-      const breedMatch = breedFilter === "all" || dog.breed === breedFilter
-      const ageMatch = ageFilter === "all" || dog.age === ageFilter
-      const genderMatch = genderFilter === "all" || dog.gender === genderFilter
-      const sizeMatch = sizeFilter === "all" || dog.size === sizeFilter
-      return breedMatch && ageMatch && genderMatch && sizeMatch
+  // Filtered pets based on selected filters
+  const filteredPets = useMemo(() => { // Renamed variable
+    return pets.filter((pet) => { // Renamed variable
+      const typeMatch = animalTypeFilter === "all" || pet.type === animalTypeFilter
+      const breedMatch = breedFilter === "all" || pet.breed === breedFilter
+      const ageMatch = ageFilter === "all" || pet.age === ageFilter
+      const genderMatch = genderFilter === "all" || pet.gender === genderFilter
+      const sizeMatch = sizeFilter === "all" || pet.size === sizeFilter
+      return typeMatch && breedMatch && ageMatch && genderMatch && sizeMatch
     })
-  }, [dogs, breedFilter, ageFilter, genderFilter, sizeFilter])
+  }, [pets, animalTypeFilter, breedFilter, ageFilter, genderFilter, sizeFilter])
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -83,18 +86,18 @@ export default function ExplorePage() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="text-center mb-8 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
-            Explore Adoptable Dogs
+            Explore Adoptable Pets
           </Badge>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
             Find Your New Best Friend
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Showing dogs near {currentLocation}.
+            Showing pets near {currentLocation}.
           </p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl"> {/* Reverted to max-w-7xl */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid lg:grid-cols-[280px_1fr] gap-8">
           {/* Left Column: Filters and Location Input */}
           <div className="lg:sticky lg:top-24 h-fit space-y-6 animate-fade-in-up">
@@ -105,7 +108,24 @@ export default function ExplorePage() {
                   Search & Filters
                 </h3>
                 <div className="space-y-4">
-                  <LocationInput onSearch={fetchDogs} initialLocation={currentLocation} isLoading={isLoading} />
+                  <LocationInput onSearch={(loc) => fetchPets(loc, animalTypeFilter)} initialLocation={currentLocation} isLoading={isLoading} />
+
+                  {/* New Animal Type Filter */}
+                  <div className="grid gap-2">
+                    <Label htmlFor="animal-type-filter">Animal Type</Label>
+                    <Select value={animalTypeFilter} onValueChange={setAnimalTypeFilter}>
+                      <SelectTrigger id="animal-type-filter">
+                        <SelectValue placeholder="Select Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {uniqueAnimalTypes.map((type) => (
+                          <SelectItem key={type} value={type}>
+                            {type === "all" ? "All Types" : type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                   <div className="grid gap-2">
                     <Label htmlFor="breed-filter">Breed</Label>
@@ -175,15 +195,15 @@ export default function ExplorePage() {
             </GradientText>
           </div>
 
-          {/* Right Column: Dog Listings */}
-          <div className="min-h-[500px]"> {/* Added min-h to ensure space */}
+          {/* Right Column: Pet Listings */}
+          <div className="min-h-[500px]">
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {Array.from({ length: 12 }).map((_, index) => (
-                  <DogCardSkeleton key={index} />
+                  <PetCardSkeleton key={index} />
                 ))}
               </div>
-            ) : filteredDogs.length > 0 ? (
+            ) : filteredPets.length > 0 ? (
               <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                 variants={{
@@ -199,16 +219,16 @@ export default function ExplorePage() {
                 initial="hidden"
                 animate="visible"
               >
-                {filteredDogs.map((dog, index) => (
-                  <motion.div key={dog.id} variants={itemVariants}>
-                    <DogCard dog={dog} />
+                {filteredPets.map((pet, index) => (
+                  <motion.div key={pet.id} variants={itemVariants}>
+                    <PetCard pet={pet} />
                   </motion.div>
                 ))}
               </motion.div>
             ) : (
               <GradientText showBorder={true} className="h-full" animationSpeed={5}>
                 <div className="text-center py-12 border-none">
-                  <h3 className="text-xl font-semibold">No dogs found matching your criteria.</h3>
+                  <h3 className="text-xl font-semibold">No pets found matching your criteria.</h3>
                   <p className="text-muted-foreground mt-2">
                     Try adjusting your filters or searching a different location.
                   </p>

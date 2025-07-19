@@ -10,21 +10,17 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { Card, CardContent } from "@/components/ui/card"
-// Removed Dialog imports as it's no longer needed for this component
 import { Badge } from "@/components/ui/badge"
 import { MapPin } from "lucide-react"
-import type { Dog } from "@/lib/types"
+import type { Pet } from "@/lib/types" // Updated import
 import { GradientText } from "@/components/animations/gradient-text"
-import { DogCard } from "./dog-card" // Import DogCard to use it directly
+import { PetCard } from "./pet-card" // Updated import
 
-interface DogCarouselProps {
-  dogs: Dog[]
+interface PetCarouselProps { // Renamed interface
+  pets: Pet[] // Renamed prop
 }
 
-export function DogCarousel({ dogs }: DogCarouselProps) {
-  // Removed selectedDog and isModalOpen states
-  // Removed handleDogClick and handleCloseModal functions
-
+export function PetCarousel({ pets }: PetCarouselProps) { // Renamed component and prop
   return (
     <>
       <Carousel
@@ -34,11 +30,10 @@ export function DogCarousel({ dogs }: DogCarouselProps) {
         className="w-full max-w-5xl mx-auto"
       >
         <CarouselContent className="-ml-4">
-          {dogs.map((dog, index) => (
-            <CarouselItem key={dog.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+          {pets.map((pet, index) => ( // Renamed variable
+            <CarouselItem key={pet.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
               <div className="p-1">
-                {/* Use DogCard directly, which now contains the PixelTransition */}
-                <DogCard dog={dog} />
+                <PetCard pet={pet} /> {/* Updated component */}
               </div>
             </CarouselItem>
           ))}
@@ -46,8 +41,6 @@ export function DogCarousel({ dogs }: DogCarouselProps) {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-
-      {/* Removed Dialog component */}
     </>
   )
 }

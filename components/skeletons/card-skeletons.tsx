@@ -20,7 +20,7 @@ export function OrgCardSkeleton() {
   )
 }
 
-export function DogCardSkeleton() {
+export function PetCardSkeleton() { // Renamed from DogCardSkeleton
   return (
     <Card className="h-full flex flex-col">
       <Skeleton className="aspect-square w-full rounded-t-lg" />

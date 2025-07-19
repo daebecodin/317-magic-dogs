@@ -5,14 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { MapPin, Loader } from "lucide-react"
-import { mockOrganizations } from "@/lib/mock-data" // Keep for shelters/rescues tabs
-import { DogsTab } from "./dogs-tab"
+import { mockOrganizations, mockPets } from "@/lib/mock-data" // Updated import for mockPets
+import { PetsTab } from "./pets-tab" // Updated import
 import { SheltersTab } from "./shelters-tab"
 import { RescuesTab } from "./rescues-tab"
 import { GradientText } from "@/components/animations/gradient-text"
-import type { Dog, PetfinderDog } from "@/lib/types" // Import our internal Dog type and PetfinderDog
-import { toast } from "sonner" // For notifications
-import { mapPetfinderDogToInternalDog } from "@/lib/utils" // Import utility function
+import type { Pet, PetfinderAnimal } from "@/lib/types" // Updated import
+import { mapPetfinderAnimalToInternalPet } from "@/lib/utils" // Updated import
+import { toast } from "sonner"
 
 const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
   ssr: false,
@@ -28,33 +28,33 @@ const InteractiveMap = dynamic(() => import("@/components/interactive-map"), {
 
 export default function NearbyPage() {
   const [location, setLocation] = useState("San Francisco, CA")
-  const [dogs, setDogs] = useState<Dog[]>([]) // Use internal Dog type
-  const [isLoadingDogs, setIsLoadingDogs] = useState(true) // Separate loading state for dogs
+  const [pets, setPets] = useState<Pet[]>([]) // Renamed state from dogs to pets
+  const [isLoadingPets, setIsLoadingPets] = useState(true) // Renamed loading state
 
-  const fetchDogsForNearby = useCallback(async (currentLocation: string) => {
-    setIsLoadingDogs(true)
+  const fetchPetsForNearby = useCallback(async (currentLocation: string) => { // Renamed function
+    setIsLoadingPets(true)
     try {
-      // Call our own API route instead of Petfinder directly
-      const response = await fetch(`/api/dogs?location=${encodeURIComponent(currentLocation)}&limit=24`);
+      // Call our own API route, now supporting 'type' parameter
+      const response = await fetch(`/api/pets?location=${encodeURIComponent(currentLocation)}&limit=24`); // Updated API route
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const fetchedPfDogs: PetfinderDog[] = await response.json();
-      const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog)
-      setDogs(mappedDogs)
-      toast.success(`Found ${mappedDogs.length} dogs near ${currentLocation}!`)
+      const fetchedPfAnimals: PetfinderAnimal[] = await response.json(); // Updated type
+      const mappedPets = fetchedPfAnimals.map(mapPetfinderAnimalToInternalPet) // Updated mapping function
+      setPets(mappedPets) // Updated state
+      toast.success(`Found ${mappedPets.length} pets near ${currentLocation}!`) // Updated toast message
     } catch (error) {
-      console.error("Error fetching dogs for Nearby page:", error)
-      setDogs([])
-      toast.error("Failed to load dogs for your location. Please try again.")
+      console.error("Error fetching pets for Nearby page:", error) // Updated console message
+      setPets([]) // Updated state
+      toast.error("Failed to load pets for your location. Please try again.") // Updated toast message
     } finally {
-      setIsLoadingDogs(false)
+      setIsLoadingPets(false)
     }
   }, [])
 
   useEffect(() => {
     // Initial fetch for San Francisco, CA on component mount
-    fetchDogsForNearby(location);
+    fetchPetsForNearby(location);
 
     // Optional: Attempt geolocation for more accurate initial load
     if (navigator.geolocation) {
@@ -63,18 +63,18 @@ export default function NearbyPage() {
           const { latitude, longitude } = position.coords
           const geoLoc = `${latitude},${longitude}`
           setLocation(geoLoc) // Update location state
-          fetchDogsForNearby(geoLoc) // Fetch dogs for new location
+          fetchPetsForNearby(geoLoc) // Fetch pets for new location
         },
         (error) => {
           console.warn("Geolocation error:", error.message);
-          toast.info("Could not detect your precise location. Showing dogs for San Francisco, CA.")
+          toast.info("Could not detect your precise location. Showing pets for San Francisco, CA.") // Updated toast message
         },
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       )
     } else {
-      toast.info("Geolocation not supported. Showing dogs for San Francisco, CA.")
+      toast.info("Geolocation not supported. Showing pets for San Francisco, CA.") // Updated toast message
     }
-  }, [fetchDogsForNearby, location]) // Depend on location to re-fetch if changed by geolocation
+  }, [fetchPetsForNearby, location])
 
   return (
     <div className="py-12 md:py-24">
@@ -102,15 +102,15 @@ export default function NearbyPage() {
           </div>
         </GradientText>
 
-        <Tabs defaultValue="dogs" className="max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: "400ms" }}>
+        <Tabs defaultValue="pets" className="max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: "400ms" }}>
           <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="dogs">Dogs</TabsTrigger>
+            <TabsTrigger value="pets">Pets</TabsTrigger> {/* Updated tab name */}
             <TabsTrigger value="shelters">Shelters</TabsTrigger>
             <TabsTrigger value="rescues">Rescues</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="dogs">
-            <DogsTab dogs={dogs} isLoading={isLoadingDogs} /> {/* Pass fetched dogs */}
+          <TabsContent value="pets">
+            <PetsTab pets={pets} isLoading={isLoadingPets} /> {/* Updated component and props */}
           </TabsContent>
 
           <TabsContent value="shelters">

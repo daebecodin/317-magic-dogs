@@ -2,16 +2,16 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, CheckCircle, ArrowRight } from "lucide-react"
+import { Heart, Users, CheckCircle, ArrowRight, PawPrint } from "lucide-react" // Changed Heart to PawPrint
 import { GradientText } from "@/components/animations/gradient-text"
 
 export function HowItWorksPreview() {
   const steps = [
     {
       number: "1",
-      title: "Shelters List Dogs",
-      description: "Overburdened shelters add red-listed dogs who need immediate help.",
-      icon: Heart,
+      title: "Shelters List Pets", // Updated text
+      description: "Overburdened shelters add red-listed pets who need immediate help.", // Updated text
+      icon: PawPrint, // Changed icon
       color: "bg-red-50 text-red-600",
     },
     {
@@ -24,7 +24,7 @@ export function HowItWorksPreview() {
     {
       number: "3",
       title: "We Make the Match",
-      description: "Smart algorithms suggest the best matches for each dog.",
+      description: "Smart algorithms suggest the best matches for each pet.", // Updated text
       icon: CheckCircle,
       color: "bg-green-50 text-green-600",
     },
@@ -41,7 +41,7 @@ export function HowItWorksPreview() {
             <GradientText>Simple Process, Powerful Results</GradientText>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Our platform streamlines rescue matching to save more dogs faster.
+            Our platform streamlines rescue matching to save more pets faster. {/* Updated text */}
           </p>
         </div>
 

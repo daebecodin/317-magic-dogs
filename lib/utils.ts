@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { Dog, PetfinderDog } from "./types"
+import type { Pet, PetfinderAnimal } from "./types" // Updated import
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -18,34 +18,35 @@ export function decodeHtmlEntities(text: string): string {
   return text;
 }
 
-// Utility function to map PetfinderDog to our internal Dog type
-export function mapPetfinderDogToInternalDog(pfDog: PetfinderDog): Dog {
+// Utility function to map PetfinderAnimal to our internal Pet type
+export function mapPetfinderAnimalToInternalPet(pfAnimal: PetfinderAnimal): Pet {
   return {
-    id: pfDog.id,
-    name: pfDog.name,
-    breed: pfDog.breeds.primary,
-    age: pfDog.age,
-    gender: pfDog.gender,
-    size: pfDog.size,
-    photos: pfDog.photos,
-    description: pfDog.description ? decodeHtmlEntities(pfDog.description) : "No description available.",
-    url: pfDog.url,
-    status: pfDog.status,
-    shelter: pfDog.contact.organization_id || `${pfDog.contact.address.city}, ${pfDog.contact.address.state}`, // Use org ID or city/state
-    distance: pfDog.distance ? `${pfDog.distance.toFixed(1)} miles` : "N/A",
+    id: pfAnimal.id,
+    type: pfAnimal.type, // Map the animal type
+    name: pfAnimal.name,
+    breed: pfAnimal.breeds.primary,
+    age: pfAnimal.age,
+    gender: pfAnimal.gender,
+    size: pfAnimal.size,
+    photos: pfAnimal.photos,
+    description: pfAnimal.description ? decodeHtmlEntities(pfAnimal.description) : "No description available.",
+    url: pfAnimal.url,
+    status: pfAnimal.status,
+    shelter: pfAnimal.contact.organization_id || `${pfAnimal.contact.address.city}, ${pfAnimal.contact.address.state}`, // Use org ID or city/state
+    distance: pfAnimal.distance ? `${pfAnimal.distance.toFixed(1)} miles` : "N/A",
     urgent: false, // Default to false, as Petfinder doesn't have this directly
-    characteristics: pfDog.tags || [], // Mapped from Petfinder 'tags'
+    characteristics: pfAnimal.tags || [], // Mapped from Petfinder 'tags'
     health: [ // Mapped from Petfinder 'attributes'
-      pfDog.attributes.spayed_neutered ? "Spayed / Neutered" : null,
-      pfDog.attributes.shots_current ? "Vaccinations up to date" : null,
-      pfDog.attributes.special_needs ? "Special Needs" : null,
-      pfDog.attributes.house_trained ? "House Trained" : null,
+      pfAnimal.attributes.spayed_neutered ? "Spayed / Neutered" : null,
+      pfAnimal.attributes.shots_current ? "Vaccinations up to date" : null,
+      pfAnimal.attributes.special_needs ? "Special Needs" : null,
+      pfAnimal.attributes.house_trained ? "House Trained" : null,
     ].filter(Boolean) as string[],
     goodInHomeWith: [ // Mapped from Petfinder 'environment'
-      pfDog.environment.children ? "Children" : null,
-      pfDog.environment.dogs ? "Other dogs" : null,
-      pfDog.environment.cats ? "Cats" : null,
+      pfAnimal.environment.children ? "Children" : null,
+      pfAnimal.environment.dogs ? "Other pets (dogs)" : null, // Generalized
+      pfAnimal.environment.cats ? "Other pets (cats)" : null, // Generalized
     ].filter(Boolean) as string[],
-    adoptionFee: pfDog.adoption_fee,
+    adoptionFee: pfAnimal.adoption_fee,
   };
 }

@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight } from "lucide-react"
-// Removed imports for Heart, Users, and CountUp as they are no longer needed for stats
 import { SplitText } from "@/components/animations/split-text"
 
 declare global {
@@ -98,15 +97,15 @@ export function Hero() {
           <div className="space-y-8">
             <div className="space-y-4 animate-fade-in-up text-center lg:text-left">
               <Badge variant="secondary" className="w-fit mx-auto lg:mx-0">
-                🐕 Saving Lives Through Technology
+                🐾 Saving Lives Through Technology {/* Updated emoji */}
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                <SplitText text="Saving Dogs Through" className="justify-center lg:justify-start" />
-                <SplitText text="Smarter Rescue Matching" className="text-primary justify-center lg:justify-start" />
+                <SplitText text="Helping Every Pet Find" className="justify-center lg:justify-start" /> {/* Updated text */}
+                <SplitText text="Their Forever Home" className="text-primary justify-center lg:justify-start" /> {/* Updated text */}
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                We connect at-risk dogs in high-kill shelters with a network of vetted, loving animal rescues. Together,
-                we can give every dog a chance at a happy life.
+                We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, {/* Updated text */}
+                we can give every pet a chance at a happy life. {/* Updated text */}
               </p>
             </div>
 
@@ -115,8 +114,8 @@ export function Hero() {
               style={{ animationDelay: "200ms" }}
             >
               <Button size="lg" asChild className="group">
-                <Link href="/signup">
-                  For Rescues
+                <Link href="/explore"> {/* Updated link */}
+                  Browse Pets {/* Updated text */}
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>

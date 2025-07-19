@@ -25,7 +25,7 @@ export function ImpactPreview() {
     {
       name: "Max",
       status: "Placed",
-      story: "Senior dog found a quiet home perfect for his golden years.",
+      story: "Senior pet found a quiet home perfect for his golden years.", // Updated text
       location: "Arizona → Colorado",
       image: "/placeholder.svg?height=100&width=100",
     },
@@ -38,9 +38,9 @@ export function ImpactPreview() {
           <Badge variant="secondary" className="mb-4">
             Success Stories
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Every Dog Has a Story</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Every Pet Has a Story</h2> {/* Updated text */}
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Meet some of the amazing dogs who found their second chance through SafeDawgs.
+            Meet some of the amazing pets who found their second chance through SafeDawgs. {/* Updated text */}
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export function ImpactPreview() {
                     <div className="relative w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-full">
                       <Avatar className="w-full h-full">
                         <AvatarImage src={story.image || "/placeholder.svg"} alt={story.name} />
-                        <AvatarFallback className="text-2xl">🐕</AvatarFallback>
+                        <AvatarFallback className="text-2xl">🐾</AvatarFallback> {/* Updated emoji */}
                       </Avatar>
                     </div>
                     <CardTitle className="text-xl">{story.name}</CardTitle>

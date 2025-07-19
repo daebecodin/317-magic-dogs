@@ -1,20 +1,20 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Users, Scale, Lightbulb, BarChart, Cpu, MessageSquare, CalendarDays, ClipboardCheck, Clock, Link as LinkIcon, ArrowRight } from "lucide-react" // Added new icons
+import { Heart, Users, Scale, Lightbulb, BarChart, Cpu, MessageSquare, CalendarDays, ClipboardCheck, Clock, Link as LinkIcon, ArrowRight, PawPrint } from "lucide-react" // Added PawPrint
 import { GradientText } from "@/components/animations/gradient-text"
-import Link from "next/link" // Added Link import for the CTA button
-import { Button } from "@/components/ui/button" // Added Button import for the CTA button
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "Our Vision for Impact - SafeDawgs",
-  description: "Learn about SafeDawgs' vision for impact and how we plan to save more dogs through smarter rescue matching.",
+  description: "Learn about SafeDawgs' vision for impact and how we plan to save more pets through smarter rescue matching.", // Updated description
 }
 
 export default function ImpactPage() {
   const impactAreas = [
     {
-      icon: Heart,
+      icon: PawPrint, // Changed icon
       title: "Increasing Live Release Rates",
       description: "Our primary goal is to reduce euthanasia rates in overcrowded shelters by facilitating timely transfers to rescue partners with available space and resources.",
     },
@@ -34,7 +34,7 @@ export default function ImpactPage() {
       description: "We envision a future where shelters and rescues seamlessly collaborate, sharing information and resources to create a more efficient and compassionate animal welfare ecosystem.",
     },
     {
-      icon: Cpu, // Using Cpu icon for hardware
+      icon: Cpu,
       title: "Developing Hardware Solutions",
       description: "We are exploring the development of innovative hardware devices to further assist shelters and rescues with real-time monitoring and data collection, enhancing animal welfare efforts.",
     },
@@ -71,7 +71,7 @@ export default function ImpactPage() {
             Building a Future of Impact
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            As a research and startup initiative, SafeDawgs is laying the groundwork for a future where every at-risk dog finds a second chance. Here's our vision for the impact we aim to create.
+            As a research and startup initiative, SafeDawgs is laying the groundwork for a future where every at-risk pet finds a second chance. Here's our vision for the impact we aim to create. {/* Updated text */}
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export default function ImpactPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8"> {/* Adjusted grid columns */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
             {impactAreas.map((area, index) => (
               <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${150 + index * 100}ms` }}>
                 <GradientText showBorder={true} className="h-full" animationSpeed={5}>

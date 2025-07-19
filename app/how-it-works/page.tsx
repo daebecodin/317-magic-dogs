@@ -1,22 +1,22 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Heart, Shield, Users, CheckCircle } from "lucide-react"
+import { Heart, Shield, Users, CheckCircle, PawPrint } from "lucide-react" // Changed Heart to PawPrint for generic pet icon
 import Image from "next/image"
 import { GradientText } from "@/components/animations/gradient-text"
 
 export const metadata: Metadata = {
   title: "How It Works - SafeDawgs",
-  description: "Learn about our simple, effective process to save dogs through smart rescue matching.",
+  description: "Learn about our simple, effective process to save pets through smart rescue matching.", // Updated description
 }
 
 export default function HowItWorksPage() {
   const steps = [
     {
       number: "1",
-      title: "Shelters List Dogs",
-      description: "Red-listed dogs are added by overburdened shelters who need immediate help finding placement.",
-      icon: Heart,
+      title: "Shelters List Pets", // Updated title
+      description: "Red-listed pets are added by overburdened shelters who need immediate help finding placement.", // Updated description
+      icon: PawPrint, // Changed icon
       color: "bg-red-50 text-red-600",
     },
     {
@@ -56,7 +56,7 @@ export default function HowItWorksPage() {
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Our platform streamlines the rescue process, making it easier for shelters and rescues to work together and
-            save more dogs.
+            save more pets.
           </p>
         </div>
 
@@ -115,7 +115,7 @@ export default function HowItWorksPage() {
               <div className="relative aspect-square bg-gradient-to-br from-blue-50 to-green-50 rounded-xl">
                 <Image
                   src="/placeholder.svg?height=400&width=500"
-                  alt="Happy rescued dog being cared for"
+                  alt="Happy rescued pet being cared for"
                   fill
                   className="rounded-xl object-cover"
                 />

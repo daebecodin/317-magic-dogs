@@ -65,7 +65,7 @@ export default function SignupPage() {
           </Badge>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Start Saving Lives Today</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Join our network of verified shelters and rescue organizations working together to save dogs.
+            Join our network of verified shelters and rescue organizations working together to save pets. {/* Updated text */}
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function SignupPage() {
                 <Card className="border-none">
                   <CardHeader>
                     <CardTitle>Join as a Rescue Organization</CardTitle>
-                    <CardDescription>Connect with shelters in need and help save dogs in your area.</CardDescription>
+                    <CardDescription>Connect with shelters in need and help save pets in your area.</CardDescription> {/* Updated text */}
                   </CardHeader>
                   <CardContent>
                     <SignupForm accountType="rescue" onSuccess={() => setIsSubmitted(true)} />
@@ -96,7 +96,7 @@ export default function SignupPage() {
                   <CardHeader>
                     <CardTitle>Join as a Shelter</CardTitle>
                     <CardDescription>
-                      Connect with rescue organizations ready to help your dogs find homes.
+                      Connect with rescue organizations ready to help your pets find homes. {/* Updated text */}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

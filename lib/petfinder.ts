@@ -39,39 +39,39 @@ async function getPetfinderToken(): Promise<string> {
   }
 }
 
-import type { PetfinderDog } from "./types"; // Import PetfinderDog from types
+import type { PetfinderAnimal } from "./types"; // Updated import
 
-export async function getAdoptableDogs(location: string, limit = 48): Promise<PetfinderDog[]> {
-  console.log(`Attempting to fetch adoptable dogs for location: ${location}`);
+export async function getAdoptableAnimals(location: string, type: string = 'dog', limit = 48): Promise<PetfinderAnimal[]> {
+  console.log(`Attempting to fetch adoptable ${type}s for location: ${location}`);
   try {
     const token = await getPetfinderToken();
-    const apiUrl = `https://api.petfinder.com/v2/animals?type=dog&location=${encodeURIComponent(location)}&limit=${limit}`;
-    console.log("Fetching dogs from URL:", apiUrl);
+    const apiUrl = `https://api.petfinder.com/v2/animals?type=${encodeURIComponent(type)}&location=${encodeURIComponent(location)}&limit=${limit}`;
+    console.log("Fetching animals from URL:", apiUrl);
     const response = await fetch(apiUrl,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        next: { revalidate: 3600 }, // Revalidate dog data every hour
+        next: { revalidate: 3600 }, // Revalidate animal data every hour
       },
     );
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("Petfinder dogs fetch failed:", response.status, errorData);
-      throw new Error(`Failed to fetch adoptable dogs: ${errorData.detail || response.statusText}`);
+      console.error("Petfinder animals fetch failed:", response.status, errorData);
+      throw new Error(`Failed to fetch adoptable animals: ${errorData.detail || response.statusText}`);
     }
 
     const data = await response.json();
-    console.log(`Successfully fetched ${data.animals.length} dogs.`);
+    console.log(`Successfully fetched ${data.animals.length} ${type}s.`);
     return data.animals;
   } catch (error) {
-    console.error("Error fetching adoptable dogs:", error);
+    console.error("Error fetching adoptable animals:", error);
     throw error;
   }
 }
 
-export async function getAnimalById(id: number): Promise<PetfinderDog | null> {
+export async function getAnimalById(id: number): Promise<PetfinderAnimal | null> {
   console.log(`Attempting to fetch animal by ID: ${id}`);
   try {
     const token = await getPetfinderToken();

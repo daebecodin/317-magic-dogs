@@ -1,4 +1,4 @@
-import type { Dog, Shelter, Rescue } from "./types"
+import type { Pet, Shelter, Rescue } from "./types" // Updated import
 
 export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
   shelters: [
@@ -85,14 +85,15 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
   ],
 }
 
-export const mockDogs: Dog[] = [
+export const mockPets: Pet[] = [ // Renamed from mockDogs to mockPets
   {
     id: 1,
+    type: "Dog", // Added type
     name: "Buddy",
     breed: "Golden Retriever",
     age: "2 years",
     gender: "Male",
-    size: "Large", // Added missing property
+    size: "Large",
     shelter: "Bay Area Animal Shelter",
     distance: "2.3 miles",
     photos: [{
@@ -105,18 +106,19 @@ export const mockDogs: Dog[] = [
     description: "A friendly and energetic boy who loves to play fetch and swim. He's great with other dogs and would thrive in an active home. Buddy is house-trained and knows basic commands.",
     characteristics: ["Athletic", "Affectionate", "Playful", "Friendly", "Smart"],
     health: ["Vaccinations up to date", "Spayed / Neutered"],
-    goodInHomeWith: ["Other dogs", "Children"],
+    goodInHomeWith: ["Other pets (dogs)", "Children"], // Updated text
     adoptionFee: 300,
-    url: "https://www.petfinder.com/dog-profile/buddy-1", // Added missing property
-    status: "adoptable", // Added missing property
+    url: "https://www.petfinder.com/dog-profile/buddy-1",
+    status: "adoptable",
   },
   {
     id: 2,
+    type: "Dog", // Added type
     name: "Luna",
     breed: "German Shepherd Mix",
     age: "1 year",
     gender: "Female",
-    size: "Large", // Added missing property
+    size: "Large",
     shelter: "Golden Gate Humane Society",
     distance: "8.7 miles",
     photos: [{
@@ -129,18 +131,19 @@ export const mockDogs: Dog[] = [
     description: "A smart and loyal companion, great with kids and other dogs. Luna is eager to please and would benefit from continued training. She loves long walks and puzzle toys.",
     characteristics: ["Smart", "Loyal", "Curious", "Friendly"],
     health: ["Vaccinations up to date", "Spayed / Neutered"],
-    goodInHomeWith: ["Other dogs", "Children"],
+    goodInHomeWith: ["Other pets (dogs)", "Children"], // Updated text
     adoptionFee: 350,
-    url: "https://www.petfinder.com/dog-profile/luna-2", // Added missing property
-    status: "adoptable", // Added missing property
+    url: "https://www.petfinder.com/dog-profile/luna-2",
+    status: "adoptable",
   },
   {
     id: 3,
+    type: "Dog", // Added type
     name: "Max",
     breed: "Beagle",
     age: "4 years",
     gender: "Male",
-    size: "Medium", // Added missing property
+    size: "Medium",
     shelter: "Peninsula Pet Rescue",
     distance: "12.1 miles",
     photos: [{
@@ -153,18 +156,19 @@ export const mockDogs: Dog[] = [
     description: "A curious and happy-go-lucky dog who loves to follow his nose. Max is a typical beagle, full of personality and loves to explore. He's looking for a home with a secure yard.",
     characteristics: ["Curious", "Funny", "Independent"],
     health: ["Vaccinations up to date", "Spayed / Neutered"],
-    goodInHomeWith: ["Other dogs"],
+    goodInHomeWith: ["Other pets (dogs)"], // Updated text
     adoptionFee: 250,
-    url: "https://www.petfinder.com/dog-profile/max-3", // Added missing property
-    status: "adoptable", // Added missing property
+    url: "https://www.petfinder.com/dog-profile/max-3",
+    status: "adoptable",
   },
   {
     id: 4,
+    type: "Dog", // Added type
     name: "Daisy",
     breed: "Pit Bull Mix",
     age: "3 years",
     gender: "Female",
-    size: "Medium", // Added missing property
+    size: "Medium",
     shelter: "Bay Area Animal Shelter",
     distance: "2.3 miles",
     photos: [{
@@ -179,40 +183,42 @@ export const mockDogs: Dog[] = [
     health: ["Vaccinations up to date", "Spayed / Neutered"],
     goodInHomeWith: ["Children"],
     adoptionFee: 275,
-    url: "https://www.petfinder.com/dog-profile/daisy-4", // Added missing property
-    status: "adoptable", // Added missing property
+    url: "https://www.petfinder.com/dog-profile/daisy-4",
+    status: "adoptable",
   },
   {
     id: 5,
-    name: "Rocky",
-    breed: "Labrador Mix",
-    age: "5 years",
-    gender: "Male",
-    size: "Large", // Added missing property
-    shelter: "Loving Paws Sanctuary",
-    distance: "15.2 miles",
+    type: "Cat", // Added type - Example of a non-dog pet
+    name: "Whiskers",
+    breed: "Domestic Shorthair",
+    age: "1 year",
+    gender: "Female",
+    size: "Small",
+    shelter: "Golden Gate Humane Society",
+    distance: "8.7 miles",
     photos: [{
-      small: "https://placedog.net/200/200?id=5",
-      medium: "https://placedog.net/500/500?id=5",
-      large: "https://placedog.net/800/800?id=5",
-      full: "https://placedog.net/1200/1200?id=5",
+      small: "https://placekitten.com/200/200?image=1",
+      medium: "https://placekitten.com/500/500?image=1",
+      large: "https://placekitten.com/800/800?image=1",
+      full: "https://placekitten.com/1200/1200?image=1",
     }],
     urgent: false,
-    description: "A gentle giant who is calm, well-behaved, and loves long walks. Rocky is a laid-back dog who enjoys leisurely strolls and napping in sunbeams. He's a perfect family dog.",
-    characteristics: ["Calm", "Gentle", "Well-behaved"],
+    description: "A playful and curious cat who loves chasing toys and napping in sunbeams. Whiskers is litter-trained and enjoys gentle petting.",
+    characteristics: ["Playful", "Curious", "Independent"],
     health: ["Vaccinations up to date", "Spayed / Neutered"],
-    goodInHomeWith: ["Other dogs", "Children"],
-    adoptionFee: 320,
-    url: "https://www.petfinder.com/dog-profile/rocky-5", // Added missing property
-    status: "adoptable", // Added missing property
+    goodInHomeWith: ["Other pets (cats)"],
+    adoptionFee: 100,
+    url: "https://www.petfinder.com/cat-profile/whiskers-5",
+    status: "adoptable",
   },
   {
     id: 6,
+    type: "Dog", // Added type
     name: "Sadie",
     breed: "Australian Shepherd",
     age: "1.5 years",
     gender: "Female",
-    size: "Medium", // Added missing property
+    size: "Medium",
     shelter: "Golden Gate Humane Society",
     distance: "8.7 miles",
     photos: [{
@@ -225,9 +231,9 @@ export const mockDogs: Dog[] = [
     description: "A highly intelligent and active dog, perfect for an adventurous family. Sadie thrives on mental and physical stimulation. She would excel in a home that enjoys hiking or dog sports.",
     characteristics: ["Intelligent", "Active", "Brave", "Playful"],
     health: ["Vaccinations up to date", "Spayed / Neutered"],
-    goodInHomeWith: ["Other dogs"],
+    goodInHomeWith: ["Other pets (dogs)"], // Updated text
     adoptionFee: 380,
-    url: "https://www.petfinder.com/dog-profile/sadie-6", // Added missing property
-    status: "adoptable", // Added missing property
+    url: "https://www.petfinder.com/dog-profile/sadie-6",
+    status: "adoptable",
   },
 ]

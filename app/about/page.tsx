@@ -1,23 +1,23 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { GraduationCap, MessageCircle, ArrowRight } from "lucide-react"
+import { GraduationCap, MessageCircle, ArrowRight, PawPrint } from "lucide-react" // Added PawPrint
 import { Button } from "@/components/ui/button"
 import { GradientText } from "@/components/animations/gradient-text"
-import Link from "next/link" // Import Link for navigation
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "About Us - SafeDawgs",
   description:
-    "Meet the team behind SafeDawgs and learn about our mission to save dogs through smarter rescue matching.",
+    "Meet the team behind SafeDawgs and learn about our mission to save pets through smarter rescue matching.", // Updated description
 }
 
 export default function AboutPage() {
   const values = [
     {
-      emoji: "🐕",
-      title: "Dogs First",
-      description: "Every decision we make prioritizes the welfare and wellbeing of the dogs we serve.",
+      emoji: "🐾", // Updated emoji
+      title: "Pets First", // Updated title
+      description: "Every decision we make prioritizes the welfare and wellbeing of the pets we serve.", // Updated description
     },
     {
       emoji: "🤝",
@@ -39,7 +39,7 @@ export default function AboutPage() {
     },
     {
       name: "Stanford University",
-      description: "Collaborating on advanced data science and AI models to optimize dog matching algorithms.",
+      description: "Collaborating on advanced data science and AI models to optimize pet matching algorithms.", // Updated text
       link: "https://stanford.edu",
     },
     {
@@ -58,7 +58,7 @@ export default function AboutPage() {
             About Us
           </Badge>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
-            Our Mission: Every Dog Deserves a Chance
+            Our Mission: Every Pet Deserves a Chance {/* Updated text */}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We're building technology to solve one of the most heartbreaking problems in animal welfare: the disconnect
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl font-bold mb-6">Why We Started SafeDawgs</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Every year, millions of healthy, loving dogs are euthanized in shelters simply because there isn't enough
+                Every year, millions of healthy, loving pets are euthanized in shelters simply because there isn't enough {/* Updated text */}
                 space or resources. Meanwhile, rescue organizations across the country have the capacity and desire to
                 help, but lack an efficient way to connect with shelters in need. SafeDawgs bridges this gap with smart
                 technology that saves lives.
@@ -161,7 +161,7 @@ export default function AboutPage() {
             <Button size="lg" asChild>
               <a href="https://discord.gg/8k6uXqD4Xt" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="w-5 h-5 mr-2" />
-                Join Our Discord (Engineers & All)
+                Join Our Discord (Engineers & Pet Lovers) {/* Updated text */}
               </a>
             </Button>
           </div>
