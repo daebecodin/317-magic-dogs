@@ -64,26 +64,30 @@ export default function HomePage() {
     <>
       <Hero />
       <section className="py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">Meet Our Adoptable Dogs</h2>
+        {/* Title and description remain centered and contained */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold">Meet Our Adoptable Dogs</h2>
+          <p className="text-xl text-muted-foreground">Swipe to see more furry friends!</p>
+        </div>
+
+        {/* Circular Gallery container - now outside the max-width container */}
+        <div className="w-full px-0" style={{ height: '600px', position: 'relative' }}>
           {isLoadingDogs ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
               {Array.from({ length: 6 }).map((_, index) => (
                 <DogCardSkeleton key={index} />
               ))}
             </div>
           ) : dogs.length > 0 ? (
-            <div style={{ height: '600px', position: 'relative' }}>
-              <CircularGallery
-                items={galleryItems}
-                bend={3}
-                textColor="#ffffff"
-                borderRadius={0.05}
-                scrollEase={0.02}
-              />
-            </div>
+            <CircularGallery
+              items={galleryItems}
+              bend={3}
+              textColor="#ffffff"
+              borderRadius={0.05}
+              scrollEase={0.02}
+            />
           ) : (
-            <p className="text-muted-foreground">No dogs available right now. Check back soon!</p>
+            <p className="text-muted-foreground text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">No dogs available right now. Check back soon!</p>
           )}
         </div>
       </section>
