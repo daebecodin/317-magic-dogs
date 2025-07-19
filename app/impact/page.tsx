@@ -1,51 +1,56 @@
 import type { Metadata } from "next"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { MapPin, Calendar, Heart } from "lucide-react"
+import { Heart, Users, Scale, Lightbulb, BarChart } from "lucide-react" // Added new icons
 import { GradientText } from "@/components/animations/gradient-text"
-// Removed import for CountUp as it's no longer needed for stats
 
 export const metadata: Metadata = {
-  title: "Impact Stories - SafeDawgs",
-  description: "Read real stories of hope and second chances from dogs saved through our rescue matching platform.",
+  title: "Our Vision for Impact - SafeDawgs",
+  description: "Learn about SafeDawgs' vision for impact and how we plan to save more dogs through smarter rescue matching.",
 }
 
 export default function ImpactPage() {
-  const stories = [
+  const impactAreas = [
     {
-      name: "Buddy",
-      status: "Fostered",
-      story:
-        "Buddy was found as a stray in a rural shelter with limited resources. Through SafeDawgs, he was matched with a rescue organization that specializes in shy dogs. Now he's in a loving foster home learning to trust humans again.",
-      location: "Texas → California",
-      date: "2 months ago",
-      image: "/placeholder.svg?height=200&width=200",
-      rescueOrg: "Second Chance Rescue",
+      icon: Heart,
+      title: "Increasing Live Release Rates",
+      description: "Our primary goal is to reduce euthanasia rates in overcrowded shelters by facilitating timely transfers to rescue partners with available space and resources.",
     },
     {
-      name: "Lucy",
-      status: "Adopted",
-      story:
-        "Lucy arrived at the shelter with a severe skin condition that required expensive treatment. A rescue organization with medical resources stepped up through our platform. After months of care, Lucy found her forever family.",
-      location: "Georgia → Florida",
-      date: "4 months ago",
-      image: "/placeholder.svg?height=200&width=200",
-      rescueOrg: "Healing Paws Rescue",
+      icon: Users,
+      title: "Expanding Rescue Networks",
+      description: "We aim to connect shelters with a broader network of vetted rescue organizations, including those in different geographical areas, to maximize placement opportunities.",
     },
     {
-      name: "Max",
-      status: "Placed",
-      story:
-        'At 8 years old, Max was considered "unadoptable" by many. Our platform connected him with a senior dog specialist rescue. Max now enjoys his golden years in a quiet home with a patient, loving family.',
-      location: "Arizona → Colorado",
-      date: "6 months ago",
-      image: "/placeholder.svg?height=200&width=200",
-      rescueOrg: "Golden Years Dog Rescue",
+      icon: Scale,
+      title: "Optimizing Resource Allocation",
+      description: "By providing data-driven insights, we will help shelters and rescues make more informed decisions about resource allocation, transport logistics, and animal care.",
+    },
+    {
+      icon: Lightbulb,
+      title: "Fostering Collaboration",
+      description: "We envision a future where shelters and rescues seamlessly collaborate, sharing information and resources to create a more efficient and compassionate animal welfare ecosystem.",
     },
   ]
 
-  // Removed the stats array as per request
+  const measurementPlans = [
+    {
+      title: "Live Release Rate Tracking",
+      description: "We plan to track the percentage of animals leaving shelters alive, directly correlating with successful placements facilitated by SafeDawgs.",
+    },
+    {
+      title: "Rescue Partner Growth",
+      description: "Measuring the growth in our network of active, verified rescue organizations and their collective capacity to take in at-risk animals.",
+    },
+    {
+      title: "Geographic Reach Expansion",
+      description: "Monitoring the expansion of our platform's reach to connect shelters and rescues across new states and regions, bridging critical gaps.",
+    },
+    {
+      title: "Time-to-Placement Reduction",
+      description: "Analyzing the average time it takes for an animal to be matched and transferred through our platform, aiming for quicker outcomes for urgent cases.",
+    },
+  ]
 
   return (
     <div className="py-12 md:py-24">
@@ -53,69 +58,68 @@ export default function ImpactPage() {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in-up">
           <Badge variant="secondary" className="mb-4">
-            Impact Stories
+            Our Vision
           </Badge>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
-            Real Stories of Hope and Second Chances
+            Building a Future of Impact
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Every dog has a story. Here are just a few examples of the lives that can be transformed through rescue
-            matching. As a research and startup initiative, we're building the foundation to expand our reach and impact.
+            As a research and startup initiative, SafeDawgs is laying the groundwork for a future where every at-risk dog finds a second chance. Here's our vision for the impact we aim to create.
           </p>
         </div>
 
-        {/* Removed the Stats section */}
-
-        {/* Success Stories */}
-        <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+        {/* Key Impact Areas */}
+        <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "150ms" }}>
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Success Stories</h2>
+            <h2 className="text-3xl font-bold mb-4">Key Areas of Impact</h2>
             <p className="text-lg text-muted-foreground">
-              Meet some of the amazing dogs who found their second chance through SafeDawgs.
+              Our platform is designed to address critical challenges in animal welfare.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {stories.map((story, index) => (
-              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 150}ms` }}>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {impactAreas.map((area, index) => (
+              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${150 + index * 100}ms` }}>
                 <GradientText showBorder={true} className="h-full" animationSpeed={5}>
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full border-none">
-                    <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-blue-50 to-green-50">
-                      <Avatar className="w-full h-full rounded-none">
-                        <AvatarImage
-                          src={story.image || "/placeholder.svg"}
-                          alt={story.name}
-                          className="object-cover"
-                        />
-                        <AvatarFallback className="rounded-none text-4xl">🐕</AvatarFallback>
-                      </Avatar>
-                      <Badge
-                        className="absolute top-4 right-4"
-                        variant={story.status === "Adopted" ? "default" : "secondary"}
-                      >
-                        {story.status}
-                      </Badge>
-                    </div>
-
+                  <Card className="text-center h-full border-none">
                     <CardHeader>
-                      <CardTitle className="text-2xl">{story.name}</CardTitle>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {story.location}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {story.date}
-                        </div>
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <area.icon className="w-8 h-8 text-primary" />
                       </div>
+                      <CardTitle className="text-xl">{area.title}</CardTitle>
                     </CardHeader>
-
                     <CardContent>
-                      <p className="text-muted-foreground leading-relaxed mb-4">{story.story}</p>
-                      <div className="text-sm">
-                        <span className="font-medium">Rescued by:</span> {story.rescueOrg}
-                      </div>
+                      <CardDescription className="text-base">{area.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                </GradientText>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* How We Plan to Measure Success */}
+        <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">How We Plan to Measure Success</h2>
+            <p className="text-lg text-muted-foreground">
+              Our commitment to transparency and continuous improvement.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {measurementPlans.map((plan, index) => (
+              <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${300 + index * 100}ms` }}>
+                <GradientText showBorder={true} className="h-full" animationSpeed={5}>
+                  <Card className="h-full border-none">
+                    <CardHeader>
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <BarChart className="w-6 h-6 text-primary" />
+                        {plan.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="text-base">{plan.description}</CardDescription>
                     </CardContent>
                   </Card>
                 </GradientText>
@@ -130,10 +134,10 @@ export default function ImpactPage() {
             className="bg-primary/5 rounded-2xl p-8 md:p-12 text-center animate-fade-in-up border-none"
             style={{ animationDelay: "450ms" }}
           >
-            <h2 className="text-3xl font-bold mb-4">Be Part of the Next Success Story</h2>
+            <h2 className="text-3xl font-bold mb-4">Be Part of Our Journey</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
               Whether you're a shelter with dogs in need or a rescue with space to help, join our platform and help us
-              save more lives.
+              build the future of animal welfare.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Badge variant="outline" className="text-base px-6 py-2">
