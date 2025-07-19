@@ -87,7 +87,7 @@ export const mockOrganizations: { shelters: Shelter[]; rescues: Rescue[] } = {
 
 export const mockDogs: Dog[] = [
   {
-    id: 1,
+    id: 70000001, // Changed to a large number to simulate a real Petfinder ID
     name: "Buddy",
     breed: "Golden Retriever",
     age: "2 years",
@@ -108,7 +108,7 @@ export const mockDogs: Dog[] = [
     adoptionFee: 300,
   },
   {
-    id: 2,
+    id: 70000002, // Changed to a large number
     name: "Luna",
     breed: "German Shepherd Mix",
     age: "1 year",
@@ -129,7 +129,7 @@ export const mockDogs: Dog[] = [
     adoptionFee: 350,
   },
   {
-    id: 3,
+    id: 70000003, // Changed to a large number
     name: "Max",
     breed: "Beagle",
     age: "4 years",
@@ -150,7 +150,7 @@ export const mockDogs: Dog[] = [
     adoptionFee: 250,
   },
   {
-    id: 4,
+    id: 70000004, // Changed to a large number
     name: "Daisy",
     breed: "Pit Bull Mix",
     age: "3 years",
@@ -171,7 +171,7 @@ export const mockDogs: Dog[] = [
     adoptionFee: 275,
   },
   {
-    id: 5,
+    id: 70000005, // Changed to a large number
     name: "Rocky",
     breed: "Labrador Mix",
     age: "5 years",
@@ -192,7 +192,7 @@ export const mockDogs: Dog[] = [
     adoptionFee: 320,
   },
   {
-    id: 6,
+    id: 70000006, // Changed to a large number
     name: "Sadie",
     breed: "Australian Shepherd",
     age: "1.5 years",
