@@ -15,22 +15,36 @@ export default function HomePage() {
   const [isLoadingDogs, setIsLoadingDogs] = useState(true)
 
   useEffect(() => {
+    console.log("HomePage useEffect: Fetching dogs...");
     const fetchDogsForHomepage = async () => {
       setIsLoadingDogs(true)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
       try {
-        const response = await fetch(`/api/dogs?location=90210&limit=12`); // Fetch 12 dogs for the gallery
+        const response = await fetch(`/api/dogs?location=90210&limit=12`, { signal: controller.signal });
+        clearTimeout(timeoutId); // Clear timeout if fetch completes within time
+
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          const errorText = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
         const fetchedPfDogs: PetfinderDog[] = await response.json();
         const mappedDogs = fetchedPfDogs.map(mapPetfinderDogToInternalDog);
+        console.log("Fetched and mapped dogs successfully:", mappedDogs.length, "dogs");
         setDogs(mappedDogs);
-      } catch (error) {
-        console.error("Error fetching dogs for homepage:", error);
-        setDogs([]);
-        toast.error("Failed to load some furry friends for the homepage.");
+      } catch (error: any) {
+        if (error.name === 'AbortError') {
+          console.error("Fetch for dogs timed out:", error);
+          toast.error("Loading dogs timed out. Please try refreshing the page.");
+        } else {
+          console.error("Error fetching dogs for homepage:", error);
+          toast.error("Failed to load some furry friends for the homepage.");
+        }
+        setDogs([]); // Ensure dogs array is empty on error
       } finally {
         setIsLoadingDogs(false);
+        console.log("Finished fetching dogs. isLoadingDogs set to false.");
       }
     };
 
@@ -42,6 +56,9 @@ export default function HomePage() {
     image: dog.photos[0]?.medium || dog.photos[0]?.small || "/placeholder.svg",
     text: dog.name,
   }));
+
+  console.log("HomePage render: isLoadingDogs =", isLoadingDogs, "dogs.length =", dogs.length);
+  console.log("Gallery items for CircularGallery:", galleryItems);
 
   return (
     <>
