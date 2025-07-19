@@ -4,7 +4,6 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import "../styles/PixelTransition.css" // Import the new CSS file
 import "../styles/CircularGallery.css" // Import the new CircularGallery CSS file
-import "../styles/ChromaGrid.css" // Import the new ChromaGrid CSS file
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ParticlesBackground } from "@/components/particles-background"

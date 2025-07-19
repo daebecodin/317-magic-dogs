@@ -1,14 +1,9 @@
-const PETFINDER_API_KEY = process.env.PETFINDER_API_KEY;
-const PETFINDER_SECRET = process.env.PETFINDER_SECRET;
+const PETFINDER_API_KEY = process.env.PETFINDER_API_KEY || "JToFwlTXGc7Q3LwD0c0ALgNVcf0ca0v0fzHsqlpUHndqL8U5ms";
+const PETFINDER_SECRET = process.env.PETFINDER_SECRET || "8pJdsjPU3zptM4yujZrmu4AEnO6UrVMPRTgPgzn3";
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
 async function getPetfinderToken(): Promise<string> {
-  if (!PETFINDER_API_KEY || !PETFINDER_SECRET) {
-    console.error("Petfinder API Key or Secret is not set in environment variables.");
-    throw new Error("Petfinder API credentials are not configured.");
-  }
-
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
     console.log("Using cached Petfinder token.");
     return cachedToken.token;
