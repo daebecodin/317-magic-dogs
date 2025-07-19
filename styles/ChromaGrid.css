@@ -43,7 +43,8 @@
   overflow: hidden;
   border: 1px solid #333;
   transition: border-color 0.3s ease;
-  background: var(--card-gradient);
+  background-color: hsl(var(--background)); /* Use theme background */
+  color: hsl(var(--foreground)); /* Use theme foreground color */
 
   --mouse-x: 50%;
   --mouse-y: 50%;
@@ -77,33 +78,42 @@
   flex: 1;
   padding: 10px;
   box-sizing: border-box;
-  background: transparent;
-  transition: background 0.3s ease;
+  background-color: #1a1a1a; /* Dark background for the placeholder area */
+  aspect-ratio: 1 / 1; /* Make it square like the images were */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px; /* Match image border radius */
+  margin: 10px; /* Add margin to match padding */
 }
 
-.chroma-img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  display: block;
-}
+/* No img styles needed here as img tag is removed */
 
 .chroma-info {
   position: relative;
   z-index: 1;
   padding: 0.75rem 1rem;
-  color: #fff;
+  color: hsl(var(--foreground)); /* Use theme foreground color */
   font-family: system-ui, sans-serif;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  row-gap: 0.25rem;
-  column-gap: 0.75rem;
+  display: flex; /* Use flex for better control of name/handle */
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.chroma-info .role,
+.chroma-info .name {
+  font-weight: bold;
+  font-size: 1.125rem; /* text-lg */
+}
+
+.chroma-info .role {
+  color: hsl(var(--muted-foreground)); /* Use muted-foreground for subtitle */
+  font-size: 0.875rem; /* text-sm */
+}
+
 .chroma-info .handle {
-  color: #aaa;
+  color: hsl(var(--muted-foreground)); /* Use muted-foreground for handle */
+  font-size: 0.875rem; /* text-sm */
+  margin-left: auto; /* Push handle to the right */
 }
 
 .chroma-overlay {
