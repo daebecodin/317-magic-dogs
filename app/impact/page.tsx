@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { MapPin, Calendar, Heart } from "lucide-react"
 import { GradientText } from "@/components/animations/gradient-text"
-import { CountUp } from "@/components/animations/count-up" // Added this import
+// Removed import for CountUp as it's no longer needed for stats
 
 export const metadata: Metadata = {
   title: "Impact Stories - SafeDawgs",
@@ -45,12 +45,7 @@ export default function ImpactPage() {
     },
   ]
 
-  const stats = [
-    { number: "1,247", label: "Dogs Saved", icon: Heart },
-    { number: "89",
-      label: "Partner Rescues", icon: MapPin },
-    { number: "156", label: "Shelter Partners", icon: Calendar },
-  ]
+  // Removed the stats array as per request
 
   return (
     <div className="py-12 md:py-24">
@@ -64,31 +59,12 @@ export default function ImpactPage() {
             Real Stories of Hope and Second Chances
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Every dog has a story. Here are just a few of the lives that have been transformed through our rescue
-            matching platform. As a research and startup initiative, we're continuously working to expand our reach and impact.
+            Every dog has a story. Here are just a few examples of the lives that can be transformed through rescue
+            matching. As a research and startup initiative, we're building the foundation to expand our reach and impact.
           </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {stats.map((stat, index) => (
-            <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 150}ms` }}>
-              <GradientText showBorder={true} className="h-full" animationSpeed={5}>
-                <Card className="text-center h-full border-none">
-                  <CardHeader>
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <stat.icon className="w-8 h-8 text-primary" />
-                    </div>
-                    <CardTitle className="text-3xl font-bold text-primary">
-                      <CountUp to={parseInt(stat.number.replace(/,/g, ""))} />
-                    </CardTitle>
-                    <CardDescription className="text-lg">{stat.label}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </GradientText>
-            </div>
-          ))}
-        </div>
+        {/* Removed the Stats section */}
 
         {/* Success Stories */}
         <div className="mb-16 animate-fade-in-up" style={{ animationDelay: "300ms" }}>

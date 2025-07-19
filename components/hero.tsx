@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowRight, Heart, Users } from "lucide-react"
-import { CountUp } from "@/components/animations/count-up"
+import { ArrowRight } from "lucide-react"
+// Removed imports for Heart, Users, and CountUp as they are no longer needed for stats
 import { SplitText } from "@/components/animations/split-text"
 
 declare global {
@@ -125,33 +125,7 @@ export function Hero() {
               </Button>
             </div>
 
-            <div
-              className="flex flex-wrap gap-8 pt-8 border-t animate-fade-in-up justify-center lg:justify-start"
-              style={{ animationDelay: "300ms" }}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">
-                    <CountUp to={1247} />
-                  </div>
-                  <div className="text-sm text-muted-foreground">Dogs Saved</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">
-                    <CountUp to={245} />
-                  </div>
-                  <div className="text-sm text-muted-foreground">Partner Organizations</div>
-                </div>
-              </div>
-            </div>
+            {/* Removed the stats section */}
           </div>
 
           {/* Right - Spline 3D Model */}
