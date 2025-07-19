@@ -6,9 +6,18 @@ export type Dog = {
   gender: "Male" | "Female"
   shelter: string
   distance: string
-  image: string
+  photos: Array<{
+    small: string;
+    medium: string;
+    large: string;
+    full: string;
+  }>;
   urgent: boolean
   description: string
+  characteristics: string[]
+  health: string[]
+  goodInHomeWith: string[]
+  adoptionFee: number | null
 }
 
 export type Shelter = {
