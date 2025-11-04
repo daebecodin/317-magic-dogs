@@ -191,6 +191,7 @@ class PetCards {
 document.addEventListener('DOMContentLoaded', function() {
     new PetCards();
     initFooter();
+    initCTA();
 });
 
 // Footer functionality
@@ -198,6 +199,14 @@ function initFooter() {
     const newsletterForm = document.getElementById('newsletter-form');
     if (newsletterForm) {
         newsletterForm.addEventListener('submit', handleNewsletterSubmit);
+    }
+}
+
+// CTA functionality
+function initCTA() {
+    const ctaNewsletterForm = document.getElementById('cta-newsletter-form');
+    if (ctaNewsletterForm) {
+        ctaNewsletterForm.addEventListener('submit', handleCTANewsletterSubmit);
     }
 }
 
@@ -219,6 +228,27 @@ function handleNewsletterSubmit(event) {
     
     // Simulate newsletter signup
     alert('Thank you for joining our mission! You\'ll receive updates about pets in need.');
+    emailInput.value = '';
+}
+
+function handleCTANewsletterSubmit(event) {
+    event.preventDefault();
+    
+    const emailInput = document.getElementById('cta-newsletter-email');
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email address');
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Simulate newsletter signup
+    alert('Thank you for subscribing! You\'ll receive the latest success stories and platform updates.');
     emailInput.value = '';
 }
 
