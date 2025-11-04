@@ -53,11 +53,42 @@
         </div>
     </nav>
 
-    <!-- Temporary content -->
-    <main style="padding: 40px 20px; text-align: center;">
-        <h1>OnlyPets - Navbar Converted!</h1>
-        <p>The navbar has been converted from React to vanilla HTML/CSS/JS</p>
-    </main>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <!-- Left Content -->
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        🐾 Saving Lives Through Technology
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="hero-title-line">Helping Every Pet Find</span>
+                        <span class="hero-title-line hero-title-primary">Their Forever Home</span>
+                    </h1>
+                    <p class="hero-description">
+                        We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.
+                    </p>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="/explore" class="btn btn-primary btn-lg">
+                        Browse Pets
+                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12,5 19,12 12,19"/>
+                        </svg>
+                    </a>
+                    <a href="/signup" class="btn btn-outline btn-lg">For Shelters</a>
+                </div>
+            </div>
+
+            <!-- Right - Spline 3D Model -->
+            <div class="hero-3d">
+                <div id="spline-container"></div>
+            </div>
+        </div>
+    </section>
 
     <script src="script.js"></script>
 </body>
