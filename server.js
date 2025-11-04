@@ -22,10 +22,6 @@ app.get('/impact', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'impact.html'));
 });
 
-app.get('/pricing', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'pricing.html'));
-});
-
 app.get('/nearby', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'nearby.html'));
 });
