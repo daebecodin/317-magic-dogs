@@ -190,4 +190,39 @@ class PetCards {
 // Initialize Pet Cards when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     new PetCards();
+    initFooter();
 });
+
+// Footer functionality
+function initFooter() {
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', handleNewsletterSubmit);
+    }
+}
+
+function handleNewsletterSubmit(event) {
+    event.preventDefault();
+    
+    const emailInput = document.getElementById('newsletter-email');
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        alert('Please enter your email address');
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Simulate newsletter signup
+    alert('Thank you for joining our mission! You\'ll receive updates about pets in need.');
+    emailInput.value = '';
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
