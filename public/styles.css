@@ -42,7 +42,7 @@ body {
 .nav-brand .heart-icon {
     width: 24px;
     height: 24px;
-    color: #3b82f6;
+    color: rgba(255, 157, 0, 0.8);
 }
 
 .nav-brand span {
@@ -66,7 +66,7 @@ body {
 }
 
 .nav-menu a:hover {
-    color: #3b82f6;
+    color: rgba(255, 157, 0, 0.8);
 }
 
 .nav-actions {
@@ -90,12 +90,12 @@ body {
 }
 
 .btn-primary {
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
 }
 
 .btn-outline {
@@ -233,7 +233,7 @@ body {
 }
 
 .hero-title-primary {
-    color: #3b82f6;
+    color: rgba(255, 157, 0, 0.8);
 }
 
 .hero-description {
@@ -268,12 +268,12 @@ body {
 }
 
 .btn-primary.btn-lg {
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
 }
 
 .btn-primary.btn-lg:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
     transform: translateY(-1px);
 }
 
@@ -478,7 +478,7 @@ body {
 .pet-card-button {
     width: 100%;
     padding: 10px 16px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     border: none;
     border-radius: 6px;
@@ -491,7 +491,7 @@ body {
 }
 
 .pet-card-button:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
 }
 
 /* Loading skeleton */
@@ -582,7 +582,7 @@ body {
 .footer-brand-icon {
     width: 24px;
     height: 24px;
-    color: #3b82f6;
+    color: rgba(255, 157, 0, 0.8);
 }
 
 .footer-brand-name {
@@ -624,13 +624,13 @@ body {
 
 .newsletter-input:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: rgba(255, 157, 0, 0.8);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .newsletter-btn {
     padding: 8px 12px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     border: none;
     border-radius: 6px;
@@ -641,7 +641,7 @@ body {
 }
 
 .newsletter-btn:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
 }
 
 .footer-links {
@@ -672,7 +672,7 @@ body {
 }
 
 .footer-section a:hover {
-    color: #3b82f6;
+    color: rgba(255, 157, 0, 0.8);
 }
 
 .discord-btn {
@@ -785,7 +785,7 @@ body {
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4);
+    background: linear-gradient(135deg, rgba(255, 157, 0, 0.8), #8b5cf6, #06b6d4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -841,7 +841,7 @@ body {
 
 .step-icon-container.blue {
     background: #eff6ff;
-    color: #2563eb;
+    color: rgba(255, 157, 0, 1);
 }
 
 .step-icon-container.green {
@@ -860,7 +860,7 @@ body {
     right: -12px;
     width: 32px;
     height: 32px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -892,7 +892,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -902,7 +902,7 @@ body {
 }
 
 .learn-more-btn:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
     transform: translateY(-1px);
 }
 
@@ -1012,7 +1012,7 @@ body {
 
 .cta-card-icon.blue {
     background: #dbeafe;
-    color: #2563eb;
+    color: rgba(255, 157, 0, 1);
 }
 
 .cta-card-icon.red {
@@ -1041,7 +1041,7 @@ body {
 .cta-card-button {
     width: 100%;
     padding: 12px 24px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     border: none;
     border-radius: 6px;
@@ -1056,7 +1056,7 @@ body {
 }
 
 .cta-card-button:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
     transform: translateY(-1px);
 }
 
@@ -1108,13 +1108,13 @@ body {
 
 .newsletter-form input:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: rgba(255, 157, 0, 0.8);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .newsletter-form button {
     padding: 12px 24px;
-    background: #3b82f6;
+    background: rgba(255, 157, 0, 0.8);
     color: white;
     border: none;
     border-radius: 6px;
@@ -1124,7 +1124,7 @@ body {
 }
 
 .newsletter-form button:hover {
-    background: #2563eb;
+    background: rgba(255, 157, 0, 1);
 }
 
 .newsletter-privacy {
