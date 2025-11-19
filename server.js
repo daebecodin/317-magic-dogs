@@ -1,37 +1,60 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const pool = require('./db/pool');
+
+// Import routes
+const authRoutes = require('./routes/auth');
+const petRoutes = require('./routes/pets');
+
 const app = express();
+const port = 3000;
 
-// Serve static files from public directory
-app.use(express.static('public'));
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Route handlers for all pages
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/pets', petRoutes);
+
+// Test database connection
+app.get('/api/test-db', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT NOW()');
+        res.json({ 
+            success: true, 
+            message: 'Database connected successfully',
+            timestamp: result.rows[0].now 
+        });
+    } catch (error) {
+        console.error('Database connection error:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Database connection failed',
+            details: error.message 
+        });
+    }
+});
+
+// Serve HTML pages
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/how-it-works', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'how-it-works.html'));
-});
-
-app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'about.html'));
-});
-
-app.get('/impact', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'impact.html'));
-});
-
-app.get('/nearby', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'nearby.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'));
 });
 
 app.get('/explore', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'explore.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'explore.html'));
+});
+
+app.get('/favorites', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'favorites.html'));
 });
 
 app.get('/signup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'signup.html'));
 });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(port, () => {
+    console.log(`Magic Dawgs server running on http://localhost:${port}`);
+});
