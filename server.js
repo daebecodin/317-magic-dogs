@@ -58,3 +58,7 @@ app.get('/signup', (req, res) => {
 app.listen(port, () => {
     console.log(`Magic Dawgs server running on http://localhost:${port}`);
 });
+
+app.get("/login", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "html", "login.html"));
+});

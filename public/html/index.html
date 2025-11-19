@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woofus - Find Your Perfect Pet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>Woofus</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="/html/how-it-works.html">How It Works</a></li>
+                <li><a href="/html/about.html">About Us</a></li>
+                <li><a href="/html/impact.html">Impact</a></li>
+                <li><a href="/html/nearby.html">Nearby</a></li>
+                <li><a href="/html/explore.html">Explore</a></li>
+                <li><a href="/html/favorites.html">Favorites</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="signup.html" class="btn btn-outline">For Shelters</a>
+                <a href="explore.html" class="btn btn-primary">Find Pets</a>
+                
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="mobile-menu">
+            <ul>
+                <li><a href="how-it-works.html">How It Works</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="nearby.html">Nearby</a></li>
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="favorites.html">Favorites</a></li>
+                <li><a href="signup.html">For Shelters</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        🐾 Saving Lives Through Technology
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="hero-title-line">Helping Every Pet Find</span>
+                        <span class="hero-title-line hero-title-primary">Their Forever Home</span>
+                    </h1>
+                    <p class="hero-description">
+                        We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pet Cards Section -->
+    <section class="pets-section">
+        <div class="pets-container">
+            <div class="pets-header">
+                <h2 class="pets-title">Meet Our Adoptable Pets</h2>
+                <p class="pets-subtitle">Find your perfect companion from our loving pets waiting for homes</p>
+            </div>
+            
+            <div id="pets-grid" class="pets-grid">
+                <!-- Pet cards will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="how-it-works-container">
+            <div class="how-it-works-header">
+                <div class="how-it-works-badge">How It Works</div>
+                <h2 class="how-it-works-title">Simple Process, Powerful Results</h2>
+                <p class="how-it-works-description">
+                    Our platform streamlines rescue matching to save more pets faster.
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <div class="step-icon-container red">
+                        <svg class="step-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="11" cy="4" r="2"/>
+                            <path d="m18 8.35-4.34-2.67a2.24 2.24 0 0 0-2.11-.05L8.34 6.89a2.24 2.24 0 0 0-1.11 1.94V13h2.22l.55-1.1a2.24 2.24 0 0 1 2-.9h.78c.86 0 1.65.5 2.01 1.28L15.56 15H18V8.35Z"/>
+                            <path d="M2 13h6v8H2z"/>
+                            <path d="M10 21h4l-2-7"/>
+                            <path d="M18 12h4v9h-4z"/>
+                        </svg>
+                    </div>
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Shelters List Pets</h3>
+                    <p class="step-description">
+                        Overburdened shelters add red-listed pets who need immediate help.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card">
+                    <div class="step-icon-container blue">
+                        <svg class="step-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="m22 21-3-3m0 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+                        </svg>
+                    </div>
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Rescues Offer Space</h3>
+                    <p class="step-description">
+                        Vetted rescue organizations post their available capacity.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <div class="step-icon-container green">
+                        <svg class="step-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22,4 12,14.01 9,11.01"/>
+                        </svg>
+                    </div>
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">We Make the Match</h3>
+                    <p class="step-description">
+                        Smart algorithms suggest the best matches for each pet.
+                    </p>
+                </div>
+            </div>
+
+            <div class="how-it-works-cta">
+                <a href="how-it-works.html" class="learn-more-btn">
+                    Learn More
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12,5 19,12 12,19"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-header">
+                <h2 class="cta-title">Ready to Help Pets?</h2>
+                <p class="cta-description">
+                    Join thousands of shelters and rescues working together to give every pet a chance.
+                </p>
+            </div>
+
+            <div class="cta-cards">
+                <!-- Rescue Organizations Card -->
+                <div class="cta-card">
+                    <div class="cta-card-icon blue">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="m22 21-3-3m0 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0"/>
+                        </svg>
+                    </div>
+                    <h3 class="cta-card-title">For Rescue Organizations</h3>
+                    <p class="cta-card-description">Connect with shelters in need and expand your impact</p>
+                    <a href="signup.html" class="cta-card-button">
+                        Join as a Rescue
+                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12,5 19,12 12,19"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Shelters Card -->
+                <div class="cta-card">
+                    <div class="cta-card-icon red">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="11" cy="4" r="2"/>
+                            <path d="m18 8.35-4.34-2.67a2.24 2.24 0 0 0-2.11-.05L8.34 6.89a2.24 2.24 0 0 0-1.11 1.94V13h2.22l.55-1.1a2.24 2.24 0 0 1 2-.9h.78c.86 0 1.65.5 2.01 1.28L15.56 15H18V8.35Z"/>
+                            <path d="M2 13h6v8H2z"/>
+                            <path d="M10 21h4l-2-7"/>
+                            <path d="M18 12h4v9h-4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="cta-card-title">For Shelters</h3>
+                    <p class="cta-card-description">Find rescue partners and save more pets</p>
+                    <a href="signup.html" class="cta-card-button">
+                        Join as a Shelter
+                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12,5 19,12 12,19"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Newsletter Signup -->
+            <div class="newsletter-card">
+                <h3 class="newsletter-title">Stay Updated</h3>
+                <p class="newsletter-description">Get the latest success stories and platform updates</p>
+                <form id="cta-newsletter-form" class="newsletter-form">
+                    <input 
+                        type="email" 
+                        id="cta-newsletter-email"
+                        placeholder="Enter your email" 
+                        required
+                    >
+                    <button type="submit">Subscribe</button>
+                </form>
+                <p class="newsletter-privacy">
+                    We respect your privacy. Unsubscribe at any time.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Brand Section -->
+                <div class="footer-brand">
+                    <a href="/" class="footer-brand-link">
+                        <svg class="footer-brand-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        <span class="footer-brand-name">Woofus</span>
+                    </a>
+                    <p class="footer-description">
+                        Connecting at-risk pets in high-kill shelters with vetted, loving rescue organizations. Together, we can give every pet a chance at a happy life.
+                    </p>
+                    
+                    <!-- Newsletter -->
+                    <div class="footer-newsletter">
+                        <h4>Join the Mission</h4>
+                        <form id="newsletter-form" class="newsletter-form">
+                            <input 
+                                type="email" 
+                                id="newsletter-email"
+                                placeholder="Your email" 
+                                class="newsletter-input"
+                                required
+                            >
+                            <button type="submit" class="newsletter-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Platform Links -->
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="how-it-works.html">How It Works</a></li>
+                        <li><a href="nearby.html">Nearby</a></li>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Links -->
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/careers">Careers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Links -->
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/help">Help Center</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                    </ul>
+                    
+                    <!-- Discord Link -->
+                    <a href="https://discord.gg/woofus" target="_blank" rel="noopener noreferrer" class="discord-btn">
+                        <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                        </svg>
+                        Join Discord
+                    </a>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Woofus. All Rights Reserved.</p>
+                <div class="footer-made-with">
+                    <span>Made with</span>
+                    <svg class="footer-heart" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    <span>for pets everywhere</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

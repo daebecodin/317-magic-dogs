@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Magic Dawgs</title>
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">Create account</h1>
+        <p class="auth-description">Enter your information to get started</p>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label class="form-label" for="firstName">First Name</label>
+                <input class="form-input" type="text" id="firstName" name="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="lastName">Last Name</label>
+                <input class="form-input" type="text" id="lastName" name="lastName" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input class="form-input" type="text" id="username" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input class="form-input" type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="/login" class="auth-link">Sign in</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Account created successfully!');
+                window.location.href = '/login';
+            } else {
+                const error = await response.json();
+                alert(error.message || 'Registration failed');
+            }
+        } catch (error) {
+            alert('Registration failed: ' + error.message);
+        }
+    });
+</script>
+</body>
+</html>

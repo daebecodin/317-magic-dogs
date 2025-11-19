@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites - Magic Dawgs</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/favorites.css">
+</head>
+<body>
+<div class="container">
+    <h1>My Favorite Pets</h1>
+    <div id="favorites-grid" class="pets-grid">
+        <!-- Favorite pets will be loaded here -->
+    </div>
+    <div id="no-favorites" style="display: none; text-align: center; padding: 2rem;">
+        <p>You haven't saved any favorites yet.</p>
+        <a href="/explore">Browse pets to add some favorites!</a>
+    </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/favorites.js"></script>
+<script>
+    // Load and display user's favorite pets
+    async function loadFavorites() {
+        if (!AuthService.isLoggedIn()) {
+            window.location.href = '/login';
+            return;
+        }
+
+        try {
+            const response = await AuthService.authenticatedFetch('/api/pets/favorites');
+            const data = await response.json();
+
+            if (data.success && data.favorites.length > 0) {
+                displayFavorites(data.favorites);
+            } else {
+                document.getElementById('no-favorites').style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error loading favorites:', error);
+            document.getElementById('no-favorites').style.display = 'block';
+        }
+    }
+
+    function displayFavorites(favorites) {
+        const grid = document.getElementById('favorites-grid');
+        grid.innerHTML = favorites.map(pet => `
+                <div class="pet-card">
+                    ${createHeartIcon(pet.pet_api_id, {
+            name: pet.pet_name,
+            type: pet.pet_type,
+            breed: pet.pet_breed
+        })}
+                    <img src="/placeholder.jpg" alt="${pet.pet_name}" class="pet-image">
+                    <div class="pet-info">
+                        <h3 class="pet-name">${pet.pet_name}</h3>
+                        <div class="pet-details">
+                            <p>${pet.pet_type} • ${pet.pet_breed || 'Mixed'}</p>
+                            <p>Added: ${new Date(pet.added_at).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        // Update heart icons to show as favorited
+        setTimeout(() => favoritesManager.updateHeartIcons(), 100);
+    }
+
+    // Load favorites on page load
+    document.addEventListener('DOMContentLoaded', loadFavorites);
+</script>
+</body>
+</html>
