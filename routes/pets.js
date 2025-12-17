@@ -94,3 +94,36 @@ router.delete('/favorites/:petId', verifyToken, async (req, res) => {
 });
 
 module.exports = router;
+
+router.post('/favorites', require('../middleware/auth').verifyToken, async (req, res) => {
+    const { pet_api_id, pet_name, pet_type, pet_breed } = req.body;
+    try {
+        await pool.query(
+            'INSERT INTO favorite_pets (user_id, pet_api_id, pet_name, pet_type, pet_breed) VALUES ($1, $2, $3, $4, $5)',
+            [req.user.id, pet_api_id, pet_name, pet_type, pet_breed]
+        );
+        res.json({ success: true, message: 'Pet added to favorites' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error adding favorite', error: err.message });
+    }
+});
+
+// Get user favorites
+router.get('/favorites', require('../middleware/auth').verifyToken, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM favorite_pets WHERE user_id = $1', [req.user.id]);
+        res.json({ success: true, favorites: result.rows });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error fetching favorites', error: err.message });
+    }
+});
+
+// Remove from favorites
+router.delete('/:petId/favorite', require('../middleware/auth').verifyToken, async (req, res) => {
+    try {
+        await pool.query('DELETE FROM favorite_pets WHERE user_id = $1 AND pet_api_id = $2', [req.user.id, req.params.petId]);
+        res.json({ success: true, message: 'Pet removed from favorites' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error removing favorite', error: err.message });
+    }
+});        

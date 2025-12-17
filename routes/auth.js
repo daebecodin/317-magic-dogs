@@ -7,12 +7,12 @@ const router = express.Router();
 
 // Register a new user
 router.post('/register', async (req, res) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, firstName, lastName } = req.body;
   try {
     const hash = await bcrypt.hash(password, 10);
     const result = await pool.query(
-      'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING id, username, email',
-      [username, hash, email]
+      'INSERT INTO users (username, password_hash, email, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, username, email',
+      [username, hash, email, firstName, lastName]
     );
     res.json({ success: true, message: 'User registered successfully', user: result.rows[0] });
   } catch (err) {
@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
     if (result.rowCount === 0) return res.status(401).json({ success: false, message: 'Invalid credentials' });
     
     const user = result.rows[0];
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password_hash);
     if (!match) return res.status(401).json({ success: false, message: 'Invalid credentials' });
     
     // Create token with 1-hour expiration
