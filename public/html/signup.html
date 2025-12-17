@@ -3,74 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Magic Dawgs</title>
-    <link rel="stylesheet" href="/css/auth.css">
+    <title>Sign Up - Woofus</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, rgba(255, 222, 213, 0.9) 0%, rgba(255, 157, 0, 0.9) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -250px;
+            left: -250px;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -200px;
+            right: -200px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-logo h1 {
+            font-size: 2rem;
+            margin: 0;
+            color: rgba(255, 157, 0, 1);
+        }
+
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 0.25rem 0;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: #6b7280;
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 0.875rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 157, 0, 1);
+            box-shadow: 0 0 0 3px rgba(255, 157, 0, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 157, 0, 1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: rgba(255, 157, 0, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 157, 0, 0.3);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #6b7280;
+        }
+
+        .auth-link {
+            color: rgba(255, 157, 0, 1);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            font-size: 0.875rem;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body>
-<div class="auth-container">
-    <div class="auth-card">
-        <h1 class="auth-title">Create account</h1>
-        <p class="auth-description">Enter your information to get started</p>
-
-        <form id="signupForm">
-            <div class="form-group">
-                <label class="form-label" for="firstName">First Name</label>
-                <input class="form-input" type="text" id="firstName" name="firstName" required>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <h1>🐾 Woofus</h1>
             </div>
+            
+            <h2 class="auth-title">Create Account</h2>
+            <p class="auth-subtitle">Join us to find your perfect companion</p>
 
-            <div class="form-group">
-                <label class="form-label" for="lastName">Last Name</label>
-                <input class="form-input" type="text" id="lastName" name="lastName" required>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="signupForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">First Name</label>
+                        <input class="form-input" type="text" id="firstName" name="firstName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Last Name</label>
+                        <input class="form-input" type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input class="form-input" type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input class="form-input" type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-input" type="password" id="password" name="password" required minlength="6">
+                </div>
+
+                <button type="submit" class="btn-submit">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="/html/login.html" class="auth-link">Sign in</a></p>
+                <p><a href="/html/index.html" class="auth-link">← Back to Home</a></p>
             </div>
-
-            <div class="form-group">
-                <label class="form-label" for="username">Username</label>
-                <input class="form-input" type="text" id="username" name="username" required>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="email">Email</label>
-                <input class="form-input" type="email" id="email" name="email" required>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label" for="password">Password</label>
-                <input class="form-input" type="password" id="password" name="password" required>
-            </div>
-
-            <button type="submit" class="btn-primary">Create Account</button>
-        </form>
-
-        <div class="auth-footer">
-            <p>Already have an account? <a href="/login" class="auth-link">Sign in</a></p>
         </div>
     </div>
-</div>
 
-<script>
-    document.getElementById('signupForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
+    <script src="../js/auth.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
 
-        try {
-            const response = await fetch('/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
 
-            if (response.ok) {
-                alert('Account created successfully!');
-                window.location.href = '/login';
-            } else {
-                const error = await response.json();
-                alert(error.message || 'Registration failed');
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    successMsg.textContent = 'Account created! Redirecting to login...';
+                    successMsg.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = '/html/login.html';
+                    }, 1500);
+                } else {
+                    errorMsg.textContent = result.message || 'Registration failed. Please try again.';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                errorMsg.textContent = 'Registration failed: ' + error.message;
+                errorMsg.style.display = 'block';
             }
-        } catch (error) {
-            alert('Registration failed: ' + error.message);
-        }
-    });
-</script>
+        });
+    </script>
 </body>
 </html>

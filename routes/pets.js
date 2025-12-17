@@ -10,9 +10,10 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 class PetApiService {
     static async getPetById(petId) {
         try {
-            const response = await fetch(`https://onlypets-api-wrapper.onrender.com/petfinder/animals/${petId}`);
+            const response = await fetch(`https://onlypets-api-wrapper.onrender.com/rescuegroups/animals/${petId}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
+            const text = await response.text();
+            return JSON.parse(text);
         } catch (error) {
             console.error('Error fetching pet:', error);
             throw error;
@@ -28,10 +29,11 @@ class PetApiService {
                 }
             });
 
-            const url = `https://onlypets-api-wrapper.onrender.com/petfinder/animals${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+            const url = `https://onlypets-api-wrapper.onrender.com/rescuegroups/animals${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
             const response = await fetch(url);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return await response.json();
+            const text = await response.text();
+            return JSON.parse(text);
         } catch (error) {
             console.error('Error searching pets:', error);
             throw error;
