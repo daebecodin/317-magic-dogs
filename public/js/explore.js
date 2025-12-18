@@ -58,7 +58,7 @@ async function loadPets() {
     
     try {
         console.log('Fetching pets...');
-        const response = await fetch('/api/pets/search?limit=50');
+        const response = await fetch('https://onlypets-api-wrapper.onrender.com/rescuegroups/animals?limit=50');
         console.log('Response:', response);
         const data = await response.json();
         console.log('Data:', data);
@@ -141,15 +141,103 @@ function showLoginRequired() {
 }
 
 function applyFilters() {
-    loadPets();
+    const typeFilter = document.getElementById('type-filter').value;
+    const ageFilter = document.getElementById('age-filter').value;
+    const genderFilter = document.getElementById('gender-filter').value;
+    const sizeFilter = document.getElementById('size-filter').value;
+    
+    loadPetsWithFilters(typeFilter, ageFilter, genderFilter, sizeFilter);
 }
 
 function searchByLocation() {
-    loadPets();
+    const location = document.getElementById('location-input').value;
+    loadPetsWithLocation(location);
 }
 
-function setupEventListeners() {
-    // Placeholder
+async function loadPetsWithFilters(type, age, gender, size) {
+    const container = document.getElementById('pets-container');
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading...</div>';
+    
+    try {
+        let url = 'https://onlypets-api-wrapper.onrender.com/rescuegroups/animals?limit=50';
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        let animals = data.data || [];
+        
+        // Client-side filtering
+        if (type && type !== 'all') {
+            animals = animals.filter(animal => {
+                if (type === 'dog') return animal.relationships?.species?.data?.[0]?.id === '8';
+                if (type === 'cat') return animal.relationships?.species?.data?.[0]?.id === '3';
+                return true;
+            });
+        }
+        
+        if (age && age !== 'all') {
+            animals = animals.filter(animal => 
+                animal.attributes?.ageString?.toLowerCase().includes(age.toLowerCase())
+            );
+        }
+        
+        if (gender && gender !== 'all') {
+            animals = animals.filter(animal => 
+                animal.attributes?.sex === gender
+            );
+        }
+        
+        if (size && size !== 'all') {
+            animals = animals.filter(animal => 
+                animal.attributes?.sizeGroup === size
+            );
+        }
+        
+        if (animals.length > 0) {
+            displayAnimals(animals);
+        } else {
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No pets found matching your filters</div>';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Error loading pets</div>';
+    }
+}
+
+async function loadPetsWithLocation(location) {
+    const container = document.getElementById('pets-container');
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Loading...</div>';
+    
+    try {
+        let url = 'https://onlypets-api-wrapper.onrender.com/petfinder/animals?limit=50';
+        if (location) {
+            url += `&location=${encodeURIComponent(location)}`;
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        const animals = data.data || [];
+        
+        if (animals.length > 0) {
+            displayAnimals(animals);
+            document.getElementById('location-subtitle').textContent = `Showing pets near ${location}`;
+        } else {
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">No pets found in this location</div>';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem;">Error loading pets</div>';
+    }
+}
+
+function loadPetsFromAPI() {
+    // Reset all filters
+    document.getElementById('type-filter').value = 'all';
+    document.getElementById('age-filter').value = 'all';
+    document.getElementById('gender-filter').value = 'all';
+    document.getElementById('size-filter').value = 'all';
+    
+    // Load fresh pets
+    loadPets();
 }
 
 function showLoading() {}
