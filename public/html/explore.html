@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/explore.css">
     <link rel="stylesheet" href="/css/favorites.css">
-    <link rel="stylesheet" href="/css/favorites.css">
+    <link rel="stylesheet" href="/css/modal.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -31,7 +31,7 @@
             
             <div class="nav-actions">
                 <a href="signup.html" class="btn btn-outline">For Shelters</a>
-                <a href="explore.html" class="btn btn-primary">Find Pets</a>
+                <a href="/html/explore.html" class="btn btn-primary">Find Pets</a>
                 
                 <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -141,6 +141,62 @@
         </div>
     </div>
 
+    <!-- Pet Details Modal -->
+    <div id="pet-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-pet-image" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-header">
+                        <h2 id="modal-pet-name"></h2>
+                        <span id="modal-pet-fee" class="fee-badge"></span>
+                    </div>
+                    <div class="modal-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Age:</span>
+                            <span id="modal-pet-age"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Gender:</span>
+                            <span id="modal-pet-gender"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Size:</span>
+                            <span id="modal-pet-size"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Breed:</span>
+                            <span id="modal-pet-breed"></span>
+                        </div>
+                    </div>
+                    <div class="compatibility">
+                        <h3>Good with:</h3>
+                        <div class="compatibility-tags">
+                            <span id="modal-dogs-ok" class="tag">Dogs</span>
+                            <span id="modal-cats-ok" class="tag">Cats</span>
+                            <span id="modal-kids-ok" class="tag">Kids</span>
+                        </div>
+                    </div>
+                    <div class="modal-description">
+                        <h3>About Me:</h3>
+                        <p id="modal-pet-description"></p>
+                    </div>
+                    <div class="modal-location">
+                        <p><strong>Location:</strong> <span id="modal-pet-location"></span></p>
+                        <p><strong>Organization:</strong> <span id="modal-pet-org"></span></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="modal-contact-btn" class="btn-primary">Contact Shelter</button>
+                        <button id="modal-favorite-btn" class="btn-secondary">Add to Favorites</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -235,10 +291,8 @@
         </div>
     </footer>
     <script src="/js/script.js"></script>
+    <script src="/js/shared-auth.js"></script>
     <script src="/js/explore.js"></script>
-    <script src="/js/auth.js"></script>
-    <script src="/js/favorites.js"></script>
-    <script src="/js/auth.js"></script>
     <script src="/js/favorites.js"></script>
 </body>
 </html>

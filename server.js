@@ -5,6 +5,7 @@ const pool = require('./db/pool');
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const favoritesRoutes = require('./routes/favorites');
 
 const app = express();
 const port = 3000;
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/favorites', favoritesRoutes);
 
 // Test database connection
 app.get('/api/test-db', async (req, res) => {
