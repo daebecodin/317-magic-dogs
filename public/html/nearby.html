@@ -18,7 +18,6 @@
             </a>
             
             <ul class="nav-menu">
-                <li><a href="/html/how-it-works.html">How It Works</a></li>
                 <li><a href="/html/about.html">About Us</a></li>
                 <li><a href="/html/nearby.html">Nearby</a></li>
                 <li><a href="/html/explore.html">Explore</a></li>
@@ -55,30 +54,46 @@
         </div>
     </nav>
 
-    <!-- Page Content -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <div class="hero-badge">
-                        📍 Find Nearby
-                    </div>
-                    <h1 class="hero-title">
-                        <span class="hero-title-line">Pets Near You</span>
-                    </h1>
-                    <p class="hero-description">
-                        Discover adoptable pets and rescue organizations in your local area.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- Main Content -->
     <section class="pets-section">
         <div class="pets-container">
             <div class="pets-header">
-                <h2 class="pets-title">Coming Soon</h2>
-                <p class="pets-subtitle">Location-based pet search and interactive map will be available here</p>
+                <h2 class="pets-title">Find Local Organizations</h2>
+                <p class="pets-subtitle">Search for rescue organizations and shelters near you</p>
+            </div>
+            
+            <!-- Search Form -->
+            <div class="search-form">
+                <div class="search-inputs">
+                    <div class="input-group">
+                        <label for="zipcode">Zip Code</label>
+                        <input type="text" id="zipcode" placeholder="Enter zip code" maxlength="5">
+                    </div>
+                    <div class="input-group">
+                        <label for="distance">Distance (miles)</label>
+                        <select id="distance">
+                            <option value="10">10 miles</option>
+                            <option value="25" selected>25 miles</option>
+                            <option value="50">50 miles</option>
+                            <option value="100">100 miles</option>
+                        </select>
+                    </div>
+                    <button onclick="searchOrganizations()" class="btn-primary">Search</button>
+                </div>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading" class="loading" style="display: none;">
+                Searching for organizations...
+            </div>
+            
+            <!-- Results -->
+            <div id="organizations-container" class="organizations-grid"></div>
+            
+            <!-- No Results -->
+            <div id="no-results" style="display: none; text-align: center; padding: 3rem;">
+                <h3>No organizations found</h3>
+                <p>Try expanding your search distance or check your zip code.</p>
             </div>
         </div>
     </section>
@@ -178,5 +193,6 @@
     </footer>
     <script src="/js/script.js"></script>
     <script src="/js/shared-auth.js"></script>
+    <script src="/js/nearby.js"></script>
 </body>
 </html>
