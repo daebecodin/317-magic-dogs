@@ -18,9 +18,7 @@
             </a>
             
             <ul class="nav-menu">
-                <li><a href="/html/how-it-works.html">How It Works</a></li>
                 <li><a href="/html/about.html">About Us</a></li>
-                <li><a href="/html/impact.html">Impact</a></li>
                 <li><a href="/html/nearby.html">Nearby</a></li>
                 <li><a href="/html/explore.html">Explore</a></li>
                 <li><a href="/html/favorites.html">Favorites</a></li>
@@ -28,7 +26,7 @@
             
             <div class="nav-actions">
                 <a href="signup.html" class="btn btn-outline">For Shelters</a>
-                <a href="/pets" class="btn btn-primary">Find Pets</a>
+                <a href="/html/explore.html" class="btn btn-primary">Find Pets</a>
                 
                 <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -39,6 +37,9 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Auth Section -->
+        <div id="auth-container" class="auth-section"></div>
         
         <div id="mobile-menu" class="mobile-menu">
             <ul>
@@ -75,8 +76,25 @@
     <section class="pets-section">
         <div class="pets-container">
             <div class="pets-header">
-                <h2 class="pets-title">Coming Soon</h2>
-                <p class="pets-subtitle">Our team story, mission, and values will be shared here</p>
+                <h2 class="pets-title">About Woofus</h2>
+                <p class="pets-subtitle">Connecting at-risk pets with loving rescue organizations</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>We bridge the gap between high-kill shelters and vetted rescue organizations, giving every pet a chance at finding their forever home. Our platform streamlines the rescue process to save more lives faster.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h3>How We Help</h3>
+                    <p>By connecting overburdened shelters with rescue organizations that have space and resources, we create a network of care that extends beyond geographical boundaries. Every connection we facilitate is a life saved.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h3>Our Impact</h3>
+                    <p>Through our platform, rescue organizations can quickly identify pets in need, streamline adoption processes, and focus their efforts where they're needed most. Together, we're building a future where no adoptable pet is left behind.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -175,5 +193,6 @@
         </div>
     </footer>
     <script src="/js/script.js"></script>
+    <script src="/js/shared-auth.js"></script>
 </body>
 </html>

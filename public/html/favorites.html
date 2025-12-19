@@ -3,73 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Favorites - Magic Dawgs</title>
+    <title>My Favorites - Woofus</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/explore.css">
     <link rel="stylesheet" href="/css/favorites.css">
+    <link rel="stylesheet" href="/css/modal.css">
 </head>
 <body>
-<div class="container">
-    <h1>My Favorite Pets</h1>
-    <div id="favorites-grid" class="pets-grid">
-        <!-- Favorite pets will be loaded here -->
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-brand">
+                <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                <span>Woofus</span>
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="/html/about.html">About Us</a></li>
+                <li><a href="/html/nearby.html">Nearby</a></li>
+                <li><a href="/html/explore.html">Explore</a></li>
+                <li><a href="/html/favorites.html">Favorites</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <a href="signup.html" class="btn btn-outline">For Shelters</a>
+                <a href="/html/explore.html" class="btn btn-primary">Find Pets</a>
+                
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Section -->
+    <div id="auth-container" class="auth-section"></div>
+
+    <!-- Main Content -->
+    <div class="explore-container">
+        <!-- Header -->
+        <div class="explore-header">
+            <span class="explore-badge">My Favorites</span>
+            <h1 class="explore-title">Your Saved Pets</h1>
+            <p class="explore-subtitle">
+                Pets you've saved for later consideration.
+            </p>
+        </div>
+
+        <!-- Favorites Grid -->
+        <div class="explore-grid">
+            <div>
+                <div id="loading" class="loading" style="display: none;">
+                    Loading favorites...
+                </div>
+                <div id="favorites-container" class="pets-grid"></div>
+                <div id="no-favorites" style="display: none; grid-column: 1/-1; text-align: center; padding: 3rem;">
+                    <h2 style="margin-bottom: 1rem;">No Favorites Yet</h2>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">Start exploring to find pets you'd like to save!</p>
+                    <a href="/html/explore.html" class="btn-primary">Browse Pets</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="no-favorites" style="display: none; text-align: center; padding: 2rem;">
-        <p>You haven't saved any favorites yet.</p>
-        <a href="/explore">Browse pets to add some favorites!</a>
-    </div>
-</div>
 
-<script src="/js/auth.js"></script>
-<script src="/js/favorites.js"></script>
-<script>
-    // Load and display user's favorite pets
-    async function loadFavorites() {
-        if (!AuthService.isLoggedIn()) {
-            window.location.href = '/login';
-            return;
-        }
-
-        try {
-            const response = await AuthService.authenticatedFetch('/api/pets/favorites');
-            const data = await response.json();
-
-            if (data.success && data.favorites.length > 0) {
-                displayFavorites(data.favorites);
-            } else {
-                document.getElementById('no-favorites').style.display = 'block';
-            }
-        } catch (error) {
-            console.error('Error loading favorites:', error);
-            document.getElementById('no-favorites').style.display = 'block';
-        }
-    }
-
-    function displayFavorites(favorites) {
-        const grid = document.getElementById('favorites-grid');
-        grid.innerHTML = favorites.map(pet => `
-                <div class="pet-card">
-                    ${createHeartIcon(pet.pet_api_id, {
-            name: pet.pet_name,
-            type: pet.pet_type,
-            breed: pet.pet_breed
-        })}
-                    <img src="/placeholder.jpg" alt="${pet.pet_name}" class="pet-image">
-                    <div class="pet-info">
-                        <h3 class="pet-name">${pet.pet_name}</h3>
-                        <div class="pet-details">
-                            <p>${pet.pet_type} • ${pet.pet_breed || 'Mixed'}</p>
-                            <p>Added: ${new Date(pet.added_at).toLocaleDateString()}</p>
+    <!-- Pet Details Modal -->
+    <div id="pet-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-pet-image" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <div class="modal-header">
+                        <h2 id="modal-pet-name"></h2>
+                        <span id="modal-pet-fee" class="fee-badge"></span>
+                    </div>
+                    <div class="modal-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Age:</span>
+                            <span id="modal-pet-age"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Gender:</span>
+                            <span id="modal-pet-gender"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Size:</span>
+                            <span id="modal-pet-size"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Breed:</span>
+                            <span id="modal-pet-breed"></span>
                         </div>
                     </div>
+                    <div class="compatibility">
+                        <h3>Good with:</h3>
+                        <div class="compatibility-tags">
+                            <span id="modal-dogs-ok" class="tag">Dogs</span>
+                            <span id="modal-cats-ok" class="tag">Cats</span>
+                            <span id="modal-kids-ok" class="tag">Kids</span>
+                        </div>
+                    </div>
+                    <div class="modal-description">
+                        <h3>About Me:</h3>
+                        <p id="modal-pet-description"></p>
+                    </div>
+                    <div class="modal-location">
+                        <p><strong>Location:</strong> <span id="modal-pet-location"></span></p>
+                        <p><strong>Organization:</strong> <span id="modal-pet-org"></span></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button id="modal-contact-btn" class="btn-primary">Contact Shelter</button>
+                        <button id="modal-remove-favorite-btn" class="btn-secondary">Remove from Favorites</button>
+                    </div>
                 </div>
-            `).join('');
+            </div>
+        </div>
+    </div>
 
-        // Update heart icons to show as favorited
-        setTimeout(() => favoritesManager.updateHeartIcons(), 100);
-    }
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="/" class="footer-brand-link">
+                        <svg class="footer-brand-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                        <span class="footer-brand-name">Woofus</span>
+                    </a>
+                    <p class="footer-description">
+                        Connecting at-risk pets in high-kill shelters with vetted, loving rescue organizations.
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2025 Woofus. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    // Load favorites on page load
-    document.addEventListener('DOMContentLoaded', loadFavorites);
-</script>
+    <script src="/js/script.js"></script>
+    <script src="/js/shared-auth.js"></script>
+    <script src="/js/favorites.js"></script>
 </body>
 </html>

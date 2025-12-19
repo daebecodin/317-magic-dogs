@@ -18,9 +18,7 @@
             </a>
             
             <ul class="nav-menu">
-                <li><a href="/html/how-it-works.html">How It Works</a></li>
                 <li><a href="/html/about.html">About Us</a></li>
-                <li><a href="/html/impact.html">Impact</a></li>
                 <li><a href="/html/nearby.html">Nearby</a></li>
                 <li><a href="/html/explore.html">Explore</a></li>
                 <li><a href="/html/favorites.html">Favorites</a></li>
@@ -28,7 +26,7 @@
             
             <div class="nav-actions">
                 <a href="signup.html" class="btn btn-outline">For Shelters</a>
-                <a href="explore.html" class="btn btn-primary">Find Pets</a>
+                <a href="/html/explore.html" class="btn btn-primary">Find Pets</a>
                 
                 <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -39,6 +37,9 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Auth Section -->
+        <div id="auth-container" class="auth-section"></div>
         
         <div id="mobile-menu" class="mobile-menu">
             <ul>
@@ -69,20 +70,6 @@
                         We connect at-risk pets in high-kill shelters with a network of vetted, loving animal rescues. Together, we can give every pet a chance at a happy life.
                     </p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pet Cards Section -->
-    <section class="pets-section">
-        <div class="pets-container">
-            <div class="pets-header">
-                <h2 class="pets-title">Meet Our Adoptable Pets</h2>
-                <p class="pets-subtitle">Find your perfect companion from our loving pets waiting for homes</p>
-            </div>
-            
-            <div id="pets-grid" class="pets-grid">
-                <!-- Pet cards will be loaded here by JavaScript -->
             </div>
         </div>
     </section>
@@ -328,5 +315,6 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="/js/shared-auth.js"></script>
 </body>
 </html>
